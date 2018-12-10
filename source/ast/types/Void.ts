@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-import { Type } from './Type';
+import { Type, TypeID } from './Type';
 
 export class Void extends Type
 {
-	constructor ()
-	{
-		super ('__void');
-	}
+	protected readonly TYPE_ID: TypeID = TypeID.VOID;
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Type } from '../Type';
+import { Type, TypeID } from '../Type';
 
 export enum Precision {
 	SIMPLE = 0,
@@ -23,8 +23,17 @@ export enum Precision {
 
 export class Float extends Type
 {
+	protected readonly TYPE_ID: TypeID = TypeID.FLOAT;
+
 	constructor (name: string, public readonly precision: Precision)
 	{
 		super (name);	
+	}
+
+	toJSON ():any
+	{
+		let json = super.toJSON ();
+		json.precision = this.precision;
+		return json;
 	}
 }

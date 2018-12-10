@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-import { Type } from './Type';
+import { Type, TypeID } from './Type';
 
 export class Pointer extends Type
 {
-	constructor (name: string, public readonly pointerType: Type)
+	protected readonly TYPE_ID: TypeID = TypeID.POINTER;
+
+	constructor (name: string, public type: Type)
 	{
 		super (name);
+	}
+
+	toJSON ():any
+	{
+		let json = super.toJSON ();
+		json.type = this.type.toJSON ();
+		return json;
 	}
 }

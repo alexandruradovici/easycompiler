@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-import { Type } from './Type';
+import { Type, TypeID } from './Type';
 
 export class Unknown extends Type
 {
+	protected readonly TYPE_ID: TypeID = TypeID.UNKNOWN;
+
 	constructor ()
 	{
 		super ('__unknown');

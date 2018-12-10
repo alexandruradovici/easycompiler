@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-import { Type } from './Type';
+import { Type, TypeID } from './Type';
 
 export class Function extends Type
 {
+	protected readonly TYPE_ID: TypeID = TypeID.FUNCTION;
+
 	constructor (name: string = '__function')
 	{
 		super (name);
 	}
+
+	// TODO add parameter types
 }

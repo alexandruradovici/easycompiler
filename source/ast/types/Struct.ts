@@ -14,18 +14,29 @@
  * limitations under the License.
  */
 
-import { Type } from './Type';
+import { Type, TypeID } from './Type';
 import { u32 } from 'util/types';
 
 export class StructElement {
-	constructor (public readonly name: string, public readonly type: Type)
+	constructor (public name: string, public type: Type)
 	{
 
+	}
+
+	toJSON ():any
+	{
+		let json:any = {
+			name: this.name,
+			type: this.type.toJSON ()
+		};
+		return json;
 	}
 }
 
 export class Struct extends Type
 {
+	protected readonly TYPE_ID: TypeID = TypeID.STRUCT;
+
 	constructor (name: string, public readonly elements: StructElement[] = [])
 	{
 		super (name);
@@ -80,5 +91,16 @@ export class Struct extends Type
 	hasElement (name: StructElement | string)
 	{
 		return (this.getElement (name) === null);
+	}
+
+	toJSON ():any
+	{
+		let json = super.toJSON ();
+		json.elements = [];
+		for (let element in this.elements)
+		{
+			json.elements.push (this.elements[element].toJSON ());
+		}
+		return json;
 	}
 }

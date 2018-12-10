@@ -16,9 +16,12 @@
 
 import { Float } from './Float';
 import { Precision } from './Float';
+import { TypeID } from '../Type';
 
 export class FloatSimple extends Float
 {
+	protected readonly TYPE_ID: TypeID = TypeID.FLOAT_SIMPLE;
+
 	constructor (name: string)
 	{
 		super (name, Precision.SIMPLE);

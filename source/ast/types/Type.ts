@@ -18,9 +18,24 @@
 
 import { u32 } from 'util/types';
 
+export enum TypeID {
+	TYPE = 0,
+	FLOAT = 1,
+	FLOAT_SIMPLE = 2,
+	FLOAT_DOUBLE = 3,
+	ARRAY = 4,
+	FUNCTION = 5,
+	POINTER = 6,
+	STRUCT = 7,
+	UNKNOWN = 8,
+	VOID = 9
+};
+
 export abstract class Type
 {
 	protected version:u32 = 1;
+	protected readonly TYPE_ID: TypeID = TypeID.TYPE;
+
 	constructor (public readonly name: string)
 	{
 
@@ -29,7 +44,9 @@ export abstract class Type
 	toJSON ():any 
 	{
 		let json: any = {
-			version: this.version
+			version: this.version,
+			typeId: this.TYPE_ID,
+			name: this.name
 		};
 		return json;
 	}

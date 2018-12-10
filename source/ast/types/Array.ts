@@ -17,11 +17,13 @@
 
 
 
-import { Type } from './Type';
+import { Type, TypeID } from './Type';
 import { u32 } from 'util/types';
 
 export class Array extends Type
 {
+	protected readonly TYPE_ID: TypeID = TypeID.ARRAY;
+
 	constructor (name: string, public readonly type: Type, public readonly size: u32)
 	{
 		super (name);
@@ -30,7 +32,6 @@ export class Array extends Type
 	toJSON ():any 
 	{
 		let json = super.toJSON ();
-		json.name = this.name;
 		json.type = this.type.toJSON ();
 		json.size = this.size;
 		return json;
