@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { Node, ParentNode, NodeID } from './Node';
+import { Node, ParentNode, NodeID } from '@easycompiler/util/Node';
 import { Expression } from './Expression';
-import { u32 } from 'util/types';
-import { i32 } from 'util/types';
-import { ASTError } from 'ast/errors';
+import { u32 } from '@easycompiler/util/types';
+import { i32 } from '@easycompiler/util/types';
+import { ASTError } from '@easycompiler/ast/errors';
 
 export class FunctionCall extends Expression implements ParentNode
 {

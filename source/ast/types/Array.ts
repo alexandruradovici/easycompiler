@@ -18,7 +18,7 @@
 
 
 import { Type, TypeID } from './Type';
-import { u32 } from 'util/types';
+import { u32 } from '@easycompiler/util/types';
 
 export class Array extends Type
 {

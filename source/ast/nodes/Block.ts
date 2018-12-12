@@ -15,9 +15,8 @@
  */
 
 
-import { Node, NodeID, ParentNode } from './Node';
-import { i32 } from 'util/types';
-import { u32 } from 'util/types';
+import { Node, NodeID, ParentNode } from '@easycompiler/util/Node';
+import { i32, u32 } from '@easycompiler/util/types';
 
 export class Block extends Node implements ParentNode
 {

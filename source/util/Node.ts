@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { i32, u32, i64, u64, f32, f64 } from 'util/types';
+import { i32, u32, i64, u64, f32, f64 } from '@easycompiler/util/types';
 
-type NodeTagValue = string | i32 | u32 | f32 | f64;
+export type NodeTagValue = string | i32 | u32 | f32 | f64 | boolean;
 
 export enum NodeID {
+	// AST Nodes
 	NODE = 0,
 	ARRAY_ELEMENT = 1,
 	BLOCK = 2,
@@ -39,7 +40,11 @@ export enum NodeID {
 	MODULE = 17,
 	JUMP = 18,
 	LABEL = 19,
-	TYPE_DEFINITION = 20
+	TYPE_DEFINITION = 20,
+
+	// Parsetree Nodes
+	RULE = 21,
+	TOKEN = 22
 };
 
 export class NodeTag

@@ -16,10 +16,10 @@
 
 
 
-import { Node, NodeID, ParentNode } from './Node';
+import { Node, NodeID, ParentNode } from '@easycompiler/util/Node';
 import { Block } from './Block';
 import { Expression } from './Expression';
-import { ASTError } from 'ast/errors';
+import { ASTError } from '@easycompiler/ast/errors';
 
 export class Branch extends Node implements ParentNode
 {

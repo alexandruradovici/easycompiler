@@ -16,14 +16,16 @@
 
 
 
-import { Node, ParentNode, NodeID } from 'ast/nodes';
-import { Expression } from 'ast/nodes';
-import { ASTError } from 'ast/errors';
+import { Node, ParentNode, NodeID } from '@easycompiler/ast/nodes';
+import { Expression } from '@easycompiler/ast/nodes';
+import { ASTError } from '@easycompiler/ast/errors';
 
-export enum ExpressionUnaryOperator {
+export enum UnaryExpressionOperator {
 	OPERATOR_NEGATIVE = '-',
 	OPERATOR_NOT = '!',
-	OPERATOR_DEFERENCEc = '*'
+	OPERATOR_DEFERENCE = '*',
+	OPERATOR_INCREMENT = '++',
+	OPERATOR_DECREMENT = '--'
 };
 
 export class UnaryExpression extends Node implements ParentNode
@@ -31,7 +33,7 @@ export class UnaryExpression extends Node implements ParentNode
 	protected NODE_ID: NodeID = NodeID.UNARY_EXPRESSION;
 
 	constructor (private _expression: Expression, 
-				 private operator: ExpressionUnaryOperator | string)
+				 private operator: UnaryExpressionOperator | string)
 	{
 		super ();
 	}

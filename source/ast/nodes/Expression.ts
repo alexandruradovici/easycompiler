@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { Node, NodeID } from './Node';
-import { Type, Unknown } from 'ast/types';
+import { Node, NodeID } from '@easycompiler/util/Node';
+import { Type, Unknown } from '@easycompiler/ast/types';
 
 export abstract class Expression extends Node
 {

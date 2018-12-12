@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Node, NodeID } from './Node';
+import { Node, NodeID } from '@easycompiler/util/Node';
 
 export class Label extends Node
 {

@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import { NodeID } from './Node';
-import { Type } from 'ast/types';
+import { NodeID } from '@easycompiler/util/Node';
+import { Type, Unknown } from '@easycompiler/ast/types';
 import { Expression } from './expression';
 
 export class Identifier extends Expression
 {
 	protected NODE_ID: NodeID = NodeID.IDENTIFIER;
 
-	constructor (public name: string, public readonly type: Type)
+	constructor (public name: string, public type: Type = new Unknown())
 	{
 		super ();
 	}

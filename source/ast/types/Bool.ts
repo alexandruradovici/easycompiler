@@ -14,28 +14,21 @@
  * limitations under the License.
  */
 
-import { Node, NodeID } from '@easycompiler/ast/nodes';
+import { Type, TypeID } from './Type';
 
-export enum JumpType {
-	BREAK = 'break',
-	CONTINUE = 'continue',
-	JUMP_TO_LABEL = 'label'
-};
-
-export abstract class Jump extends Node
+export class Bool extends Type
 {
-	protected NODE_ID: NodeID = NodeID.JUMP;
+	protected readonly TYPE_ID: TypeID = TypeID.BOOL;
 
-	constructor (public jumpType: JumpType | string, public name?: string)
+	constructor (name: string, public type: Type)
 	{
-		super ();
+		super (name);
 	}
 
 	toJSON ():any
 	{
 		let json = super.toJSON ();
-		json.name = this.name;
-		json.jumpType = this.jumpType;
+		json.type = this.type.toJSON ();
 		return json;
 	}
 }

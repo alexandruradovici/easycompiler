@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { Node, ParentNode, NodeID } from './Node';
+import { Node, ParentNode, NodeID } from '@easycompiler/util/Node';
 import { Expression } from './Expression';
-import { Type } from 'ast/types';
+import { Type } from '@easycompiler/ast/types';
 
 export class Return extends Node implements ParentNode
 {

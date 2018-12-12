@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { Node, ParentNode, NodeID } from './Node';
+import { Node, ParentNode, NodeID } from '@easycompiler/util/Node';
 import { Block } from './Block';
-import { ASTError } from 'ast/errors';
+import { ASTError } from '@easycompiler/ast/errors';
 
 export class Loop extends Node implements ParentNode
 {

@@ -18,5 +18,5 @@ import { Type, TypeID } from './Type';
 
 export class Void extends Type
 {
-	protected readonly TYPE_ID: TypeID = TypeID.VOID;
+	protected readonly TYPE_ID: TypeID = TypeID.VOID; 
 }

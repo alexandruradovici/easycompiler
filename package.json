@@ -1,0 +1,27 @@
+{
+  "name": "easycompiler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexandruradovici/easycompiler.git"
+  },
+  "author": "Alexandru RADOVICI",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/alexandruradovici/easycompiler/issues"
+  },
+  "homepage": "https://github.com/alexandruradovici/easycompiler#readme",
+  "dependencies": {
+    "module-alias": "^2.1.0"
+  },
+  "_moduleAliases": {
+    "@easycompiler"  : "dist",
+    "@ast"  : "dist/ast",
+    "@parsetree"  : "dist/frontend/parsetree"
+  }
+}

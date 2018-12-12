@@ -15,11 +15,11 @@
  */
 
 
-import { Node, ParentNode, NodeID } from 'ast/nodes';
-import { Expression } from 'ast/nodes';
-import { ASTError } from 'ast/errors';
+import { Node, ParentNode, NodeID } from '@easycompiler/ast/nodes';
+import { Expression } from '@easycompiler/ast/nodes';
+import { ASTError } from '@easycompiler/ast/errors';
 
-export enum ExpressionBinaryOperator {
+export enum BinaryExpressionOperator {
 	OPERATOR_ADD = '+',
 	OPERATOR_SUBTRACT = '-',
 	OPERATOR_MULTIPLY = '*',
@@ -42,7 +42,7 @@ export class BinaryExpression extends Node implements ParentNode
 
 	constructor (private _left: Expression, 
 				 private _right: Expression,
-				 public operator: ExpressionBinaryOperator | string)
+				 public operator: BinaryExpressionOperator | string)
 	{
 		super ();
 	}

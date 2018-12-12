@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { Type, Struct } from 'ast/types';
+import { Type, Struct } from '@easycompiler/ast/types';
 import { Expression } from './Expression';
-import { Unknown } from 'ast/types';
-import { Node, ParentNode, NodeID } from './Node';
-import { ASTError } from 'ast/errors';
+import { Unknown } from '@easycompiler/ast/types';
+import { Node, ParentNode, NodeID } from '@easycompiler/util/Node';
+import { ASTError } from '@easycompiler/ast/errors';
 
 export class StructElement extends Expression implements ParentNode
 {

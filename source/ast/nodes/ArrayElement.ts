@@ -16,11 +16,10 @@
 
 
 
-import { Type } from 'ast/types';
+import { Type } from '@easycompiler/ast/types';
 import { Expression } from './Expression';
-import { Node, NodeID, ParentNode } from './Node';
-import { ASTError } from 'ast/errors';
-import { u32 } from 'util/types';
+import { Node, NodeID, ParentNode } from '@easycompiler/util/Node';
+import { ASTError } from '@easycompiler/ast/errors';
 
 export class ArrayElement extends Expression implements ParentNode
 {

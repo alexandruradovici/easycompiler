@@ -16,9 +16,9 @@
 
 
 
-import { Type } from 'ast/types';
+import { Type } from '@easycompiler/ast/types';
 import { Identifier } from './Identifier';
-import { NodeID } from './Node';
+import { NodeID } from '@easycompiler/util/Node';
 
 export class Constant extends Identifier
 {

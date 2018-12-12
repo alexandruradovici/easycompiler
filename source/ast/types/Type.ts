@@ -16,7 +16,7 @@
 
 
 
-import { u32 } from 'util/types';
+import { u32 } from '@easycompiler/util/types';
 
 export enum TypeID {
 	TYPE = 0,
@@ -28,7 +28,8 @@ export enum TypeID {
 	POINTER = 6,
 	STRUCT = 7,
 	UNKNOWN = 8,
-	VOID = 9
+	VOID = 9,
+	BOOL = 10
 };
 
 export abstract class Type

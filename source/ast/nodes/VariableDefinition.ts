@@ -15,8 +15,8 @@
  */
 
 import { Definition } from "./Definition";
-import { Type } from 'ast/types';
-import { NodeID } from './Node';
+import { Type } from '@easycompiler/ast/types';
+import { NodeID } from '@easycompiler/util/Node';
 
 export class VariableDefinition extends Definition
 {

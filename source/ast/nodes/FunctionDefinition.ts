@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import { Node, ParentNode, NodeID } from './Node';
-import { i32 } from 'util/types';
-import { Type } from 'ast/types';
+import { Node, ParentNode, NodeID } from '@easycompiler/util/Node';
+import { i32 } from '@easycompiler/util/types';
+import { Type } from '@easycompiler/ast/types';
 import { Block } from './Block';
 import { Definition } from './Definition';
 import { Expression } from './Expression';
 import { VariableDefinition } from './VariableDefinition';
-import { u32 } from 'util/types';
-import { ASTError } from 'ast/errors';
+import { u32 } from '@easycompiler/util/types';
+import { ASTError } from '@easycompiler/ast/errors';
 
 export class FunctionDefinition extends Definition implements ParentNode
 {

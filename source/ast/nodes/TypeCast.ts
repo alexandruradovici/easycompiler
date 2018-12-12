@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-import { Expression } from "ast/nodes/expression";
-import { Type } from "ast/types";
-import { i32 } from 'util/types';
-import { Node, ParentNode, NodeID } from './Node';
-import { ASTError } from 'ast/errors';
+import { Expression } from "@easycompiler/ast/nodes/expression";
+import { Type } from "@easycompiler/ast/types";
+import { Node, ParentNode, NodeID } from '@easycompiler/util/Node';
+import { ASTError } from '@easycompiler/ast/errors';
 
 export class TypeCase extends Expression implements ParentNode
 {
 	protected NODE_ID: NodeID = NodeID.TYPE_CAST;
 
-	constructor (private _target: Node, public fromType: Type, public type: Type)
+	constructor (private _target: Node, public type: Type)
 	{
 		super ();
 		_target.parent = this;
@@ -55,7 +54,6 @@ export class TypeCase extends Expression implements ParentNode
 	{
 		let json = super.toJSON ();
 		json.target = this._target.toJSON ();
-		json.fromType = this.fromType.toJSON ();
 		return json;
 	}
 }

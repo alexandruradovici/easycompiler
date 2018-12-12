@@ -16,5 +16,5 @@
 
 
 
-export { UnaryExpression, ExpressionUnaryOperator } from './UnaryExpression';
-export { BinaryExpression, ExpressionBinaryOperator } from './BinaryExpression';
+export { UnaryExpression, UnaryExpressionOperator } from './UnaryExpression';
+export { BinaryExpression, BinaryExpressionOperator } from './BinaryExpression';
