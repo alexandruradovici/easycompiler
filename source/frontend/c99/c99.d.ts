@@ -1,6 +1,6 @@
-import { Node } from '@easycompiler/ast/nodes';
+import { ParseTree } from '@parsetree/nodes';
 
 export class parser
 {
-	static parse (text:string):Node;
+	static parse (text:string):ParseTree;
 }
