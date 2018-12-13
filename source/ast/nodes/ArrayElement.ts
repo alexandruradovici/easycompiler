@@ -18,7 +18,8 @@
 
 import { Type } from '@easycompiler/ast/types';
 import { Expression } from './Expression';
-import { Node, NodeID, ParentNode } from '@easycompiler/util/Node';
+import { NodeID, ParentNode } from '@easycompiler/util/Node';
+import { Node } from "@easycompiler/util/Node";
 import { ASTError } from '@easycompiler/ast/errors';
 
 export class ArrayElement extends Expression implements ParentNode

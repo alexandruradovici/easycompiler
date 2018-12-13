@@ -16,7 +16,8 @@
 
 import { Expression } from "@easycompiler/ast/nodes/expression";
 import { Type } from "@easycompiler/ast/types";
-import { Node, ParentNode, NodeID } from '@easycompiler/util/Node';
+import { ParentNode, NodeID } from '@easycompiler/util/Node';
+import { Node } from "@easycompiler/util/Node";
 import { ASTError } from '@easycompiler/ast/errors';
 
 export class TypeCase extends Expression implements ParentNode

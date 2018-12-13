@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { Node, ParentNode, NodeID } from '@easycompiler/util/Node';
+import { ParentNode, NodeID } from '@easycompiler/util/Node';
+import { Node } from "@easycompiler/util/Node";
 import { Block } from './Block';
 import { ASTError } from '@easycompiler/ast/errors';
 

@@ -17,7 +17,8 @@
 import { Type, Struct } from '@easycompiler/ast/types';
 import { Expression } from './Expression';
 import { Unknown } from '@easycompiler/ast/types';
-import { Node, ParentNode, NodeID } from '@easycompiler/util/Node';
+import { ParentNode, NodeID } from '@easycompiler/util/Node';
+import { Node } from "@easycompiler/util/Node";
 import { ASTError } from '@easycompiler/ast/errors';
 
 export class StructElement extends Expression implements ParentNode

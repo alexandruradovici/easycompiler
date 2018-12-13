@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import { i32, u32, i64, u64, f32, f64 } from '@easycompiler/util/types';
-
-export type NodeTagValue = string | i32 | u32 | f32 | f64 | boolean;
+import { u32 } from '@easycompiler/util/types';
+import { Tags, NodeTag } from './Tags';
 
 export enum NodeID {
 	// AST Nodes
@@ -47,17 +46,12 @@ export enum NodeID {
 	TOKEN = 22
 };
 
-export class NodeTag
-{
-	[label:string]:NodeTagValue 
-}
-
 export interface ParentNode
 {
 	_removeChild (child:Node): void;
 }
 
-export abstract class Node
+export abstract class Node implements Tags
 {
 	/**
 	 * class version
@@ -70,6 +64,7 @@ export abstract class Node
 	protected readonly NODE_ID: NodeID = NodeID.NODE;
 
 	public readonly tags: NodeTag = {};
+	
 	private _parent?: ParentNode = undefined;
 
 	get parent (): ParentNode | undefined

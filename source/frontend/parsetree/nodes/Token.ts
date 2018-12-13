@@ -1,4 +1,6 @@
-import { Node, NodeTagValue, NodeID } from '@easycompiler/util//Node';
+import { NodeTagValue } from '@easycompiler/util/Tags';
+import { NodeID } from '@easycompiler/util/Node';
+import { Node } from "@easycompiler/util/Node";
 import { ParseTree } from './ParseTree';
 
 export function T (name: string, value?: NodeTagValue):Token

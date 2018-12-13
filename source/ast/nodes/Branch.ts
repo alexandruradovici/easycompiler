@@ -16,7 +16,8 @@
 
 
 
-import { Node, NodeID, ParentNode } from '@easycompiler/util/Node';
+import { NodeID, ParentNode } from '@easycompiler/util/Node';
+import { Node } from "@easycompiler/util/Node";
 import { Block } from './Block';
 import { Expression } from './Expression';
 import { ASTError } from '@easycompiler/ast/errors';

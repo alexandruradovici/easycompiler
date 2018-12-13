@@ -1,4 +1,4 @@
-import { Node } from '@easycompiler/util/Node';
+import { Node } from "@easycompiler/util/Node";
 
 export abstract class ParseTree extends Node
 {
