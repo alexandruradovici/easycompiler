@@ -1313,6 +1313,10 @@ case 0:
 
 case 1:
     /*! Production::    primary_expression : IDENTIFIER */
+
+    this.$ = R ('primary_expression', T ('IDENTIFIER', yyvstack[yysp]));
+    break;
+
 case 2:
     /*! Production::    primary_expression : constant */
 case 3:
@@ -1331,18 +1335,26 @@ case 4:
 
 case 6:
     /*! Production::    constant : I_CONSTANT */
+
+    this.$ = R ('constant', T ('I_CONSTANT', yyvstack[yysp]));
+    break;
+
 case 7:
     /*! Production::    constant : F_CONSTANT */
+
+    this.$ = R ('constant',  T ('F_CONSTANT', yyvstack[yysp]));
+    break;
+
 case 8:
     /*! Production::    constant : ENUMERATION_CONSTANT */
 
-    this.$ = R ('constant', yyvstack[yysp]);
+    this.$ = R ('constant', T ('ENUMERATION_CONSTANT', yyvstack[yysp]));
     break;
 
 case 9:
     /*! Production::    enumeration_constant : IDENTIFIER */
 
-    this.$ = R ('enumeration_constant', yyvstack[yysp]);
+    this.$ = R ('enumeration_constant', T ('IDENTIFIER', yyvstack[yysp]));
     break;
 
 case 10:
@@ -1395,7 +1407,7 @@ case 16:
 case 17:
     /*! Production::    postfix_expression : primary_expression */
 
-    this.$ = R ('postfix_expression', yyvstack[yysp]);
+    this.$ = TR ('postfix_expression', yyvstack[yysp]);
     break;
 
 case 18:
@@ -1463,7 +1475,7 @@ case 28:
 case 29:
     /*! Production::    unary_expression : postfix_expression */
 
-    this.$ = R ('unary_expression', yyvstack[yysp]);
+    this.$ = TR ('unary_expression', yyvstack[yysp]);
     break;
 
 case 30:
@@ -1521,7 +1533,7 @@ case 41:
 case 42:
     /*! Production::    cast_expression : unary_expression */
 
-    this.$ = R ('cast_expression', yyvstack[yysp]);
+    this.$ = TR ('cast_expression', yyvstack[yysp]);
     break;
 
 case 43:
@@ -1533,7 +1545,7 @@ case 43:
 case 44:
     /*! Production::    multiplicative_expression : cast_expression */
 
-    this.$ = R ('multiplicative_expression', yyvstack[yysp]);
+    this.$ = TR ('multiplicative_expression', yyvstack[yysp]);
     break;
 
 case 45:
@@ -1549,7 +1561,7 @@ case 47:
 case 48:
     /*! Production::    additive_expression : multiplicative_expression */
 
-    this.$ = R ('additive_expression', yyvstack[yysp]);
+    this.$ = TR ('additive_expression', yyvstack[yysp]);
     break;
 
 case 49:
@@ -1563,7 +1575,7 @@ case 50:
 case 51:
     /*! Production::    shift_expression : additive_expression */
 
-    this.$ = R ('shift_expression', yyvstack[yysp]);
+    this.$ = TR ('shift_expression', yyvstack[yysp]);
     break;
 
 case 52:
@@ -1581,7 +1593,7 @@ case 53:
 case 54:
     /*! Production::    relational_expression : shift_expression */
 
-    this.$ = R ('relational_expression', yyvstack[yysp]);
+    this.$ = TR ('relational_expression', yyvstack[yysp]);
     break;
 
 case 55:
@@ -1607,7 +1619,7 @@ case 58:
 case 59:
     /*! Production::    equality_expression : relational_expression */
 
-    this.$ = R ('equality_expression', yyvstack[yysp]);
+    this.$ = TR ('equality_expression', yyvstack[yysp]);
     break;
 
 case 60:
@@ -1625,7 +1637,7 @@ case 61:
 case 62:
     /*! Production::    and_expression : equality_expression */
 
-    this.$ = R ('and_expression', yyvstack[yysp]);
+    this.$ = TR ('and_expression', yyvstack[yysp]);
     break;
 
 case 63:
@@ -1637,7 +1649,7 @@ case 63:
 case 64:
     /*! Production::    exclusive_or_expression : and_expression */
 
-    this.$ = R ('exclusive_or_expression', yyvstack[yysp]);
+    this.$ = TR ('exclusive_or_expression', yyvstack[yysp]);
     break;
 
 case 65:
@@ -1649,7 +1661,7 @@ case 65:
 case 66:
     /*! Production::    inclusive_or_expression : exclusive_or_expression */
 
-    this.$ = R ('inclusive_or_expression', yyvstack[yysp]);
+    this.$ = TR ('inclusive_or_expression', yyvstack[yysp]);
     break;
 
 case 67:
@@ -1661,7 +1673,7 @@ case 67:
 case 68:
     /*! Production::    logical_and_expression : inclusive_or_expression */
 
-    this.$ = R ('logical_and_expression', yyvstack[yysp]);
+    this.$ = TR ('logical_and_expression', yyvstack[yysp]);
     break;
 
 case 69:
@@ -1673,7 +1685,7 @@ case 69:
 case 70:
     /*! Production::    logical_or_expression : logical_and_expression */
 
-    this.$ = R ('logical_or_expression', yyvstack[yysp]);
+    this.$ = TR ('logical_or_expression', yyvstack[yysp]);
     break;
 
 case 71:
@@ -1685,7 +1697,7 @@ case 71:
 case 72:
     /*! Production::    conditional_expression : logical_or_expression */
 
-    this.$ = R ('conditional_expression', yyvstack[yysp]);
+    this.$ = TR ('conditional_expression', yyvstack[yysp]);
     break;
 
 case 73:
@@ -1697,7 +1709,7 @@ case 73:
 case 74:
     /*! Production::    assignment_expression : conditional_expression */
 
-    this.$ = R ('assignment_expression', yyvstack[yysp]);
+    this.$ = TR ('assignment_expression', yyvstack[yysp]);
     break;
 
 case 75:
@@ -2777,13 +2789,13 @@ case 246:
 case 247:
     /*! Production::    block_item_list : block_item */
 
-    this.$ = RR ('block_item_list', yyvstack[yysp]);
+    this.$ = RTR ('block_item_list', yyvstack[yysp]);
     break;
 
 case 248:
     /*! Production::    block_item_list : block_item_list block_item */
 
-    this.$ = RR ('block_item_list', yyvstack[yysp - 1], yyvstack[yysp]);
+    this.$ = RTR ('block_item_list', yyvstack[yysp - 1], yyvstack[yysp]);
     break;
 
 case 249:
@@ -8876,6 +8888,7 @@ parser.lexer = lexer;
 const R = require ('@parsetree/nodes').R;
 const TR = require ('@parsetree/nodes').TR;
 const RR = require ('@parsetree/nodes').RR;
+const RTR = require ('@parsetree/nodes').RTR;
 const T = require ('@parsetree/nodes').T;
 const TT = require ('@parsetree/nodes').TT;
 

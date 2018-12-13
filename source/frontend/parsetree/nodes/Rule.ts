@@ -21,6 +21,14 @@ export function RR (name:string, ...children:ParseTree[]):Rule
 	return rule;
 }
 
+export function RTR (name:string, ...children:ParseTree[]):Rule
+{
+	let rule = new Rule (name, ...children);
+	rule.transparent = true;
+	rule.recursive = true;
+	return rule;
+}
+
 export class Rule extends ParseTree implements ParentNode
 {
 	protected readonly NODE_ID: NodeID = NodeID.RULE;

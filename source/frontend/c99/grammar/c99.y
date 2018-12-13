@@ -65,6 +65,7 @@
 const R = require ('@parsetree/nodes').R;
 const TR = require ('@parsetree/nodes').TR;
 const RR = require ('@parsetree/nodes').RR;
+const RTR = require ('@parsetree/nodes').RTR;
 const T = require ('@parsetree/nodes').T;
 const TT = require ('@parsetree/nodes').TT;
 %}
@@ -72,7 +73,7 @@ const TT = require ('@parsetree/nodes').TT;
 %%
 
 primary_expression: 
-    IDENTIFIER { $$ = R ('primary_expression', $1);}
+    IDENTIFIER { $$ = R ('primary_expression', T ('IDENTIFIER', $1));}
     | constant { $$ = R ('primary_expression', $1);}
     | string { $$ = R ('primary_expression', $1);}
     | '(' expression ')' { $$ = R ('primary_expression', TT ($1), $2, TT ($3));}
@@ -80,13 +81,13 @@ primary_expression:
     ;
 
 constant: 
-    I_CONSTANT    { $$ = R ('constant', $1);}     /* includes character_constant */
-    | F_CONSTANT  { $$ = R ('constant', $1);}
-    | ENUMERATION_CONSTANT { $$ = R ('constant', $1);}  /* after it has been defined as such */
+    I_CONSTANT    { $$ = R ('constant', T ('I_CONSTANT', $1));}     /* includes character_constant */
+    | F_CONSTANT  { $$ = R ('constant',  T ('F_CONSTANT', $1));}
+    | ENUMERATION_CONSTANT { $$ = R ('constant', T ('ENUMERATION_CONSTANT', $1));}  /* after it has been defined as such */
     ;
 
 enumeration_constant:        /* before it has been defined as such */
-    IDENTIFIER { $$ = R ('enumeration_constant', $1);}
+    IDENTIFIER { $$ = R ('enumeration_constant', T ('IDENTIFIER', $1));}
     ;
 
 string: 
@@ -109,7 +110,7 @@ generic_association:
     ;
 
 postfix_expression: 
-    primary_expression { $$ = R ('postfix_expression', $1); }
+    primary_expression { $$ = TR ('postfix_expression', $1); }
     | postfix_expression '[' expression ']' { $$ = R ('postfix_expression', $1, T ($2), $3, T ($4)); }
     | postfix_expression '(' ')' { $$ = R ('postfix_expression', $1, T ($2), T ($3)); }
     | postfix_expression '(' argument_expression_list ')' { $$ = R ('postfix_expression', $1, T ($2), $3, T ($4)); }
@@ -127,7 +128,7 @@ argument_expression_list:
     ;
 
 unary_expression: 
-    postfix_expression { $$ = R ('unary_expression', $1); }
+    postfix_expression { $$ = TR ('unary_expression', $1); }
     | INC_OP unary_expression { $$ = R ('unary_expression', T ('INC_OP', $1), $2); }
     | DEC_OP unary_expression { $$ = R ('unary_expression', T ('DEC_OP', $1), $2); }
     | unary_operator cast_expression { $$ = R ('unary_expression', $1, $2); }
@@ -146,31 +147,31 @@ unary_operator:
     ;
 
 cast_expression: 
-    unary_expression { $$ = R ('cast_expression', $1); }
+    unary_expression { $$ = TR ('cast_expression', $1); }
     | '(' type_name ')' cast_expression { $$ = R ('cast_expression', T ($1), $2, T  ($3), $4); }
     ;
 
 multiplicative_expression: 
-    cast_expression { $$ = R ('multiplicative_expression', $1); }
+    cast_expression { $$ = TR ('multiplicative_expression', $1); }
     | multiplicative_expression '*' cast_expression { $$ = R ('multiplicative_expression', $1, T ($2), $3); }
     | multiplicative_expression '/' cast_expression { $$ = R ('multiplicative_expression', $1, T ($2), $3); }
     | multiplicative_expression '%' cast_expression { $$ = R ('multiplicative_expression', $1, T ($2), $3); }
     ;
 
 additive_expression: 
-    multiplicative_expression { $$ = R ('additive_expression', $1); }
+    multiplicative_expression { $$ = TR ('additive_expression', $1); }
     | additive_expression '+' multiplicative_expression { $$ = R ('additive_expression', $1, T ($2), $3); }
     | additive_expression '-' multiplicative_expression { $$ = R ('additive_expression', $1, T ($2), $3); }
     ;
 
 shift_expression: 
-    additive_expression { $$ = R ('shift_expression', $1); }
+    additive_expression { $$ = TR ('shift_expression', $1); }
     | shift_expression LEFT_OP additive_expression { $$ = R ('shift_expression', $1, T ('LEFT_OP', $2), $3); }
     | shift_expression RIGHT_OP additive_expression { $$ = R ('shift_expression', $1, T ('RIGHT_OP', $2), $3); }
     ;
 
 relational_expression: 
-    shift_expression { $$ = R ('relational_expression', $1); }
+    shift_expression { $$ = TR ('relational_expression', $1); }
     | relational_expression '<' shift_expression { $$ = R ('relational_expression', $1, T ($2), $3); }
     | relational_expression '>' shift_expression { $$ = R ('relational_expression', $1, T ($2), $3); }
     | relational_expression LE_OP shift_expression { $$ = R ('relational_expression', $1, T ('LE_OP', $2), $3); }
@@ -178,43 +179,43 @@ relational_expression:
     ;
 
 equality_expression: 
-    relational_expression { $$ = R ('equality_expression', $1); }
+    relational_expression { $$ = TR ('equality_expression', $1); }
     | equality_expression EQ_OP relational_expression { $$ = R ('equality_expression', $1, T ('EQ_OP', $2), $3); }
     | equality_expression NE_OP relational_expression { $$ = R ('equality_expression', $1, T ('NE_OP', $2), $3); }
     ;
 
 and_expression: 
-    equality_expression { $$ = R ('and_expression', $1); }
+    equality_expression { $$ = TR ('and_expression', $1); }
     | and_expression '&' equality_expression { $$ = R ('and_expression', $1, T ($2), $3); }
     ;
 
 exclusive_or_expression: 
-    and_expression { $$ = R ('exclusive_or_expression', $1); }
+    and_expression { $$ = TR ('exclusive_or_expression', $1); }
     | exclusive_or_expression '^' and_expression { $$ = R ('exclusive_or_expression', $1, T ($2), $3); }
     ;
 
 inclusive_or_expression: 
-    exclusive_or_expression { $$ = R ('inclusive_or_expression', $1); }
+    exclusive_or_expression { $$ = TR ('inclusive_or_expression', $1); }
     | inclusive_or_expression '|' exclusive_or_expression { $$ = R ('inclusive_or_expression', $1, T ($2), $3); }
     ;
 
 logical_and_expression: 
-    inclusive_or_expression { $$ = R ('logical_and_expression', $1); }
+    inclusive_or_expression { $$ = TR ('logical_and_expression', $1); }
     | logical_and_expression AND_OP inclusive_or_expression { $$ = R ('logical_and_expression', $1, T ('AND_OP', $2), $3); }
     ;
 
 logical_or_expression: 
-    logical_and_expression { $$ = R ('logical_or_expression', $1); }
+    logical_and_expression { $$ = TR ('logical_or_expression', $1); }
     | logical_or_expression OR_OP logical_and_expression { $$ = R ('logical_or_expression', $1, T ('OR_OP', $2), $3); }
     ;
 
 conditional_expression: 
-    logical_or_expression { $$ = R ('conditional_expression', $1); }
+    logical_or_expression { $$ = TR ('conditional_expression', $1); }
     | logical_or_expression '?' expression ':' conditional_expression { $$ = R ('conditional_expression', $1, T ($2), $3, T ($4), $5); }
     ;
 
 assignment_expression: 
-    conditional_expression { $$ = R ('assignment_expression', $1); }
+    conditional_expression { $$ = TR ('assignment_expression', $1); }
     | unary_expression assignment_operator assignment_expression { $$ = R ('assignment_expression', $1, $2, $3); }
     ;
 
@@ -520,8 +521,8 @@ compound_statement:
     ;
 
 block_item_list: 
-    block_item { $$ = RR ('block_item_list', $1); }
-    | block_item_list block_item { $$ = RR ('block_item_list', $1, $2); }
+    block_item { $$ = RTR ('block_item_list', $1); }
+    | block_item_list block_item { $$ = RTR ('block_item_list', $1, $2); }
     ;
 
 block_item: 
