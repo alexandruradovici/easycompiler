@@ -75,7 +75,7 @@ primary_expression:
     IDENTIFIER { $$ = R ('primary_expression', $1);}
     | constant { $$ = R ('primary_expression', $1);}
     | string { $$ = R ('primary_expression', $1);}
-    | '(' expression ')' { $$ = R ('primary_expression', $2);}
+    | '(' expression ')' { $$ = R ('primary_expression', TT ($1), $2, TT ($3));}
     | generic_selection { $$ = R ('primary_expression', $1);}
     ;
 
@@ -99,8 +99,8 @@ generic_selection:
     ;
 
 generic_assoc_list: 
-    generic_association { $$ = R ('generic_assoc_list', $1);}
-    | generic_assoc_list ',' generic_association { $$ = R ('generic_assoc_list', $1, T ($2), $3); }
+    generic_association { $$ = RR ('generic_assoc_list', $1);}
+    | generic_assoc_list ',' generic_association { $$ = RR ('generic_assoc_list', $1, TT ($2), $3); }
     ;
 
 generic_association: 
@@ -122,8 +122,8 @@ postfix_expression:
     ;
 
 argument_expression_list: 
-    assignment_expression { $$ = R ('argument_expression_list', $1); }
-    | argument_expression_list ',' assignment_expression { $$ = R ('argument_expression_list', $1, T ($2), $3); }
+    assignment_expression { $$ = RR ('argument_expression_list', $1); }
+    | argument_expression_list ',' assignment_expression { $$ = RR ('argument_expression_list', $1, TT ($2), $3); }
     ;
 
 unary_expression: 
@@ -233,8 +233,8 @@ assignment_operator:
     ;
 
 expression: 
-    assignment_expression { $$ = R ('expression', $1); }
-    | expression ',' assignment_expression { $$ = R ('expression', $1, T ($2), $1); }
+    assignment_expression { $$ = RR ('expression', $1); }
+    | expression ',' assignment_expression { $$ = RR ('expression', $1, T ($2), $1); }
     ;
 
 constant_expression: 
@@ -242,9 +242,9 @@ constant_expression:
     ;
 
 declaration: 
-    declaration_specifiers ';' { $$ = R ('declaration', $1, T ($2));}
-    | declaration_specifiers init_declarator_list ';' { $$ = R ('declaration', $1, $2, T ($3));}
-    | static_assert_declaration { $$ = R ('declaration', $1);}
+    declaration_specifiers ';' { $$ = RR ('declaration', $1, T ($2));}
+    | declaration_specifiers init_declarator_list ';' { $$ = RR ('declaration', $1, $2, T ($3));}
+    | static_assert_declaration { $$ = RR ('declaration', $1);}
     ;
 
 declaration_specifiers: 
@@ -261,8 +261,8 @@ declaration_specifiers:
     ;
 
 init_declarator_list: 
-    init_declarator { $$ = R ('init_declarator_list', $1); }
-    | init_declarator_list ',' init_declarator { $$ = R ('init_declarator_list', $1, T ($2), $3); }
+    init_declarator { $$ = RR ('init_declarator_list', $1); }
+    | init_declarator_list ',' init_declarator { $$ = RR ('init_declarator_list', $1, TT ($2), $3); }
     ;
 
 init_declarator: 
@@ -310,8 +310,8 @@ struct_or_union:
     ;
 
 struct_declaration_list: 
-    struct_declaration { R ('struct_declaration_list', $1); }
-    | struct_declaration_list struct_declaration { R ('struct_declaration_list', $1, $2); }
+    struct_declaration { RR ('struct_declaration_list', $1); }
+    | struct_declaration_list struct_declaration { RR ('struct_declaration_list', $1, $2); }
     ;
 
 struct_declaration: 
@@ -321,15 +321,15 @@ struct_declaration:
     ;
 
 specifier_qualifier_list: 
-    type_specifier specifier_qualifier_list { R ('specifier_qualifier_list', $1, $2); }
-    | type_specifier { R ('specifier_qualifier_list', $1); }
-    | type_qualifier specifier_qualifier_list { R ('specifier_qualifier_list', $1, $2); }
-    | type_qualifier { R ('specifier_qualifier_list', $1); }
+    type_specifier specifier_qualifier_list { RR ('specifier_qualifier_list', $1, $2); }
+    | type_specifier { RR ('specifier_qualifier_list', $1); }
+    | type_qualifier specifier_qualifier_list { RR ('specifier_qualifier_list', $1, $2); }
+    | type_qualifier { RR ('specifier_qualifier_list', $1); }
     ;
 
 struct_declarator_list: 
-    struct_declarator { R ('struct_declarator_list', $1); }
-    | struct_declarator_list ',' struct_declarator { R ('struct_declarator_list', $1, T ($2), $3); }
+    struct_declarator { RR ('struct_declarator_list', $1); }
+    | struct_declarator_list ',' struct_declarator { RR ('struct_declarator_list', $1, TT ($2), $3); }
     ;
 
 struct_declarator: 
@@ -347,8 +347,8 @@ enum_specifier:
     ;
 
 enumerator_list: 
-    enumerator { R ('enumerator_list', $1); }
-    | enumerator_list ',' enumerator { R ('enumerator_list', $1, T ($2), $3); }
+    enumerator { RR ('enumerator_list', $1); }
+    | enumerator_list ',' enumerator { RR ('enumerator_list', $1, TT ($2), $3); }
     ;
 
 enumerator:  /* identifiers must be flagged as ENUMERATION_CONSTANT */
@@ -394,9 +394,9 @@ direct_declarator:
     | direct_declarator '[' type_qualifier_list assignment_expression ']' { $$ = R ('direct_declarator', $1, T ($2), $3, $4, T($5));}
     | direct_declarator '[' type_qualifier_list ']' { $$ = R ('direct_declarator', $1, T ($2), $3, T($4));}
     | direct_declarator '[' assignment_expression ']' { $$ = R ('direct_declarator', $1, T ($2), $3, T($4));}
-    | direct_declarator '(' parameter_type_list ')' { $$ = R ('direct_declarator', $1, TT ($2), $3, TT($4));}
-    | direct_declarator '(' ')' { $$ = R ('direct_declarator', $1, TT ($2), TT($3));}
-    | direct_declarator '(' identifier_list ')' { $$ = R ('direct_declarator', $1, TT ($2), $3, TT($4));}
+    | direct_declarator '(' parameter_type_list ')' { $$ = R ('direct_declarator', $1, T ($2), $3, T($4));}
+    | direct_declarator '(' ')' { $$ = R ('direct_declarator', $1, T ($2), T($3));}
+    | direct_declarator '(' identifier_list ')' { $$ = R ('direct_declarator', $1, T ($2), $3, T($4));}
     ;
 
 pointer: 
@@ -407,8 +407,8 @@ pointer:
     ;
 
 type_qualifier_list: 
-    type_qualifier { $$ = R ('type_qualifier_list', $1);}
-    | type_qualifier_list type_qualifier { $$ = R ('type_qualifier_list', $1, $2);}
+    type_qualifier { $$ = RR ('type_qualifier_list', $1);}
+    | type_qualifier_list type_qualifier { $$ = RR ('type_qualifier_list', $1, $2);}
     ;
 
 
@@ -475,10 +475,10 @@ initializer:
     ;
 
 initializer_list: 
-    designation initializer { $$ = R ('initializer_list', $1, $2);}
+    designation initializer { $$ = RR ('initializer_list', $1, $2);}
     | initializer { $$ = R ('initializer_list', $1);}
-    | initializer_list ',' designation initializer { $$ = R ('initializer_list', $1, T ($2), $3); }
-    | initializer_list ',' initializer { $$ = R ('initializer_list', $1, T ($2), $3); }
+    | initializer_list ',' designation initializer { $$ = RR ('initializer_list', $1, T ($2), $3); }
+    | initializer_list ',' initializer { $$ = RR ('initializer_list', $1, T ($2), $3); }
     ;
 
 designation: 
@@ -486,8 +486,8 @@ designation:
     ;
 
 designator_list: 
-    designator { $$ = R ('designator_list', $1); }
-    | designator_list designator { $$ = R ('designator_list', $1, $2); } 
+    designator { $$ = RR ('designator_list', $1); }
+    | designator_list designator { $$ = RR ('designator_list', $1, $2); } 
     ;
 
 designator: 
@@ -520,8 +520,8 @@ compound_statement:
     ;
 
 block_item_list: 
-    block_item { $$ = R ('block_item_list', $1); }
-    | block_item_list block_item { $$ = R ('block_item_list', $1, $2); }
+    block_item { $$ = RR ('block_item_list', $1); }
+    | block_item_list block_item { $$ = RR ('block_item_list', $1, $2); }
     ;
 
 block_item: 
@@ -562,8 +562,8 @@ module: translation_unit {
                         };
 
 translation_unit: 
-    external_declaration { $$ = R ('translation_unit', $1);}
-    | translation_unit external_declaration { $$ = R ('translation_unit', $1, $2);}
+    external_declaration { $$ = RR ('translation_unit', $1);}
+    | translation_unit external_declaration { $$ = RR ('translation_unit', $1, $2);}
     ;
 
 external_declaration: 
@@ -577,8 +577,8 @@ function_definition:
     ;
 
 declaration_list: 
-    declaration { $$ = R ('declaration_list', $1);}
-    | declaration_list declaration { $$ = R ('declaration_list', $1, $2);}
+    declaration { $$ = RR ('declaration_list', $1);}
+    | declaration_list declaration { $$ = RR ('declaration_list', $1, $2);}
     ;
 
 %%
