@@ -68,6 +68,21 @@ const RR = require ('@parsetree/nodes').RR;
 const RTR = require ('@parsetree/nodes').RTR;
 const T = require ('@parsetree/nodes').T;
 const TT = require ('@parsetree/nodes').TT;
+
+const SF = require ('@parsetree/context').SF;
+const UF = require ('@parsetree/context').UF;
+
+const SymbolType = require ('@ast/symbol').SymbolType;
+const SYM = require ('@ast/symbol').SYM;
+
+const IS = require ('@parsetree/context').IS;
+
+// TODO should be moved to the parser wrapper
+const RF = require ('@parsetree/context').RF;
+const RESET = require ('@ast/symbol').RESET;
+
+RF ();
+RESET ();
 %}
 
 %%
@@ -87,7 +102,7 @@ constant:
     ;
 
 enumeration_constant:        /* before it has been defined as such */
-    IDENTIFIER { $$ = R ('enumeration_constant', T ('IDENTIFIER', $1));}
+    IDENTIFIER { $$ = R ('enumeration_constant', T ('IDENTIFIER', $1)); if (IS ('ENUMERATION_CONSTANT')) SYM ($1, SymbolType.ENUMERATION_CONSTANT); }
     ;
 
 string: 
@@ -243,9 +258,9 @@ constant_expression:
     ;
 
 declaration: 
-    declaration_specifiers ';' { $$ = RR ('declaration', $1, T ($2));}
-    | declaration_specifiers init_declarator_list ';' { $$ = RR ('declaration', $1, $2, T ($3));}
-    | static_assert_declaration { $$ = RR ('declaration', $1);}
+    declaration_specifiers ';' { $$ = RR ('declaration', $1, T ($2)); UF ('TYPEDEF'); }
+    | declaration_specifiers init_declarator_list ';' { $$ = RR ('declaration', $1, $2, T ($3)); UF ('TYPEDEF'); }
+    | static_assert_declaration { $$ = RR ('declaration', $1); UF ('TYPEDEF'); }
     ;
 
 declaration_specifiers: 
@@ -272,7 +287,7 @@ init_declarator:
     ;
 
 storage_class_specifier: 
-    TYPEDEF { $$ = R ('storage_class_specifier', T ('TYPEDEF', $1)); }   /* identifiers must be flagged as TYPEDEF_NAME */
+    TYPEDEF { $$ = R ('storage_class_specifier', T ('TYPEDEF', $1)); SF ('TYPEDEF'); }   /* identifiers must be flagged as TYPEDEF_NAME */
     | EXTERN { $$ = R ('storage_class_specifier', T ('EXTERN', $1)); }
     | STATIC { $$ = R ('storage_class_specifier', T ('STATIC', $1)); }
     | THREAD_LOCAL { $$ = R ('storage_class_specifier', T ('THREAD_LOCAL', $1)); }
@@ -353,8 +368,8 @@ enumerator_list:
     ;
 
 enumerator:  /* identifiers must be flagged as ENUMERATION_CONSTANT */
-    enumeration_constant '=' constant_expression { R ('enumerator', $1, T ($2), $3); }
-    | enumeration_constant { R ('enumerator', $1); }
+    enumeration_constant '=' constant_expression { R ('enumerator', $1, T ($2), $3); SF ('ENUMERATION_CONSTANT'); }
+    | enumeration_constant { R ('enumerator', $1); SF ('ENUMERATION_CONSTANT'); }
     ;
 
 atomic_type_specifier: 
@@ -384,7 +399,7 @@ declarator:
     ;
 
 direct_declarator: 
-    IDENTIFIER { $$ = R ('direct_declarator', T ('IDENTIFIER', $1));}
+    IDENTIFIER { $$ = R ('direct_declarator', T ('IDENTIFIER', $1)); if (IS ('TYPEDEF')) SYM ($1, SymbolType.TYPEDEF_NAME); }
     | '(' declarator ')' { $$ = R ('direct_declarator', T ($1), $2, T ($3));}
     | direct_declarator '[' ']' { $$ = R ('direct_declarator', $1, T ($2), T($3));}
     | direct_declarator '[' '*' ']' { $$ = R ('direct_declarator', $1, T ($2), T($3), T($4));}

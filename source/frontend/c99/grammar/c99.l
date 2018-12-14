@@ -84,9 +84,25 @@ WS  [ \t\v\n\f]
 // static void comment(void);
 // static int check_type(void);
 
-function sym_type ()
+const SYM_TYPE = require ('@ast/symbol').SYM_TYPE;
+const SymbolType = require ('@ast/symbol').SymbolType;
+
+function sym_type (text)
 {
-	return 'IDENTIFIER';
+  switch (SYM_TYPE(text))
+  {
+    case SymbolType.IDENTIFIER:
+	    return 'IDENTIFIER';
+    
+    case SymbolType.ENUMERATION_CONSTANT:
+      return 'ENUMERATION_CONSTANT';
+    
+    case SymbolType.TYPEDEF_NAME:
+      return 'TYPEDEF_NAME';
+
+    default:
+      return 'UNDEFINED';  
+  }
 }
 
 %}

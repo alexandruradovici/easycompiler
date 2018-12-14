@@ -140,7 +140,6 @@ export class Rule extends ParseTree implements ParentNode
 					flattenedNode.merge (temporaryNode);
 					for (let node of temporaryNode._duplicateChildren())
 					{
-						console.log (node);
 						flattenedNode.addChild (node);
 					}
 				}
