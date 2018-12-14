@@ -22,6 +22,7 @@
   "_moduleAliases": {
     "@easycompiler"  : "dist",
     "@ast"  : "dist/ast",
-    "@parsetree"  : "dist/frontend/parsetree"
+    "@parsetree"  : "dist/frontend/parsetree",
+    "@parser"  : "dist/frontend/parser"
   }
 }
