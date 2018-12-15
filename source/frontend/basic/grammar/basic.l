@@ -94,6 +94,8 @@ Whitespace      \s+
 "STOP"	{ return 'STOP'; }
 "SYS"	{ return 'SYS'; } 
 "WAIT"	{ return 'WAIT'; } 
+"AND"	{ return 'AND'; }
+
 
 "="	{ return '='; }
 

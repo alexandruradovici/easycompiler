@@ -2,6 +2,7 @@ import { ParentNode, NodeID } from '@easycompiler/util/Node';
 import { Node } from "@easycompiler/util/Node";
 import { i32, u32 } from '@easycompiler/util/types'
 import { ParseTree } from './ParseTree';
+import { Token } from './Token';
 
 export function R (name:string, ...children:ParseTree[]):Rule
 {
@@ -41,10 +42,23 @@ export class Rule extends ParseTree implements ParentNode
 	{
 		super ();
 		this.children = children;
+		// verify children as the constructor may be used from pure JavaScript
+		for (let index in this.children)
+		{
+			if (!(this.children[index] instanceof ParseTree))
+			{
+				this.children[index] = new Token ('__unknown__', (this.children[index]!==undefined && this.children[index]!==null)?this.children[index].toString ():undefined);
+			}
+		}
 	}
 
 	addChild (node: ParseTree, pos: i32 = -1)
 	{
+		// check whether it is actually a ParseTree as this function may be used from pure JavaScript
+		if (!(node instanceof ParseTree))
+		{
+			node = new Token ('__unknown__', (node!==undefined && node!==null)?node:undefined);
+		}
 		node.removeFromParent ();
 		node.parent = this;
 		if (pos === -1)
