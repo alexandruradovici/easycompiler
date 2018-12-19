@@ -7,25 +7,23 @@ export class ParserContextFlag
 
 export class ParserContext
 {
-	private constructor ()
+	public constructor ()
 	{
 
 	}
-
-	private static instance:ParserContext = ParserContext.getContext ();
 
 	private flags:ParserContextFlag = new ParserContextFlag ();
 
-	static getContext (): ParserContext
-	{
-		return this.instance;
-	}
+	// static getContext (): ParserContext
+	// {
+	// 	return this.instance;
+	// }
 
-	static resetContext (): ParserContext
-	{
-		this.instance = new ParserContext ();
-		return this.instance;
-	}
+	// static resetContext (): ParserContext
+	// {
+	// 	this.instance = new ParserContext ();
+	// 	return this.instance;
+	// }
 
 	setFlag (name: string, value:ParserContextValue  = true)
 	{
@@ -47,29 +45,35 @@ export class ParserContext
 		if (this.flags[name]) return true;
 		else return false;
 	}
-}
 
-export function SF (name: string, value: ParserContextValue):void
-{
-	ParserContext.getContext ().setFlag (name, value);
-}
+	flush ():void
+	{
+		this.flags = new ParserContextFlag ();
+	}
 
-export function UF (name: string, value: ParserContextValue):void
-{
-	ParserContext.getContext ().unsetFlag (name, value);
-}
+	// shorthand functions
+	SF (name: string, value: ParserContextValue):void
+	{
+		this.setFlag (name, value);
+	}
 
-export function IS (name: string): boolean
-{
-	return ParserContext.getContext ().isSet (name);
-}
+	UF (name: string, value: ParserContextValue):void
+	{
+		this.unsetFlag (name, value);
+	}
 
-export function F (name: string): ParserContextValue
-{
-	return ParserContext.getContext ().flag (name);
-}
+	IS (name: string): boolean
+	{
+		return this.isSet (name);
+	}
 
-export function RF ():void
-{
-	ParserContext.resetContext ();
+	F (name: string): ParserContextValue
+	{
+		return this.flag (name);
+	}
+
+	RF ():void
+	{
+		this.flush ();
+	}
 }

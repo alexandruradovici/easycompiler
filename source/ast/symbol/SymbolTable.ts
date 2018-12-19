@@ -24,28 +24,33 @@ export class Symbol implements Tags
 	}
 }
 
-export class SymbolTable
+export class SymbolStorage
 {
 	[name: string]: Symbol;
 }
 
-let globalSymbolTable = new SymbolTable ();
-
-export function RESET ()
+export class SymbolTable
 {
-	globalSymbolTable = new SymbolTable ();
-}
+	private symbols: SymbolStorage = new SymbolStorage ();
 
-export function SYM (name: string, type: SymbolType, redefine: boolean = false): void
-{
-	if (redefine || globalSymbolTable[name] === undefined)
+	SYM (name: string, type: SymbolType, redefine: boolean = false): void
 	{
-		globalSymbolTable[name] = new Symbol (name, type);
+		if (redefine || this.symbols[name] === undefined)
+		{
+			this.symbols[name] = new Symbol (name, type);
+		}
+	}
+
+	SYM_TYPE (name: string): SymbolType
+	{
+		if (this.symbols[name]) return this.symbols[name].type;
+		else return SymbolType.UNDEFINED;
+	}
+
+	flush (): void
+	{
+		this.symbols = new SymbolStorage ();
 	}
 }
 
-export function SYM_TYPE (name: string): SymbolType
-{
-	if (globalSymbolTable[name]) return globalSymbolTable[name].type;
-	else return SymbolType.UNDEFINED;
-}
+

@@ -1,9 +1,12 @@
 import 'module-alias/register';
 
-import { parser } from './c99.js';
 import { ParseTree } from '@parsetree/nodes';
+import { JisonParser } from '@easycompiler/frontend/parser/JisonParser.js';
 
-let parseTree:ParseTree = parser.parse ('typedef unsigned int a, *l; int s; unsigned int test(unsigned t, unsigned short s){a*s;}');
+let jisonParser: JisonParser = new JisonParser ('@languages/basic/basic.js');
+
+let parseTree:ParseTree = jisonParser.parseString ('LET S = 0\nINPUT V\n');
+
 
 console.log ('Parse Tree');
 console.log (JSON.stringify (parseTree.toJSON (), null, 3));

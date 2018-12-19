@@ -1,1 +1,1 @@
-export { ParserContextValue, ParserContextFlag, ParserContext, SF, UF, F, IS, RF } from './ParserContext';
+export { ParserContextValue, ParserContextFlag, ParserContext } from './ParserContext';

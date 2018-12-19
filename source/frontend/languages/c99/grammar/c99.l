@@ -84,26 +84,7 @@ WS  [ \t\v\n\f]
 // static void comment(void);
 // static int check_type(void);
 
-const SYM_TYPE = require ('@ast/symbol').SYM_TYPE;
 const SymbolType = require ('@ast/symbol').SymbolType;
-
-function sym_type (text)
-{
-  switch (SYM_TYPE(text))
-  {
-    case SymbolType.IDENTIFIER:
-	    return 'IDENTIFIER';
-    
-    case SymbolType.ENUMERATION_CONSTANT:
-      return 'ENUMERATION_CONSTANT';
-    
-    case SymbolType.TYPEDEF_NAME:
-      return 'TYPEDEF_NAME';
-
-    default:
-      return 'UNDEFINED';  
-  }
-}
 
 %}
 
@@ -162,11 +143,11 @@ function sym_type (text)
 {L}{A}*                 { 
                           // return check_type(); 
 
-                          switch (sym_type(yytext)) {
-                          case 'TYPEDEF_NAME':                /* previously defined */
+                          switch (yy.SYM_TYPE(yytext)) {
+                          case SymbolType.TYPEDEF_NAME:                /* previously defined */
                             return 'TYPEDEF_NAME';
 
-                          case 'ENUMERATION_CONSTANT':        /* previously defined */
+                          case SymbolType.ENUMERATION_CONSTANT:        /* previously defined */
                             return 'ENUMERATION_CONSTANT';
 
                           default:                          /* includes undefined */

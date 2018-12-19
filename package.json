@@ -23,6 +23,7 @@
     "@easycompiler"  : "dist",
     "@ast"  : "dist/ast",
     "@parsetree"  : "dist/frontend/parsetree",
-    "@parser"  : "dist/frontend/parser"
+    "@parser"  : "dist/frontend/parser",
+    "@languages"  : "dist/frontend/languages"
   }
 }
