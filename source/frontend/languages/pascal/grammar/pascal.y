@@ -22,21 +22,6 @@ const RTR = require ('@parsetree/nodes').RTR;
 const T = require ('@parsetree/nodes').T;
 const TT = require ('@parsetree/nodes').TT;
 
-// const SF = require ('@parsetree/context').SF;
-// const UF = require ('@parsetree/context').UF;
-
-// const SymbolType = require ('@ast/symbol').SymbolType;
-// const SYM = require ('@ast/symbol').SYM;
-
-// const IS = require ('@parsetree/context').IS;
-
-// // TODO should be moved to the parser wrapper
-// const RF = require ('@parsetree/context').RF;
-// const RESET = require ('@ast/symbol').RESET;
-
-// RF ();
-// RESET ();
-
 %}
 
 %token AND ARRAY ASSIGNMENT CASE CHARACTER_STRING COLON COMMA CONST DIGSEQ
