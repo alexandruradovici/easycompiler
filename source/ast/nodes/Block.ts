@@ -1,4 +1,8 @@
 /**
+ * @module ast/nodes
+ */
+
+/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,24 +19,24 @@
  */
 
 
-import { NodeID, ParentNode } from '@easycompiler/util/Node';
-import { Node } from "@easycompiler/util/Node";
+import { Node, NodeID, ParentNode } from '@easycompiler/util/Node';
 import { i32, u32 } from '@easycompiler/util/types';
+import { AST } from './AST';
 
-export class Block extends Node implements ParentNode
+export class Block extends AST implements ParentNode
 {
 	protected readonly NODE_ID: NodeID = NodeID.BLOCK;
 
-	public readonly children: Node[] = [];
+	public readonly children: AST[] = [];
 
-	addChild (node: Node): void
+	addChild (node: AST): void
 	{
 		node.parent = this;
 		this.children.push (node);
 		// TODO should throw or just silently remove element from parent
 	}
 
-	getChildPosition (node: Node): i32
+	getChildPosition (node: AST): i32
 	{
 		for (let pos in this.children)
 		{
@@ -44,9 +48,14 @@ export class Block extends Node implements ParentNode
 	_removeChild (node: Node | u32): void
 	{
 		let pos; 
-		if (node instanceof Node)
+		if (node instanceof AST)
 		{
 			pos = this.getChildPosition (node);
+		}
+		else
+		if (node instanceof Node)
+		{
+			pos = -1;
 		}
 		else
 		{

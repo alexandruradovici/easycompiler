@@ -1,4 +1,8 @@
 /**
+ * @module ast/types
+ */
+
+/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,17 +23,16 @@
 import { u32 } from '@easycompiler/util/types';
 
 export enum TypeID {
-	TYPE = 0,
-	FLOAT = 1,
-	FLOAT_SIMPLE = 2,
-	FLOAT_DOUBLE = 3,
-	ARRAY = 4,
-	FUNCTION = 5,
-	POINTER = 6,
-	STRUCT = 7,
-	UNKNOWN = 8,
-	VOID = 9,
-	BOOL = 10
+	TYPE,
+	INTEGER,
+	FLOAT,
+	ARRAY,
+	FUNCTION,
+	POINTER,
+	STRUCT,
+	UNKNOWN,
+	VOID,
+	BOOL
 };
 
 export abstract class Type

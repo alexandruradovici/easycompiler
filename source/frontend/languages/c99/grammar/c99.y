@@ -254,7 +254,7 @@ declaration:
     ;
 
 declaration_specifiers: 
-    storage_class_specifier declaration_specifiers { $$ = RR ('declaration_specifiers', $1, $2); }   /* with constraints */
+    stor  age_class_specifier declaration_specifiers { $$ = RR ('declaration_specifiers', $1, $2); }   /* with constraints */
     | storage_class_specifier { $$ = RR ('declaration_specifiers', $1); }
     | type_specifier declaration_specifiers { $$ = RR ('declaration_specifiers', $1, $2); }
     | type_specifier { $$ = RR ('declaration_specifiers', $1); }

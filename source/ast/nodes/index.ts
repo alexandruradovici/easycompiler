@@ -1,4 +1,8 @@
 /**
+ * @module ast/nodes
+ */
+
+/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,6 +23,7 @@ export { Block } from './Block';
 export { Branch } from './Branch';
 export { Loop } from './Loop';
 export { Node } from '@easycompiler/util/Node';
+export { AST } from './AST';
 export { ParentNode } from '@easycompiler/util/Node';
 export { NodeID } from '@easycompiler/util/Node';
 export { Identifier } from './Identifier';

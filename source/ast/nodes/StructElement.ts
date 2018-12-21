@@ -1,4 +1,8 @@
 /**
+ * @module ast/nodes
+ */
+
+/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +22,8 @@ import { Type, Struct } from '@easycompiler/ast/types';
 import { Expression } from './Expression';
 import { Unknown } from '@easycompiler/ast/types';
 import { ParentNode, NodeID } from '@easycompiler/util/Node';
-import { Node } from "@easycompiler/util/Node";
 import { ASTError } from '@easycompiler/ast/errors';
+import { AST } from './AST';
 
 export class StructElement extends Expression implements ParentNode
 {
@@ -54,7 +58,7 @@ export class StructElement extends Expression implements ParentNode
 		return new Unknown();
 	}
 
-	_removeChild (expression: Node): void
+	_removeChild (expression: AST): void
 	{
 		if (expression === this._struct)
 		{

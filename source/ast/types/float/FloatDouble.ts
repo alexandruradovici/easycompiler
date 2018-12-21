@@ -1,4 +1,8 @@
 /**
+ * @module ast/types
+ */
+
+/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,8 +24,6 @@ import { TypeID } from '../Type';
 
 export class FloatDouble extends Float
 {
-	protected readonly TYPE_ID: TypeID = TypeID.FLOAT_DOUBLE;
-
 	constructor (name: string)
 	{
 		super (name, Precision.DOUBLE);

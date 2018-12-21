@@ -20,10 +20,15 @@
     "module-alias": "^2.1.0"
   },
   "_moduleAliases": {
-    "@easycompiler"  : "dist",
-    "@ast"  : "dist/ast",
-    "@parsetree"  : "dist/frontend/parsetree",
-    "@parser"  : "dist/frontend/parser",
-    "@languages"  : "dist/frontend/languages"
+    "@easycompiler": "dist",
+    "@ast": "dist/ast",
+    "@parsetree": "dist/frontend/parsetree",
+    "@parser": "dist/frontend/parser",
+    "@languages": "dist/frontend/languages"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.18",
+    "typedoc": "^0.13.0",
+    "typedoc-plugin-external-module-name": "^1.1.3"
   }
 }

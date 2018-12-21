@@ -1,4 +1,8 @@
 /**
+ * @module ast/nodes
+ */
+
+/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +18,8 @@
  * limitations under the License.
  */
 
-import { Node, NodeID } from '@easycompiler/ast/nodes';
+import { NodeID } from '@easycompiler/ast/nodes';
+import { AST } from './AST';
 
 export enum JumpType {
 	BREAK = 'break',
@@ -22,7 +27,7 @@ export enum JumpType {
 	JUMP_TO_LABEL = 'label'
 };
 
-export abstract class Jump extends Node
+export abstract class Jump extends AST
 {
 	protected NODE_ID: NodeID = NodeID.JUMP;
 

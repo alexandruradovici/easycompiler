@@ -1,4 +1,8 @@
 /**
+ * @module ast/nodes
+ */
+
+/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +21,12 @@
 
 
 import { NodeID, ParentNode } from '@easycompiler/util/Node';
-import { Node } from "@easycompiler/util/Node";
 import { Block } from './Block';
 import { Expression } from './Expression';
 import { ASTError } from '@easycompiler/ast/errors';
+import { AST } from './AST';
 
-export class Branch extends Node implements ParentNode
+export class Branch extends AST implements ParentNode
 {
 	protected NODE_ID: NodeID = NodeID.BRANCH;
 
@@ -73,7 +77,7 @@ export class Branch extends Node implements ParentNode
 		oldBlock.removeFromParent ();
 	}
 
-	_removeChild (node: Node): void
+	_removeChild (node: AST): void
 	{
 		if (node === this._expression)
 		{

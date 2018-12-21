@@ -1,4 +1,8 @@
 /**
+ * @module ast/nodes
+ */
+
+/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,25 +21,25 @@
 import { Expression } from "@easycompiler/ast/nodes/expression";
 import { Type } from "@easycompiler/ast/types";
 import { ParentNode, NodeID } from '@easycompiler/util/Node';
-import { Node } from "@easycompiler/util/Node";
 import { ASTError } from '@easycompiler/ast/errors';
+import { AST } from "./AST";
 
 export class TypeCase extends Expression implements ParentNode
 {
 	protected NODE_ID: NodeID = NodeID.TYPE_CAST;
 
-	constructor (private _target: Node, public type: Type)
+	constructor (private _target: AST, public type: Type)
 	{
 		super ();
 		_target.parent = this;
 	}
 
-	get target (): Node
+	get target (): AST
 	{
 		return this._target;
 	}
 
-	set target (newTarget: Node)
+	set target (newTarget: AST)
 	{
 		newTarget.parent = this;
 		let oldTarget = this._target;
@@ -43,7 +47,7 @@ export class TypeCase extends Expression implements ParentNode
 		oldTarget.removeFromParent ();
 	}
 
-	_removeChild (expression: Node): void
+	_removeChild (expression: AST): void
 	{
 		if (expression === this._target)
 		{

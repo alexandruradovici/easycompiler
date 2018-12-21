@@ -1,4 +1,8 @@
 /**
+ * @module ast/types
+ */
+
+/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +18,23 @@
  * limitations under the License.
  */
 
-import { Type } from '../Type';
+import { Type, TypeID } from '../Type';
 import { u32 } from '@easycompiler/util/types';
 
 export class Integer extends Type
 {
+	protected readonly TYPE_ID: TypeID = TypeID.INTEGER;
+
 	constructor (name: string, public readonly bits: u32, public readonly signed: boolean)
 	{
 		super (name);	
+	}
+
+	toJSON ():void
+	{
+		let json = super.toJSON ();
+		json.bits = this.bits;
+		json.signed = this.signed;
+		return json;
 	}
 }

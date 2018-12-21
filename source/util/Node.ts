@@ -1,4 +1,8 @@
 /**
+ * @module util
+ */
+
+/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,10 +20,13 @@
 
 import { u32 } from '@easycompiler/util/types';
 import { Tags, NodeTag } from './Tags';
+import { SymbolTable } from '@easycompiler/ast/symbol';
 
 export enum NodeID {
-	// AST Nodes
 	NODE,
+
+	// AST Nodes
+	AST,
 	ARRAY_ELEMENT,
 	BLOCK,
 	BRANCH,
@@ -41,7 +48,7 @@ export enum NodeID {
 	LABEL,
 	TYPE_DEFINITION,
 
-	// Parsetree Nodes
+	// ParseTree Nodes
 	RULE,
 	TOKEN,
 

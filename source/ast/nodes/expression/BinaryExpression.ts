@@ -1,4 +1,8 @@
 /**
+ * @module ast/nodes
+ */
+
+/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +40,7 @@ export enum BinaryExpressionOperator {
 	OPERATIR_SHR = '>>'
 };
 
-export class BinaryExpression extends Node implements ParentNode
+export class BinaryExpression extends Expression implements ParentNode
 {
 	protected NODE_ID: NodeID = NodeID.BINARY_EXPRESSION;
 

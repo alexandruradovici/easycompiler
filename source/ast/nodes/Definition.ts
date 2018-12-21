@@ -1,4 +1,8 @@
 /**
+ * @module ast/nodes
+ */
+
+/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +19,9 @@
  */
 
 import { NodeID } from '@easycompiler/util/Node';
-import { Node } from "@easycompiler/util/Node";
+import { AST } from './AST';
 
-export abstract class Definition extends Node
+export abstract class Definition extends AST
 {
 	protected NODE_ID: NodeID = NodeID.DEFINITION;
 }

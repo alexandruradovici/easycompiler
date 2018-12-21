@@ -1,4 +1,8 @@
 /**
+ * @module ast/nodes
+ */
+
+/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +24,6 @@ import { i32 } from '@easycompiler/util/types';
 import { Type } from '@easycompiler/ast/types';
 import { Block } from './Block';
 import { Definition } from './Definition';
-import { Expression } from './Expression';
 import { VariableDefinition } from './VariableDefinition';
 import { u32 } from '@easycompiler/util/types';
 import { ASTError } from '@easycompiler/ast/errors';
