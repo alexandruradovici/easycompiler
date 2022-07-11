@@ -37,4 +37,4 @@ export { Module } from './Module';
 export { Jump } from './Jump';
 export { Return } from './Return';
 export { TypeDefinition } from './TypeDefinition';
-export * from './expression';
+export * from './expressions';

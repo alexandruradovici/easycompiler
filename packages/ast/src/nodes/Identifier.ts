@@ -20,7 +20,7 @@
 
 import { NodeID } from '../util/Node';
 import { Type, Unknown } from '../types';
-import { Expression } from './expression';
+import { Expression } from './Expression';
 
 export class Identifier extends Expression
 {

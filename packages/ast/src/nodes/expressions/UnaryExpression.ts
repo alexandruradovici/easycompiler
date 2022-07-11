@@ -20,8 +20,8 @@
 
 
 
-import { Node, ParentNode, NodeID } from '../';
-import { Expression } from '../';
+import { Node, ParentNode, NodeID } from '..';
+import { Expression } from '..';
 import { ASTError } from '../../errors';
 
 export enum UnaryExpressionOperator {

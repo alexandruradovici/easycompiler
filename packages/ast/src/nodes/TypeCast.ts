@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-import { Expression } from "../nodes/expression";
+import { Expression } from "../nodes/Expression";
 import { Type } from "../types";
 import { ParentNode, NodeID } from '../util/Node';
 import { ASTError } from '../errors';
