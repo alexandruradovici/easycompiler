@@ -18,4 +18,5 @@ jobs:
         with: 
           node-version: '14'
       - run: npm install @typescript-eslint/eslint-plugin@latest --save-dev
+      - run: npm install @typescript-eslint/parser@latest --save-dev
       - run: npx lerna run lint
