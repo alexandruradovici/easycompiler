@@ -21,6 +21,7 @@
 import { Definition } from "./Definition";
 import { Type } from '../types';
 import { NodeID } from '../util/Node';
+import { iJSON } from "../util/JSON";
 
 export class VariableDefinition extends Definition
 {
@@ -31,9 +32,9 @@ export class VariableDefinition extends Definition
 		super ();
 	}
 
-	toJSON ():any
+	toJSON ():iJSON
 	{
-		let json: any = super.toJSON ();
+		const json= super.toJSON ();
 		json.name = this.name;
 		json.type = this.type.toJSON ();
 		return json;

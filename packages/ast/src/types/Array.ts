@@ -23,6 +23,7 @@
 
 import { Type, TypeID } from './Type';
 import { u32 } from '../util/types';
+import { iJSON } from '../util/JSON';
 
 export class Array extends Type
 {
@@ -33,9 +34,9 @@ export class Array extends Type
 		super (name);
 	}
 
-	toJSON ():any 
+	toJSON ():iJSON 
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.type = this.type.toJSON ();
 		json.size = this.size;
 		return json;

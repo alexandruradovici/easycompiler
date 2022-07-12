@@ -23,6 +23,7 @@
 import { Type } from '../types';
 import { Identifier } from './Identifier';
 import { NodeID } from '../util/Node';
+import { iJSON } from '../util/JSON';
 
 export class Constant extends Identifier
 {
@@ -33,9 +34,9 @@ export class Constant extends Identifier
 		super (name, type);
 	}
 
-	toJSON ():any
+	toJSON ():iJSON
 	{
-		let json: any = super.toJSON ();
+		const json = super.toJSON ();
 		json.value = this.value;
 		return json;
 	}

@@ -20,6 +20,7 @@
 
 
 
+import { iJSON } from '../util/JSON';
 import { u32 } from '../util/types';
 
 export enum TypeID {
@@ -33,7 +34,7 @@ export enum TypeID {
 	UNKNOWN,
 	VOID,
 	BOOL
-};
+}
 
 export abstract class Type
 {
@@ -45,11 +46,11 @@ export abstract class Type
 
 	}
 
-	toJSON ():any 
+	toJSON ():iJSON 
 	{
-		let json: any = {
+		const json: iJSON = {
 			version: this.version,
-			typeId: this.TYPE_ID,
+			typeID: this.TYPE_ID,
 			name: this.name
 		};
 		return json;

@@ -22,6 +22,7 @@ import { ParentNode, NodeID } from '../util/Node';
 import { Expression } from './Expression';
 import { Type } from '../types';
 import { AST } from './AST';
+import { iJSON } from '../util/JSON';
 
 export class Return extends AST implements ParentNode
 {
@@ -61,9 +62,9 @@ export class Return extends AST implements ParentNode
 		}
 	}
 
-	toJSON ():any
+	toJSON ():iJSON
 	{
-		let json: any = super.toJSON ();
+		const json = super.toJSON ();
 		if (this.expression) json.expression = this.expression.toJSON ();
 		json.type = this.type.toJSON ();
 		return json;

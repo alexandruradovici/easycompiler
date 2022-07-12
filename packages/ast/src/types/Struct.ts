@@ -38,6 +38,7 @@ import { u32 } from '../util/types';
 // }
 
 import { StructElement } from '../nodes';
+import { iJSON } from '../util/JSON';
 export class Struct extends Type
 {
 	protected readonly TYPE_ID: TypeID = TypeID.STRUCT;
@@ -76,7 +77,7 @@ export class Struct extends Type
 	getElement (name: StructElement | string): StructElement | null
 	{
 		if (name instanceof StructElement) name = name.name;
-		for (let element of this.elements)
+		for (const element of this.elements)
 		{
 			if (element.name === name) return element;
 		}
@@ -86,7 +87,7 @@ export class Struct extends Type
 	getElementPosition (name: StructElement | string): u32
 	{
 		if (name instanceof StructElement) name = name.name;
-		for (let index in this.elements)
+		for (const index in this.elements)
 		{
 			if (this.elements[index].name === name) return parseInt(index);
 		}
@@ -98,11 +99,11 @@ export class Struct extends Type
 		return (this.getElement (name) === null);
 	}
 
-	toJSON ():any
+	toJSON ():iJSON
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.elements = [];
-		for (let element in this.elements)
+		for (const element in this.elements)
 		{
 			json.elements.push (this.elements[element].toJSON ());
 		}

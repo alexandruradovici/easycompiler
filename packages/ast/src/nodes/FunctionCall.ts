@@ -24,6 +24,7 @@ import { Expression } from './Expression';
 import { u32 } from '../util/types';
 import { i32 } from '../util/types';
 import { ASTError } from '../errors';
+import { iJSON } from '../util/JSON';
 
 export class FunctionCall extends Expression implements ParentNode
 {
@@ -33,7 +34,7 @@ export class FunctionCall extends Expression implements ParentNode
 	{
 		super ();
 		_fn.parent = this;
-		for (let expression of args)
+		for (const expression of args)
 		{
 			expression.parent = this;
 		}
@@ -48,7 +49,7 @@ export class FunctionCall extends Expression implements ParentNode
 	set fn (newFn: Expression)
 	{
 		newFn.parent = this;
-		let oldFn = this._fn;
+		const oldFn = this._fn;
 		this._fn = newFn;
 		oldFn.removeFromParent ();
 	}
@@ -90,19 +91,19 @@ export class FunctionCall extends Expression implements ParentNode
 
 	getArgPosition (expression: Expression): i32
 	{
-		for (let pos in this.args)
+		for (const pos in this.args)
 		{
 			if (this.args[pos] === expression) return parseInt (pos);
 		}
 		return -1;
 	}
 
-	toJSON ():any 
+	toJSON ():iJSON 
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.fn = this._fn.toJSON ();
 		json.args = [];
-		for (let index in this.args)
+		for (const index in this.args)
 		{
 			json.args.push (this.args[index].toJSON ());
 		}

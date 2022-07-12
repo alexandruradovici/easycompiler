@@ -20,7 +20,7 @@
 
 import { i32, u32, i64, u64, f32, f64 } from './types';
 
-export type NodeTagValue = string | i32 | u32 | f32 | f64 | boolean;
+export type NodeTagValue = string | i32 | i64 | u32 | u64 | f32 | f64 | boolean;
 
 export class NodeTag
 {

@@ -19,6 +19,7 @@
  */
 
 
+import { iJSON } from '../util/JSON';
 import { Node, NodeID, ParentNode } from '../util/Node';
 import { i32, u32 } from '../util/types';
 import { AST } from './AST';
@@ -38,7 +39,7 @@ export class Block extends AST implements ParentNode
 
 	getChildPosition (node: AST): i32
 	{
-		for (let pos in this.children)
+		for (const pos in this.children)
 		{
 			if (this.children[pos] === node) return parseInt (pos);
 		}
@@ -72,11 +73,11 @@ export class Block extends AST implements ParentNode
 		return this.children.length === 0;
 	}
 
-	toJSON ():any
+	toJSON ():iJSON
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.children = [];
-		for (let index in this.children)
+		for (const index in this.children)
 		{
 			json.children.push (this.children[index].toJSON());
 		}

@@ -18,6 +18,7 @@
  * limitations under the License.
  */
 
+import { iJSON } from '../util/JSON';
 import { NodeID } from '../nodes';
 import { AST } from './AST';
 
@@ -25,7 +26,7 @@ export enum JumpType {
 	BREAK = 'break',
 	CONTINUE = 'continue',
 	JUMP_TO_LABEL = 'label'
-};
+}
 
 export abstract class Jump extends AST
 {
@@ -36,9 +37,9 @@ export abstract class Jump extends AST
 		super ();
 	}
 
-	toJSON ():any
+	toJSON ():iJSON
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.name = this.name;
 		json.jumpType = this.jumpType;
 		return json;

@@ -20,7 +20,7 @@
 
 import { u32 } from './types';
 import { Tags, NodeTag } from './Tags';
-import { SymbolTable } from '../symbol';
+import { iJSON } from './JSON';
 
 export enum NodeID {
 	NODE,
@@ -54,7 +54,7 @@ export enum NodeID {
 
 	// Other
 	OTHER
-};
+}
 
 export interface ParentNode
 {
@@ -90,7 +90,14 @@ export abstract class Node implements Tags
 
 	hasTag (label: string): boolean
 	{
-		return this.tags.prototype.hasOwnProperty (label);
+		if(this.tags[label]) 
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	removeFromParent (): void
@@ -102,17 +109,26 @@ export abstract class Node implements Tags
 		}
 	}
 
-	toJSON (): any
+	toJSON (): iJSON
 	{
-		let json: any = {
+		// let json : any = {
+		// 	node: this.NODE_ID,
+		// 	version: this.VERSION,
+		// 	tags: {}
+		// };
+		
+		const json:iJSON={
 			node: this.NODE_ID,
 			version: this.VERSION,
 			tags: {}
 		};
-		for (let tag in this.tags)
-		{
-			json.tags[tag] = this.tags[tag];
+		if(json.tags){
+			for (const tag in this.tags)
+			{
+				json.tags[tag]=this.tags[tag];
+			}
 		}
+		//json.tags= this.tags;
 		return json;
 	}
 }

@@ -21,6 +21,7 @@
 import { NodeID } from '../util/Node';
 import { Type, Unknown } from '../types';
 import { Expression } from './Expression';
+import { iJSON } from '../util/JSON';
 
 export class Identifier extends Expression
 {
@@ -31,9 +32,9 @@ export class Identifier extends Expression
 		super ();
 	}
 
-	toJSON ():any 
+	toJSON ():iJSON 
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.name = this.name;
 		json.type = this.type.toJSON ();
 		return json;

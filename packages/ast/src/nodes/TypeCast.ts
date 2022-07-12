@@ -23,6 +23,7 @@ import { Type } from "../types";
 import { ParentNode, NodeID } from '../util/Node';
 import { ASTError } from '../errors';
 import { AST } from "./AST";
+import { iJSON } from "../util/JSON";
 
 export class TypeCase extends Expression implements ParentNode
 {
@@ -42,7 +43,7 @@ export class TypeCase extends Expression implements ParentNode
 	set target (newTarget: AST)
 	{
 		newTarget.parent = this;
-		let oldTarget = this._target;
+		const oldTarget = this._target;
 		this._target = newTarget;
 		oldTarget.removeFromParent ();
 	}
@@ -55,9 +56,9 @@ export class TypeCase extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():any
+	toJSON ():iJSON
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.target = this._target.toJSON ();
 		return json;
 	}

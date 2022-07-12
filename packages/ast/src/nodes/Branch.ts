@@ -25,6 +25,7 @@ import { Block } from './Block';
 import { Expression } from './Expression';
 import { ASTError } from '../errors';
 import { AST } from './AST';
+import { iJSON } from '../util/JSON';
 
 export class Branch extends AST implements ParentNode
 {
@@ -46,7 +47,7 @@ export class Branch extends AST implements ParentNode
 	set expression (newExpression: Expression)
 	{
 		newExpression.parent = this;
-		let oldExpression = this._expression;
+		const oldExpression = this._expression;
 		this._expression = newExpression
 		oldExpression.removeFromParent ();
 	}
@@ -59,7 +60,7 @@ export class Branch extends AST implements ParentNode
 	set thenBlock (newBlock: Block)
 	{
 		newBlock.parent = this;
-		let oldBlock = this._thenBlock;
+		const oldBlock = this._thenBlock;
 		this._thenBlock = newBlock;
 		oldBlock.removeFromParent ();
 	}
@@ -72,7 +73,7 @@ export class Branch extends AST implements ParentNode
 	set elseBlock (newBlock: Block)
 	{
 		newBlock.parent = this;
-		let oldBlock = this._elseBlock;
+		const oldBlock = this._elseBlock;
 		this._elseBlock = newBlock;
 		oldBlock.removeFromParent ();
 	}
@@ -95,9 +96,9 @@ export class Branch extends AST implements ParentNode
 		}
 	}
 
-	toJSON ():any
+	toJSON ():iJSON
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.expression = this._expression.toJSON ();
 		json.thenBlock = this._thenBlock.toJSON ();
 		json.elseBlock = this._elseBlock.toJSON ();

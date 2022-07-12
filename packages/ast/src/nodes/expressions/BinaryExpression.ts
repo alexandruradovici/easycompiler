@@ -19,6 +19,7 @@
  */
 
 
+import { iJSON } from '../../util/JSON';
 import { Node, ParentNode, NodeID } from '..';
 import { Expression } from '..';
 import { ASTError } from '../../errors';
@@ -38,15 +39,13 @@ export enum BinaryExpressionOperator {
 	OPERATOR_GE = '>=',
 	OPERATIR_SHL = '<<',
 	OPERATIR_SHR = '>>'
-};
+}
 
 export class BinaryExpression extends Expression implements ParentNode
 {
 	protected NODE_ID: NodeID = NodeID.BINARY_EXPRESSION;
 
-	constructor (private _left: Expression, 
-				 private _right: Expression,
-				 public operator: BinaryExpressionOperator | string)
+	constructor (private _left: Expression, private _right: Expression, public operator: BinaryExpressionOperator | string)
 	{
 		super ();
 	}
@@ -59,7 +58,7 @@ export class BinaryExpression extends Expression implements ParentNode
 	set left (expression: Expression)
 	{
 		expression.parent = this;
-		let oldExpression = this._left;
+		const oldExpression = this._left;
 		this._left = expression;
 		oldExpression.removeFromParent ();
 	}
@@ -72,7 +71,7 @@ export class BinaryExpression extends Expression implements ParentNode
 	set right (expression: Expression)
 	{
 		expression.parent = this;
-		let oldExpression = this._right;
+		const oldExpression = this._right;
 		this._right = expression;
 		oldExpression.removeFromParent ();
 	}
@@ -89,11 +88,11 @@ export class BinaryExpression extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():any
+	toJSON ():iJSON
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.left = this._left.toJSON ();
-		json.rght = this._right.toJSON ();
+		json.right = this._right.toJSON ();
 		json.operator = this.operator;
 		return json;
 	}

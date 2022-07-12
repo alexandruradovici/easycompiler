@@ -25,6 +25,7 @@ import { Expression } from './Expression';
 import { NodeID, ParentNode } from '../util//Node';
 import { Node } from "../util/Node";
 import { ASTError } from '../errors';
+import { iJSON } from '../util/JSON';
 
 export class ArrayElement extends Expression implements ParentNode
 {
@@ -45,7 +46,7 @@ export class ArrayElement extends Expression implements ParentNode
 	set expression (expression: Expression)
 	{
 		expression.parent = this;
-		let oldExpression = this._expression;
+		const oldExpression = this._expression;
 		this._expression = expression;
 		oldExpression.removeFromParent ();
 		
@@ -59,7 +60,7 @@ export class ArrayElement extends Expression implements ParentNode
 	set index (index: Expression)
 	{
 		index.parent = this;
-		let oldIndex = this._index;
+		const oldIndex = this._index;
 		this._index = index;
 		oldIndex.removeFromParent ();
 		
@@ -78,9 +79,9 @@ export class ArrayElement extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():any
+	toJSON ():iJSON
 	{
-		let json: any = super.toJSON ();
+		const json = super.toJSON();
 		json.expression = this._expression.toJSON ();
 		json.index = this._index;
 		return json;

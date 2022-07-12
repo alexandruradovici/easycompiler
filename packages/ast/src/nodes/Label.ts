@@ -18,6 +18,7 @@
  * limitations under the License.
  */
 
+import { iJSON } from '../util/JSON';
 import { NodeID } from '../util/Node';
 import { AST } from './AST';
 
@@ -30,9 +31,9 @@ export class Label extends AST
 		super ();
 	}
 
-	toJSON ():any
+	toJSON ():iJSON
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.name = this.name;
 		return json;
 	}

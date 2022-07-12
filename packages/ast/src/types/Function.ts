@@ -24,9 +24,9 @@ export class Function extends Type
 {
 	protected readonly TYPE_ID: TypeID = TypeID.FUNCTION;
 
-	constructor (name: string = '__function')
+	constructor ()
 	{
-		super (name);
+		super ('__function');
 	}
 
 	// TODO add parameter types

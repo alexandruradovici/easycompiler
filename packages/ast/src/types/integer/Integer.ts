@@ -20,6 +20,7 @@
 
 import { Type, TypeID } from '../Type';
 import { u32 } from '../../util/types';
+import { iJSON } from '../../util/JSON';
 
 export class Integer extends Type
 {
@@ -30,9 +31,9 @@ export class Integer extends Type
 		super (name);	
 	}
 
-	toJSON ():void
+	toJSON ():iJSON
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.bits = this.bits;
 		json.signed = this.signed;
 		return json;

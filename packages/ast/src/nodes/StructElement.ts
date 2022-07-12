@@ -24,6 +24,7 @@ import { Unknown } from '../types';
 import { ParentNode, NodeID } from '../util/Node';
 import { ASTError } from '../errors';
 import { AST } from './AST';
+import { iJSON } from '../util/JSON';
 
 export class StructElement extends Expression implements ParentNode
 {
@@ -43,7 +44,7 @@ export class StructElement extends Expression implements ParentNode
 	set struct (newStruct: Expression)
 	{
 		newStruct.parent = this;
-		let oldStruct = this._struct;
+		const oldStruct = this._struct;
 		this._struct = newStruct;
 		oldStruct.removeFromParent ();
 	}
@@ -52,7 +53,7 @@ export class StructElement extends Expression implements ParentNode
 	{
 		if (this._struct.type instanceof Struct)
 		{
-			let element = this._struct.type.getElement (this.name);
+			const element = this._struct.type.getElement (this.name);
 			if (element) return element.type;
 		}
 		return new Unknown();
@@ -66,9 +67,9 @@ export class StructElement extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():any
+	toJSON ():iJSON
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.struct = this._struct.toJSON ();
 		json.name = this.name;
 		return json;

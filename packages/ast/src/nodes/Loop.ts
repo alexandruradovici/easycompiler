@@ -22,6 +22,7 @@ import { ParentNode, NodeID } from '../util/Node';
 import { Block } from './Block';
 import { ASTError } from '../errors';
 import { AST } from './AST';
+import { iJSON } from '../util/JSON';
 
 export class Loop extends AST implements ParentNode
 {
@@ -41,7 +42,7 @@ export class Loop extends AST implements ParentNode
 	set header (newHeader: Block)
 	{
 		newHeader.parent = this;
-		let oldBlock = this._header;
+		const oldBlock = this._header;
 		this._header = newHeader;
 		oldBlock.removeFromParent ();
 	}
@@ -54,7 +55,7 @@ export class Loop extends AST implements ParentNode
 	set body (newBody: Block)
 	{
 		newBody.parent = this;
-		let oldBody = this._body;
+		const oldBody = this._body;
 		this._body = newBody;
 		oldBody.removeFromParent ();
 	}
@@ -67,7 +68,7 @@ export class Loop extends AST implements ParentNode
 	set end (newEnd: Block)
 	{
 		newEnd.parent = this;
-		let oldEnd = this._end;
+		const oldEnd = this._end;
 		this._end = newEnd;
 		oldEnd.removeFromParent ();
 	}
@@ -90,9 +91,9 @@ export class Loop extends AST implements ParentNode
 		}
 	}
 
-	toJSON ():any 
+	toJSON ():iJSON 
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.header = this._header.toJSON ();
 		json.body = this._body.toJSON ();
 		json.end = this._end.toJSON ();

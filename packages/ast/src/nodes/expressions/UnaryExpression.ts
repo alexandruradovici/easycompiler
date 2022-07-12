@@ -20,6 +20,7 @@
 
 
 
+import { iJSON } from '../../util/JSON';
 import { Node, ParentNode, NodeID } from '..';
 import { Expression } from '..';
 import { ASTError } from '../../errors';
@@ -30,14 +31,13 @@ export enum UnaryExpressionOperator {
 	OPERATOR_DEFERENCE = '*',
 	OPERATOR_INCREMENT = '++',
 	OPERATOR_DECREMENT = '--'
-};
+}
 
 export class UnaryExpression extends Expression implements ParentNode
 {
 	protected NODE_ID: NodeID = NodeID.UNARY_EXPRESSION;
 
-	constructor (private _expression: Expression, 
-				 private operator: UnaryExpressionOperator | string)
+	constructor (private _expression: Expression, private operator: UnaryExpressionOperator | string)
 	{
 		super ();
 	}
@@ -50,7 +50,7 @@ export class UnaryExpression extends Expression implements ParentNode
 	set expression (expression: Expression)
 	{
 		expression.parent = this;
-		let oldExpression = this._expression;
+		const oldExpression = this._expression;
 		this._expression = expression;
 		oldExpression.removeFromParent ();
 	}
@@ -63,9 +63,9 @@ export class UnaryExpression extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():any
+	toJSON ():iJSON
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.expression = this._expression.toJSON ();
 		json.operator = this.operator;
 		return json;

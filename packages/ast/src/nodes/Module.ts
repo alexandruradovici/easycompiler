@@ -22,6 +22,7 @@ import { NodeID, ParentNode } from '../util/Node';
 import { Block } from './Block';
 import { ASTError } from '../errors';
 import { AST } from './AST';
+import { iJSON } from '../util/JSON';
 
 export class Module extends AST implements ParentNode
 {
@@ -41,7 +42,6 @@ export class Module extends AST implements ParentNode
 	set block (newBlock: Block)
 	{
 		newBlock.parent = this;
-		let oldBlock = this._block;
 		this._block = newBlock;
 		newBlock.removeFromParent ();
 	}
@@ -54,9 +54,9 @@ export class Module extends AST implements ParentNode
 		}
 	}
 
-	toJSON ():any
+	toJSON ():iJSON
 	{
-		let json: any = super.toJSON ();
+		const json = super.toJSON ();
 		json.id = this.NODE_ID;
 		json.name = this.name;
 		json.block = this._block.toJSON ();

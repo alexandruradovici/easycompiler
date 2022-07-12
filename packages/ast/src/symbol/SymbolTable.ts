@@ -33,7 +33,7 @@ export enum SymbolType
 	OTHER
 }
 
-export class Symbol implements Tags
+export class CSymbol implements Tags
 {
 
 	public readonly tags: NodeTag = {};
@@ -46,27 +46,34 @@ export class Symbol implements Tags
 
 export class SymbolStorage
 {
-	[name: string]: Symbol;
+	[name: string]: CSymbol;
 }
 
 export class SymbolTable
 {
 	private symbols: SymbolStorage = new SymbolStorage ();
 
-	set (name: string, type: SymbolType, redefine: boolean = false): void
+	set (name: string, type: SymbolType, redefine: boolean): void
 	{
+		if(redefine !== true)
+		{
+			redefine=false;
+		} 
 		if (redefine || this.symbols[name] === undefined)
 		{
-			this.symbols[name] = new Symbol (name, type);
+			this.symbols[name] = new CSymbol (name, type);
 		}
 	}
 	
-	SYM (name: string, type: SymbolType, redefine: boolean = false): void
+	SYM (name: string, type: SymbolType, redefine: boolean): void
 	{
+		if(redefine !== true){
+			redefine=false;
+		}
 		this.set (name, type, redefine);
 	}
 
-	get (name: string): Symbol | undefined
+	get (name: string): CSymbol | undefined
 	{
 		return this.symbols[name];
 	}

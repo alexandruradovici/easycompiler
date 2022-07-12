@@ -27,6 +27,7 @@ import { Definition } from './Definition';
 import { VariableDefinition } from './VariableDefinition';
 import { u32 } from '../util/types';
 import { ASTError } from '../errors';
+import { iJSON } from '../util/JSON';
 
 export class FunctionDefinition extends Definition implements ParentNode
 {
@@ -35,7 +36,7 @@ export class FunctionDefinition extends Definition implements ParentNode
 	constructor (public name: string, private _parameters:VariableDefinition[], private _block:Block, public returnType: Type)
 	{
 		super ();
-		for (let parameter of _parameters)
+		for (const parameter of _parameters)
 		{
 			parameter.parent = this;
 		}
@@ -55,7 +56,7 @@ export class FunctionDefinition extends Definition implements ParentNode
 	set block (newBlock: Block)
 	{
 		newBlock.parent = this;
-		let oldBlock = this._block;
+		const oldBlock = this._block;
 		this._block = newBlock;
 		oldBlock.removeFromParent ();
 	}
@@ -92,19 +93,19 @@ export class FunctionDefinition extends Definition implements ParentNode
 
 	getParameterPosition (variableDefinition: VariableDefinition): i32
 	{
-		for (let pos in this._parameters)
+		for (const pos in this._parameters)
 		{
 			if (this._parameters[pos] === variableDefinition) return parseInt (pos);
 		}
 		return -1;
 	}
 
-	toJSON ():any 
+	toJSON ():iJSON 
 	{
-		let json = super.toJSON ();
+		const json = super.toJSON ();
 		json.name = this.name;
 		json.parameters = [];
-		for (let index in this._parameters)
+		for (const index in this._parameters)
 		{
 			json.parameters.push (this._parameters[index].toJSON());
 		}
