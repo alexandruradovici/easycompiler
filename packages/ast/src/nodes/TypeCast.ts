@@ -20,10 +20,9 @@
 
 import { Expression } from "../nodes/Expression";
 import { Type } from "../types";
-import { ParentNode, NodeID } from '../util/Node';
+import { ParentNode, NodeID } from '@easycompiler/util';
 import { ASTError } from '../errors';
 import { AST } from "./AST";
-import { iJSON } from "../util/JSON";
 
 export class TypeCase extends Expression implements ParentNode
 {
@@ -56,7 +55,7 @@ export class TypeCase extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.target = this._target.toJSON ();

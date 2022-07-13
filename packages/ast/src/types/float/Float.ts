@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-import { iJSON } from '../../util/JSON';
+
 import { Type, TypeID } from '../Type';
 
 export enum Precision {
@@ -35,7 +35,7 @@ export class Float extends Type
 		super (name);	
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.precision = this.precision;

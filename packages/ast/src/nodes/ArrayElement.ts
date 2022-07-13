@@ -22,10 +22,10 @@
 
 import { Type } from '../types';
 import { Expression } from './Expression';
-import { NodeID, ParentNode } from '../util//Node';
-import { Node } from "../util/Node";
+import { NodeID, ParentNode } from '@easycompiler/util';
+import { Node } from "@easycompiler/util";
 import { ASTError } from '../errors';
-import { iJSON } from '../util/JSON';
+ 
 
 export class ArrayElement extends Expression implements ParentNode
 {
@@ -79,7 +79,7 @@ export class ArrayElement extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON();
 		json.expression = this._expression.toJSON ();

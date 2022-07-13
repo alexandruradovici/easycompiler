@@ -18,11 +18,11 @@
  * limitations under the License.
  */
 
-import { ParentNode, NodeID } from '../util/Node';
+import { ParentNode, NodeID } from '@easycompiler/util';
 import { Expression } from './Expression';
 import { Type } from '../types';
 import { AST } from './AST';
-import { iJSON } from '../util/JSON';
+ 
 
 export class Return extends AST implements ParentNode
 {
@@ -62,7 +62,7 @@ export class Return extends AST implements ParentNode
 		}
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		if (this.expression) json.expression = this.expression.toJSON ();

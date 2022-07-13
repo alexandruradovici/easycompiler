@@ -18,13 +18,13 @@
  * limitations under the License.
  */
 
-import { ParentNode, NodeID } from '../util/Node';
-import { Node } from "../util/Node";
+import { ParentNode, NodeID } from '@easycompiler/util';
+import { Node } from "@easycompiler/util";
 import { Expression } from './Expression';
-import { u32 } from '../util/types';
-import { i32 } from '../util/types';
+import { u32 } from '@easycompiler/util';
+import { i32 } from '@easycompiler/util';
 import { ASTError } from '../errors';
-import { iJSON } from '../util/JSON';
+ 
 
 export class FunctionCall extends Expression implements ParentNode
 {
@@ -98,7 +98,7 @@ export class FunctionCall extends Expression implements ParentNode
 		return -1;
 	}
 
-	toJSON ():iJSON 
+	toJSON ():any 
 	{
 		const json = super.toJSON ();
 		json.fn = this._fn.toJSON ();

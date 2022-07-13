@@ -19,9 +19,7 @@
  */
 
 
-
-import { iJSON } from '../util/JSON';
-import { u32 } from '../util/types';
+import { u32 } from '@easycompiler/util';
 
 export enum TypeID {
 	TYPE,
@@ -48,9 +46,9 @@ export abstract class Type
 
 	}
 
-	toJSON ():iJSON 
+	toJSON ():any 
 	{
-		const json: iJSON = {
+		const json = {
 			version: this.version,
 			typeID: this.TYPE_ID,
 			name: this.name

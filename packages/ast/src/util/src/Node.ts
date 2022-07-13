@@ -20,7 +20,6 @@
 
 import { u32 } from './types';
 import { Tags, NodeTag } from './Tags';
-import { iJSON } from './JSON';
 
 export enum NodeID {
 	NODE,
@@ -109,7 +108,7 @@ export abstract class Node implements Tags
 		}
 	}
 
-	toJSON (): iJSON
+	toJSON (): any
 	{
 		// let json : any = {
 		// 	node: this.NODE_ID,
@@ -117,7 +116,7 @@ export abstract class Node implements Tags
 		// 	tags: {}
 		// };
 		
-		const json:iJSON={
+		const json:any={
 			node: this.NODE_ID,
 			version: this.VERSION,
 			tags: {}

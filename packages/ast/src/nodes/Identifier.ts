@@ -18,10 +18,10 @@
  * limitations under the License.
  */
 
-import { NodeID } from '../util/Node';
+import { NodeID } from '@easycompiler/util';
 import { Type, Unknown } from '../types';
 import { Expression } from './Expression';
-import { iJSON } from '../util/JSON';
+ 
 
 export class Identifier extends Expression
 {
@@ -32,7 +32,7 @@ export class Identifier extends Expression
 		super ();
 	}
 
-	toJSON ():iJSON 
+	toJSON ():any 
 	{
 		const json = super.toJSON ();
 		json.name = this.name;

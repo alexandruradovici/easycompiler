@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-import { Node, NodeID } from "../util/Node";
+import { Node, NodeID } from "@easycompiler/util";
 
 export abstract class AST extends Node
 {

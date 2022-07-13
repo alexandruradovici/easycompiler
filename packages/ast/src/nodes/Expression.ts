@@ -18,10 +18,10 @@
  * limitations under the License.
  */
 
-import { NodeID } from '../util/Node';
+import { NodeID } from '@easycompiler/util';
 import { Type, Unknown } from '../types';
 import { AST } from './AST';
-import { iJSON } from '../util/JSON';
+ 
 
 export abstract class Expression extends AST
 {
@@ -32,7 +32,7 @@ export abstract class Expression extends AST
 		super ();
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.type = this.type.toJSON ();

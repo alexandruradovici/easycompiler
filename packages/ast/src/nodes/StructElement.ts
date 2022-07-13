@@ -21,10 +21,10 @@
 import { Type, Struct } from '../types';
 import { Expression } from './Expression';
 import { Unknown } from '../types';
-import { ParentNode, NodeID } from '../util/Node';
+import { ParentNode, NodeID } from '@easycompiler/util';
 import { ASTError } from '../errors';
 import { AST } from './AST';
-import { iJSON } from '../util/JSON';
+ 
 
 export class StructElement extends Expression implements ParentNode
 {
@@ -67,7 +67,7 @@ export class StructElement extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.struct = this._struct.toJSON ();

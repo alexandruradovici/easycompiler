@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-import { NodeTag, Tags } from '../util/Tags';
+import { NodeTag, Tags } from '@easycompiler/util';
 
 export enum SymbolType
 {

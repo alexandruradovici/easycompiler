@@ -20,9 +20,7 @@
 
 import { Definition } from "./Definition";
 import { Type } from "../types";
-import { NodeID } from '../util/Node';
-import { iJSON } from "../util/JSON";
-
+import { NodeID } from '@easycompiler/util';
 export class TypeDefinition extends Definition
 {
 	protected readonly NODE_ID: NodeID = NodeID.TYPE_DEFINITION;
@@ -32,7 +30,7 @@ export class TypeDefinition extends Definition
 		super ();
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.name = this.name;

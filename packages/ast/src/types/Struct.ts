@@ -19,7 +19,7 @@
  */
 
 import { Type, TypeID } from './Type';
-import { u32 } from '../util/types';
+import { u32 } from '@easycompiler/util';
 
 // export class StructElement {
 // 	constructor (public name: string, public type: Type)
@@ -38,7 +38,7 @@ import { u32 } from '../util/types';
 // }
 
 import { StructElement } from '../nodes';
-import { iJSON } from '../util/JSON';
+ 
 export class Struct extends Type
 {
 	protected readonly TYPE_ID: TypeID = TypeID.STRUCT;
@@ -99,7 +99,7 @@ export class Struct extends Type
 		return (this.getElement (name) === null);
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.elements = [];

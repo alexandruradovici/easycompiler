@@ -18,7 +18,7 @@
 * limitations under the License.
 */
 
-import { iJSON } from '../util/JSON';
+ 
 import { Type, TypeID } from './Type';
 
 export class String extends Type
@@ -29,7 +29,7 @@ export class String extends Type
         super (name);
     }
 
-    toJSON():iJSON
+    toJSON():any
     {
         const json = super.toJSON ();
         json.type = this.type.toJSON ();

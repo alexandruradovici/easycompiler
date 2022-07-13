@@ -19,7 +19,7 @@
  */
 
 
-import { iJSON } from '../../util/JSON';
+ 
 import { Node, ParentNode, NodeID } from '..';
 import { Expression } from '..';
 import { ASTError } from '../../errors';
@@ -88,7 +88,7 @@ export class BinaryExpression extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.left = this._left.toJSON ();

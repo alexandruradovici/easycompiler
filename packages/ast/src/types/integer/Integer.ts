@@ -19,8 +19,8 @@
  */
 
 import { Type, TypeID } from '../Type';
-import { u32 } from '../../util/types';
-import { iJSON } from '../../util/JSON';
+import { u32 } from '@easycompiler/util';
+ 
 
 export class Integer extends Type
 {
@@ -31,7 +31,7 @@ export class Integer extends Type
 		super (name);	
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.bits = this.bits;

@@ -22,7 +22,7 @@ export { ArrayElement } from './ArrayElement';
 export { Block } from './Block';
 export { Branch } from './Branch';
 export { Loop } from './Loop';
-export { Node, ParentNode, NodeID } from '../util/Node';
+export { Node, ParentNode, NodeID } from '@easycompiler/util';
 export { AST } from './AST';
 export { Identifier } from './Identifier';
 export { Constant } from './Constant';

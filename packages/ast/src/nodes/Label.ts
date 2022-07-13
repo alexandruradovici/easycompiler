@@ -18,8 +18,8 @@
  * limitations under the License.
  */
 
-import { iJSON } from '../util/JSON';
-import { NodeID } from '../util/Node';
+ 
+import { NodeID } from '@easycompiler/util';
 import { AST } from './AST';
 
 export class Label extends AST
@@ -31,7 +31,7 @@ export class Label extends AST
 		super ();
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.name = this.name;

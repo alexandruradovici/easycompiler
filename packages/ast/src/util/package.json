@@ -1,5 +1,5 @@
 {
-  "name": "@easycompiler/ast",
+  "name": "@easycompiler/util",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -22,7 +22,6 @@
     "lerna": "^5.1.7"
   },
   "dependencies": {
-    "@types/node": "^18.0.3",
-    "@easycompiler/util": "1.0.0"
+    "@types/node": "^18.0.3"
   }
 }

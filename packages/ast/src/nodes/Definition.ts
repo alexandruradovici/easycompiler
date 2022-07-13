@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-import { NodeID } from '../util/Node';
+import { NodeID } from '@easycompiler/util';
 import { AST } from './AST';
 
 export abstract class Definition extends AST

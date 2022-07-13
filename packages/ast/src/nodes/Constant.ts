@@ -22,8 +22,8 @@
 
 import { Type } from '../types';
 import { Identifier } from './Identifier';
-import { NodeID } from '../util/Node';
-import { iJSON } from '../util/JSON';
+import { NodeID } from '@easycompiler/util';
+ 
 
 export class Constant extends Identifier
 {
@@ -34,7 +34,7 @@ export class Constant extends Identifier
 		super (name, type);
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.value = this.value;

@@ -20,7 +20,7 @@
 
 
 
-import { iJSON } from '../../util/JSON';
+ 
 import { Node, ParentNode, NodeID } from '..';
 import { Expression } from '..';
 import { ASTError } from '../../errors';
@@ -63,7 +63,7 @@ export class UnaryExpression extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.expression = this._expression.toJSON ();

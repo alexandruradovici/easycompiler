@@ -19,9 +19,9 @@
  */
 
 
-import { iJSON } from '../util/JSON';
-import { Node, NodeID, ParentNode } from '../util/Node';
-import { i32, u32 } from '../util/types';
+ 
+import { Node, NodeID, ParentNode } from '@easycompiler/util';
+import { i32, u32 } from '@easycompiler/util';
 import { AST } from './AST';
 
 export class Block extends AST implements ParentNode
@@ -73,7 +73,7 @@ export class Block extends AST implements ParentNode
 		return this.children.length === 0;
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.children = [];

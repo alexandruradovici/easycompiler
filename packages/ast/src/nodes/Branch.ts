@@ -20,12 +20,12 @@
 
 
 
-import { NodeID, ParentNode } from '../util/Node';
+import { NodeID, ParentNode } from '@easycompiler/util';
 import { Block } from './Block';
 import { Expression } from './Expression';
 import { ASTError } from '../errors';
 import { AST } from './AST';
-import { iJSON } from '../util/JSON';
+ 
 
 export class Branch extends AST implements ParentNode
 {
@@ -96,7 +96,7 @@ export class Branch extends AST implements ParentNode
 		}
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.expression = this._expression.toJSON ();

@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-import { iJSON } from '../util/JSON';
+ 
 import { NodeID } from '../nodes';
 import { AST } from './AST';
 
@@ -37,7 +37,7 @@ export abstract class Jump extends AST
 		super ();
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.name = this.name;

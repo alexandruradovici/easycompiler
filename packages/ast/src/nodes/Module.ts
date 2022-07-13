@@ -18,11 +18,11 @@
  * limitations under the License.
  */
 
-import { NodeID, ParentNode } from '../util/Node';
+import { NodeID, ParentNode } from '@easycompiler/util';
 import { Block } from './Block';
 import { ASTError } from '../errors';
 import { AST } from './AST';
-import { iJSON } from '../util/JSON';
+ 
 
 export class Module extends AST implements ParentNode
 {
@@ -54,7 +54,7 @@ export class Module extends AST implements ParentNode
 		}
 	}
 
-	toJSON ():iJSON
+	toJSON ():any
 	{
 		const json = super.toJSON ();
 		json.id = this.NODE_ID;

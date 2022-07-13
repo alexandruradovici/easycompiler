@@ -18,16 +18,16 @@
  * limitations under the License.
  */
 
-import { ParentNode, NodeID } from '../util/Node';
-import { Node } from "../util/Node";
-import { i32 } from '../util/types';
+import { ParentNode, NodeID } from '@easycompiler/util';
+import { Node } from "@easycompiler/util";
+import { i32 } from '@easycompiler/util';
 import { Type } from '../types';
 import { Block } from './Block';
 import { Definition } from './Definition';
 import { VariableDefinition } from './VariableDefinition';
-import { u32 } from '../util/types';
+import { u32 } from '@easycompiler/util';
 import { ASTError } from '../errors';
-import { iJSON } from '../util/JSON';
+ 
 
 export class FunctionDefinition extends Definition implements ParentNode
 {
@@ -100,7 +100,7 @@ export class FunctionDefinition extends Definition implements ParentNode
 		return -1;
 	}
 
-	toJSON ():iJSON 
+	toJSON ():any 
 	{
 		const json = super.toJSON ();
 		json.name = this.name;

@@ -1,0 +1,39 @@
+0 silly argv {
+0 silly argv   _: [ 'bootstrap' ],
+0 silly argv   lernaVersion: '5.1.8',
+0 silly argv   '$0': 'node_modules\\lerna\\cli.js'
+0 silly argv }
+1 notice cli v5.1.8
+2 verbose rootPath C:\Users\Alexa\Documents\GitHub\easycompiler-1
+3 silly npmConfig {
+3 silly npmConfig   registry: undefined,
+3 silly npmConfig   npmClient: 'npm',
+3 silly npmConfig   npmClientArgs: [],
+3 silly npmConfig   mutex: undefined
+3 silly npmConfig }
+4 info Bootstrapping 6 packages
+5 verbose lifecycle preinstall
+6 warn ECYCLE Dependency cycles detected, you should fix these!
+6 warn ECYCLE @easycompiler/ast -> @easycompiler/util -> @easycompiler/ast
+7 silly lifecycle No script for "preinstall" in "@easycompiler/ast", continuing
+8 silly lifecycle No script for "preinstall" in "@easycompiler/util", continuing
+9 silly lifecycle No script for "preinstall" in "@easycompiler/backend", continuing
+10 silly lifecycle No script for "preinstall" in "@easycompiler/frontend", continuing
+11 silly lifecycle No script for "preinstall" in "@easycompiler/optimizer", continuing
+12 silly lifecycle No script for "preinstall" in "@examples/example1", continuing
+13 silly hasDependencyInstalled @examples/example1 lerna
+14 silly hasDependencyInstalled @easycompiler/ast lerna
+15 silly hasDependencyInstalled @easycompiler/backend lerna
+16 silly hasDependencyInstalled @easycompiler/frontend lerna
+17 silly hasDependencyInstalled @easycompiler/optimizer lerna
+18 silly hasDependencyInstalled @easycompiler/util lerna
+19 error TypeError: Cannot set properties of null (setting 'peer')
+19 error     at visit (C:\Users\Alexa\Documents\GitHub\easycompiler-1\node_modules\@npmcli\arborist\lib\calc-dep-flags.js:104:54)
+19 error     at visitNode (C:\Users\Alexa\Documents\GitHub\easycompiler-1\node_modules\treeverse\lib\depth-descent.js:58:25)
+19 error     at next (C:\Users\Alexa\Documents\GitHub\easycompiler-1\node_modules\treeverse\lib\depth-descent.js:44:19)
+19 error     at depth (C:\Users\Alexa\Documents\GitHub\easycompiler-1\node_modules\treeverse\lib\depth-descent.js:83:10)
+19 error     at depth (C:\Users\Alexa\Documents\GitHub\easycompiler-1\node_modules\treeverse\lib\depth.js:27:12)
+19 error     at unsetFlag (C:\Users\Alexa\Documents\GitHub\easycompiler-1\node_modules\@npmcli\arborist\lib\calc-dep-flags.js:99:5)
+19 error     at C:\Users\Alexa\Documents\GitHub\easycompiler-1\node_modules\@npmcli\arborist\lib\calc-dep-flags.js:65:7
+19 error     at Map.forEach (<anonymous>)
+19 error     at calcDepFlagsStep (C:\Users\Alexa\Documents\GitHub\easycompiler-1\node_modules\@npmcli\arborist\lib\calc-dep-flags.js:41:17)
