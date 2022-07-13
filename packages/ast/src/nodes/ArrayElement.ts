@@ -79,11 +79,11 @@ export class ArrayElement extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():any
+	toJSON ():string
 	{
-		const json = super.toJSON();
+		const json = JSON.parse(super.toJSON());
 		json.expression = this._expression.toJSON ();
 		json.index = this._index;
-		return json;
+		return JSON.stringify(json);
 	}
 }

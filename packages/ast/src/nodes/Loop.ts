@@ -91,12 +91,12 @@ export class Loop extends AST implements ParentNode
 		}
 	}
 
-	toJSON ():any 
+	toJSON ():string 
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.header = this._header.toJSON ();
 		json.body = this._body.toJSON ();
 		json.end = this._end.toJSON ();
-		return json;
+		return JSON.stringify(json);
 	}
 }

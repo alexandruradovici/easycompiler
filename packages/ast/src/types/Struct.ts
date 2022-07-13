@@ -99,14 +99,14 @@ export class Struct extends Type
 		return (this.getElement (name) === null);
 	}
 
-	toJSON ():any
+	toJSON ():string
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.elements = [];
 		for (const element in this.elements)
 		{
-			json.elements.push (this.elements[element].toJSON ());
+			json.elements.pushs (this.elements[element].toJSON ());
 		}
-		return json;
+		return JSON.stringify(json);
 	}
 }

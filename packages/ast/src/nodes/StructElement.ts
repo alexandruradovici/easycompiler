@@ -67,11 +67,11 @@ export class StructElement extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():any
+	toJSON ():string
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.struct = this._struct.toJSON ();
 		json.name = this.name;
-		return json;
+		return JSON.stringify(json);
 	}
 }

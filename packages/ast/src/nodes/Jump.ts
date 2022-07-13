@@ -37,11 +37,11 @@ export abstract class Jump extends AST
 		super ();
 	}
 
-	toJSON ():any
+	toJSON ():string
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.name = this.name;
 		json.jumpType = this.jumpType;
-		return json;
+		return JSON.stringify(json);
 	}
 }

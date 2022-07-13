@@ -46,13 +46,13 @@ export abstract class Type
 
 	}
 
-	toJSON ():any 
+	toJSON ():string 
 	{
 		const json = {
 			version: this.version,
 			typeID: this.TYPE_ID,
 			name: this.name
 		};
-		return json;
+		return JSON.stringify(json);
 	}
 }

@@ -34,11 +34,11 @@ export class Array extends Type
 		super (name);
 	}
 
-	toJSON ():any 
+	toJSON ():string 
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.type = this.type.toJSON ();
 		json.size = this.size;
-		return json;
+		return JSON.stringify(json);
 	}
 }

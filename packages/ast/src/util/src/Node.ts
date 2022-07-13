@@ -19,7 +19,7 @@
  */
 
 import { u32 } from './types';
-import { Tags, NodeTag } from './Tags';
+import { Tags, NodeTag, NodeTagValue } from './Tags';
 
 export enum NodeID {
 	NODE,
@@ -108,15 +108,17 @@ export abstract class Node implements Tags
 		}
 	}
 
-	toJSON (): any
+	toJSON (): string
 	{
-		// let json : any = {
-		// 	node: this.NODE_ID,
-		// 	version: this.VERSION,
-		// 	tags: {}
-		// };
+		type json_type={
+			version: u32,
+			node?: NodeID,
+			tags?: {
+				[key: string]: NodeTagValue,
+			}
+		}
 		
-		const json:any={
+		const json:json_type={
 			node: this.NODE_ID,
 			version: this.VERSION,
 			tags: {}
@@ -128,7 +130,7 @@ export abstract class Node implements Tags
 			}
 		}
 		//json.tags= this.tags;
-		return json;
+		return JSON.stringify(json);
 	}
 }
 

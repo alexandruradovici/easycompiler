@@ -98,15 +98,15 @@ export class FunctionCall extends Expression implements ParentNode
 		return -1;
 	}
 
-	toJSON ():any 
+	toJSON ():string 
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.fn = this._fn.toJSON ();
 		json.args = [];
 		for (const index in this.args)
 		{
 			json.args.push (this.args[index].toJSON ());
 		}
-		return json;
+		return JSON.stringify(json);;
 	}
 }

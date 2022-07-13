@@ -63,11 +63,11 @@ export class UnaryExpression extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():any
+	toJSON ():string
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.expression = this._expression.toJSON ();
 		json.operator = this.operator;
-		return json;
+		return JSON.stringify(json);;
 	}
 }

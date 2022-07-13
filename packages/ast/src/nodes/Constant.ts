@@ -34,11 +34,11 @@ export class Constant extends Identifier
 		super (name, type);
 	}
 
-	toJSON ():any
+	toJSON ():string
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.value = this.value;
-		return json;
+		return JSON.stringify(json);;
 	}
 }
 

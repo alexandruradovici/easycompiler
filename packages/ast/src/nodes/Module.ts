@@ -54,12 +54,12 @@ export class Module extends AST implements ParentNode
 		}
 	}
 
-	toJSON ():any
+	toJSON ():string
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.id = this.NODE_ID;
 		json.name = this.name;
 		json.block = this._block.toJSON ();
-		return json;
+		return JSON.stringify(json);
 	}
 }

@@ -35,10 +35,10 @@ export class Float extends Type
 		super (name);	
 	}
 
-	toJSON ():any
+	toJSON ():string
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.precision = this.precision;
-		return json;
+		return JSON.stringify(json);
 	}
 }

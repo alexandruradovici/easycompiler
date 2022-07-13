@@ -100,9 +100,9 @@ export class FunctionDefinition extends Definition implements ParentNode
 		return -1;
 	}
 
-	toJSON ():any 
+	toJSON ():string 
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.name = this.name;
 		json.parameters = [];
 		for (const index in this._parameters)
@@ -111,6 +111,6 @@ export class FunctionDefinition extends Definition implements ParentNode
 		}
 		json.block = this._block.toJSON ();
 		json.returnType = this.returnType.toJSON ();
-		return json;
+		return JSON.stringify(json);
 	}
 }

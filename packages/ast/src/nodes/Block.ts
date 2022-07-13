@@ -73,14 +73,14 @@ export class Block extends AST implements ParentNode
 		return this.children.length === 0;
 	}
 
-	toJSON ():any
+	toJSON ():string
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.children = [];
 		for (const index in this.children)
 		{
 			json.children.push (this.children[index].toJSON());
 		}
-		return json;
+		return JSON.stringify(json);
 	}
 }

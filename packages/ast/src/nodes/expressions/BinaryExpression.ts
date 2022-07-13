@@ -88,12 +88,12 @@ export class BinaryExpression extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():any
+	toJSON ():string
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.left = this._left.toJSON ();
 		json.right = this._right.toJSON ();
 		json.operator = this.operator;
-		return json;
+		return JSON.stringify(json);;
 	}
 }

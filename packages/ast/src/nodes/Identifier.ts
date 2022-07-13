@@ -32,11 +32,11 @@ export class Identifier extends Expression
 		super ();
 	}
 
-	toJSON ():any 
+	toJSON ():string 
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.name = this.name;
 		json.type = this.type.toJSON ();
-		return json;
+		return JSON.stringify(json);
 	}
 }

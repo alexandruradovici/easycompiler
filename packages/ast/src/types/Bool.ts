@@ -30,10 +30,10 @@ export class Bool extends Type
 		super (name);
 	}
 
-	toJSON ():any
+	toJSON ():string
 	{
-		const json = super.toJSON ();
+		const json = JSON.parse(super.toJSON ());
 		json.type = this.type.toJSON ();
-		return json;
+		return JSON.stringify(json);
 	}
 }
