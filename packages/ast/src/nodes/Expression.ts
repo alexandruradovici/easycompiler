@@ -36,6 +36,6 @@ export abstract class Expression extends AST
 	{
 		const json = JSON.parse(super.toJSON());
 		json.type = this.type.toJSON ();
-		return JSON.stringify(json);;
+		return JSON.stringify(json);
 	}
 }

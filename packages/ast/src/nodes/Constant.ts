@@ -38,7 +38,7 @@ export class Constant extends Identifier
 	{
 		const json = JSON.parse(super.toJSON ());
 		json.value = this.value;
-		return JSON.stringify(json);;
+		return JSON.stringify(json);
 	}
 }
 

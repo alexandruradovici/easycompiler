@@ -35,6 +35,6 @@ export class TypeDefinition extends Definition
 		const json = JSON.parse(super.toJSON ());
 		json.name = this.name;
 		json.type = this.type.toJSON ();
-		return JSON.stringify(json);;
+		return JSON.stringify(json);
 	}
 }

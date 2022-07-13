@@ -35,6 +35,6 @@ export class Label extends AST
 	{
 		const json = JSON.parse(super.toJSON ());
 		json.name = this.name;
-		return JSON.stringify(json);;
+		return JSON.stringify(json);
 	}
 }

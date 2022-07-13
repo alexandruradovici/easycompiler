@@ -94,6 +94,6 @@ export class BinaryExpression extends Expression implements ParentNode
 		json.left = this._left.toJSON ();
 		json.right = this._right.toJSON ();
 		json.operator = this.operator;
-		return JSON.stringify(json);;
+		return JSON.stringify(json);
 	}
 }

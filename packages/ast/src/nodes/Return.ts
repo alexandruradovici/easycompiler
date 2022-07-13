@@ -67,6 +67,6 @@ export class Return extends AST implements ParentNode
 		const json = JSON.parse(super.toJSON ());
 		if (this.expression) json.expression = this.expression.toJSON ();
 		json.type = this.type.toJSON ();
-		return JSON.stringify(json);;
+		return JSON.stringify(json);
 	}
 }

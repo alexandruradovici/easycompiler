@@ -107,6 +107,6 @@ export class FunctionCall extends Expression implements ParentNode
 		{
 			json.args.push (this.args[index].toJSON ());
 		}
-		return JSON.stringify(json);;
+		return JSON.stringify(json);
 	}
 }

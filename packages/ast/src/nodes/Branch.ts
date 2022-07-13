@@ -102,6 +102,6 @@ export class Branch extends AST implements ParentNode
 		json.expression = this._expression.toJSON ();
 		json.thenBlock = this._thenBlock.toJSON ();
 		json.elseBlock = this._elseBlock.toJSON ();
-		return JSON.stringify(json);;
+		return JSON.stringify(json);
 	}
 }
