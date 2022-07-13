@@ -1,8 +1,4 @@
 node_modules
 examples
 dist
-packages/ast/dist
-packages/backend/dist
-packages/frontend/dist
-packages/optimizer/dist
 
