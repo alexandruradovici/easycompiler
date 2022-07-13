@@ -25,5 +25,8 @@ export { Struct } from './Struct';
 export { Pointer } from './Pointer';
 export { Void } from './Void';
 export { Unknown } from './Unknown';
+export { Bool } from './Bool';
+export { String } from './String';
+export { Char } from './Char';
 export * from './integer';
 export * from './float';

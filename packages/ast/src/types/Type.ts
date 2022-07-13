@@ -27,6 +27,8 @@ export enum TypeID {
 	TYPE,
 	INTEGER,
 	FLOAT,
+	STRING,
+	CHAR,
 	ARRAY,
 	FUNCTION,
 	POINTER,
