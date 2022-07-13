@@ -1,0 +1,9 @@
+{
+  "packages": [
+    "packages/*",
+    "examples/*",
+    "packages/ast/src/*"
+  ],
+  "useNx": false,
+  "version": "0.0.0"
+}
