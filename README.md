@@ -10,13 +10,13 @@ The compiler is made of multiple packages, which can then be separately imported
 ### @easycompiler/ast
 The AST package is a collection of classes that will contain information from each node.
 
-### Frontend
+### @easycompiler/frontend
 This is not yet available.
 
-### Optimizer
+### @easycompiler/optimizer
 This is not yet available.
 
-### Backend
+### @easycompiler/backend
 This is not yet available.
 
 ## Installation and Usage
