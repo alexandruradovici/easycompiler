@@ -7,7 +7,7 @@ Its main purpose is to be used in teaching compiler and compiler optimization. W
 ## Packages Description
 The compiler is made of multiple packages, which can then be separately imported into projects, based on what is needed. Packages are linked using the [Lerna](https://github.com/lerna/lerna) tool.
 
-### AST
+### @easycompiler/ast
 The AST package is a collection of classes that will contain information from each node.
 
 ### Frontend
