@@ -10,7 +10,6 @@ export interface IFrontend{
      * parsed
     */
     parse(sourceCode :string): string;
-    print():void;
 }
 
 export abstract class FrontendError extends Error {
