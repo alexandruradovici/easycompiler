@@ -1,5 +1,5 @@
 export interface IOptimizer{
-    optimizer(AST :string): string;
+    optimize(AST :string): AST;
 }
 
 export abstract class OptimizerError extends Error {
