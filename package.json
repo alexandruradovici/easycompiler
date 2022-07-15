@@ -25,6 +25,7 @@
     "lerna": "^5.1.7"
   },
   "dependencies": {
-    "@types/node": "^18.0.3"
+    "@types/node": "^18.0.3",
+    "parse-path": "^5.0.0"
   }
 }
