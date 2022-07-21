@@ -1,8 +1,4 @@
 /**
- * @module ast/nodes
- */
-
-/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,28 +14,25 @@
  * limitations under the License.
  */
 
-
-
 import { Type } from '../types';
-import { Identifier } from './Identifier';
 import { NodeID } from '@easycompiler/util';
-import { Value } from './Value';
- 
+import { AST } from "./AST";
+export class Value extends AST {
+    protected NODE_ID: NodeID = NodeID.VALUE;
+    public readonly value: string | number | boolean;
+    public readonly type: Type | undefined;
+    constructor(value: string | number | boolean, type?: Type) {
+        super();
+        this.value = value;
+        this.type = type;
+    }
 
-export class Constant extends Identifier
-{
-	protected NODE_ID: NodeID = NodeID.CONSTANT;
-
-	constructor (name: string, type: Type, public value: Value)
-	{
-		super (name, type);
-	}
-
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.value = this.value.toJSON();
-		return JSON.stringify(json);
-	}
+    toJSON(): string {
+        const json = JSON.parse(super.toJSON());
+        json.value = this.value;
+        if (this.type) {
+            json.type = this.type.parseJSON();
+        }
+        return JSON.stringify(json);
+    }
 }
-

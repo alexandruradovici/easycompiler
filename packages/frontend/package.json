@@ -6,8 +6,7 @@
   "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
       "build": "tsc --build tsconfig.json",
-      "lint": "npx eslint src",
-      "antlr4ts": "antlr4ts -visitor ./src/language.g4"
+      "lint": "npx eslint src"
   },
   "repository": {
       "type": "git",

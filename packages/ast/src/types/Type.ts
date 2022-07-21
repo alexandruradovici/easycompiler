@@ -1,6 +1,4 @@
-/**
- * @module ast/types
- */
+
 
 /**
  * Copyright 2018 Alexandru RADOVICI
@@ -36,14 +34,58 @@ export enum TypeID {
 	BOOL
 }
 
-export abstract class Type
+export class Type
 {
 	protected version:u32 = 1;
 	protected readonly TYPE_ID: TypeID = TypeID.TYPE;
 
 	constructor (public readonly name: string)
 	{
-
+		switch (name.toLowerCase()){
+			case "integer": {
+				this.TYPE_ID=TypeID.INTEGER;
+				break;
+			}
+			case "float": {
+				this.TYPE_ID=TypeID.FLOAT;
+				break;
+			}
+			case "string": {
+				this.TYPE_ID=TypeID.STRING;
+				break;
+			}
+			case "char": {
+				this.TYPE_ID=TypeID.CHAR;
+				break;
+			}
+			case "array": {
+				this.TYPE_ID=TypeID.ARRAY;
+				break;
+			}
+			case "function": {
+				this.TYPE_ID=TypeID.FUNCTION;
+				break;
+			}
+			case "pointer": {
+				this.TYPE_ID=TypeID.POINTER;
+				break;
+			}
+			case "struct": {
+				this.TYPE_ID=TypeID.STRUCT;
+				break;
+			}
+			case "void": {
+				this.TYPE_ID=TypeID.VOID;
+				break;
+			}
+			case "bool": {
+				this.TYPE_ID=TypeID.BOOL;
+				break;
+			}
+			default:{
+				this.TYPE_ID=TypeID.UNKNOWN;
+			}
+		}
 	}
 
 	toJSON ():string 
@@ -54,5 +96,8 @@ export abstract class Type
 			name: this.name
 		};
 		return JSON.stringify(json);
+	}
+	parseJSON():JSON{
+		return JSON.parse(this.toJSON());
 	}
 }

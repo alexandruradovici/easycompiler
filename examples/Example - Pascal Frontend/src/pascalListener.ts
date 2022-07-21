@@ -3,6 +3,7 @@
 
 import { ParseTreeListener } from "antlr4ts/tree/ParseTreeListener";
 
+import { StartContext } from "./pascalParser";
 import { ProgramContext } from "./pascalParser";
 import { ProgramHeadingContext } from "./pascalParser";
 import { IdentifierContext } from "./pascalParser";
@@ -107,6 +108,17 @@ import { RecordVariableListContext } from "./pascalParser";
  * `pascalParser`.
  */
 export interface pascalListener extends ParseTreeListener {
+	/**
+	 * Enter a parse tree produced by `pascalParser.start`.
+	 * @param ctx the parse tree
+	 */
+	enterStart?: (ctx: StartContext) => void;
+	/**
+	 * Exit a parse tree produced by `pascalParser.start`.
+	 * @param ctx the parse tree
+	 */
+	exitStart?: (ctx: StartContext) => void;
+
 	/**
 	 * Enter a parse tree produced by `pascalParser.program`.
 	 * @param ctx the parse tree

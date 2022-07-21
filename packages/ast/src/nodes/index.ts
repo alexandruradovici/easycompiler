@@ -1,6 +1,3 @@
-/**
- * @module ast/nodes
- */
 
 /**
  * Copyright 2018 Alexandru RADOVICI
@@ -37,4 +34,6 @@ export { Module } from './Module';
 export { Jump } from './Jump';
 export { Return } from './Return';
 export { TypeDefinition } from './TypeDefinition';
+export { Value } from './Value';
+export { Label } from './Label';
 export * from './expressions';

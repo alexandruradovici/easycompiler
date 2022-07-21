@@ -29,7 +29,9 @@ export class Block extends AST implements ParentNode
 	protected readonly NODE_ID: NodeID = NodeID.BLOCK;
 
 	public readonly children: AST[] = [];
-
+	constructor(public readonly name: string){
+		super();
+	}
 	addChild (node: AST): void
 	{
 		node.parent = this;
@@ -76,10 +78,11 @@ export class Block extends AST implements ParentNode
 	toJSON ():string
 	{
 		const json = JSON.parse(super.toJSON ());
+		json.name=this.name;
 		json.children = [];
 		for (const index in this.children)
 		{
-			json.children.push (this.children[index].toJSON());
+			json.children.push (this.children[index].parseJSON());
 		}
 		return JSON.stringify(json);
 	}

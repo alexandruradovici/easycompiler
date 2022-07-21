@@ -1,4 +1,3 @@
-//imports don't work
 import { AST } from '@easycompiler/ast';
 export interface IOptimizer{
     optimize(AST :string): AST;

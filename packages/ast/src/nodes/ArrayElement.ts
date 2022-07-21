@@ -68,7 +68,10 @@ export class ArrayElement extends Expression implements ParentNode
 
 	getType ():Type
 	{
-		return this.expression.type;
+		if(this.expression.type){
+			return this.expression.type;
+		}
+		return new Type("unknown");
 	}
 
 	_removeChild (node: Node): void

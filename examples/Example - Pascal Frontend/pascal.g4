@@ -37,9 +37,11 @@ grammar pascal;
 
 options { caseInsensitive = true; }
 
+start
+   : program;
+
 program
-   : programHeading (INTERFACE)? block DOT EOF
-   ;
+   : programHeading (INTERFACE)? block DOT EOF;
 
 programHeading
    : PROGRAM identifier (LPAREN identifierList RPAREN)? SEMI
@@ -356,7 +358,7 @@ signedFactor
 factor
    : variable
    | LPAREN expression RPAREN
-   | functionDesignator
+   | functionDesignator  
    | unsignedConstant
    | set_
    | NOT factor

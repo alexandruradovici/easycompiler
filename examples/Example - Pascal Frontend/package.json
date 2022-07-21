@@ -2,12 +2,13 @@
   "name": "@examples/pascal-frontend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "antlr4ts": "antlr4ts -visitor ./pascal.g4",
     "build": "tsc --build tsconfig.json",
-    "lint": "npx eslint src" 
+    "lint": "npx eslint src" ,
+    "go": "node dist/main.js"
   },
   "author": "",
   "license": "ISC",

@@ -1,1 +1,6 @@
-WRITELN('Hello, World!');
+PROGRAM HELLOWORLD;
+
+(* Here the main program block starts *)
+BEGIN
+   WRITELN('Hello, World!');
+END.

@@ -3,6 +3,7 @@
 
 import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
 
+import { StartContext } from "./pascalParser";
 import { ProgramContext } from "./pascalParser";
 import { ProgramHeadingContext } from "./pascalParser";
 import { IdentifierContext } from "./pascalParser";
@@ -110,6 +111,13 @@ import { RecordVariableListContext } from "./pascalParser";
  * operations with no return type.
  */
 export interface pascalVisitor<Result> extends ParseTreeVisitor<Result> {
+	/**
+	 * Visit a parse tree produced by `pascalParser.start`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitStart?: (ctx: StartContext) => Result;
+
 	/**
 	 * Visit a parse tree produced by `pascalParser.program`.
 	 * @param ctx the parse tree

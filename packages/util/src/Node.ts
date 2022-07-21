@@ -22,37 +22,38 @@ import { u32 } from './types';
 import { Tags, NodeTag, NodeTagValue } from './Tags';
 
 export enum NodeID {
-	NODE,
+	NODE="Node",
 
 	// AST Nodes
-	AST,
-	ARRAY_ELEMENT,
-	BLOCK,
-	BRANCH,
-	CONSTANT,
-	DEFINITION,
-	EXPRESSION,
-	FUNCTION_CALL,
-	FUNCTION_DEFINITION,
-	IDENTIFIER,
-	LOOP,
-	STRUCT_ELEMENT,
-	TYPE_CAST,
-	VARIABLE_DEFINITION,
-	BINARY_EXPRESSION,
-	UNARY_EXPRESSION,
-	RETURN,
-	MODULE,
-	JUMP,
-	LABEL,
-	TYPE_DEFINITION,
+	AST="AST",
+	ARRAY_ELEMENT="ArrayElement",
+	BLOCK="Block",
+	BRANCH="Branch",
+	CONSTANT="Constant",
+	DEFINITION="Definition",
+	EXPRESSION="Expression",
+	FUNCTION_CALL="FunctionCall",
+	FUNCTION_DEFINITION="FunctionDefinition",
+	IDENTIFIER="Identifier",
+	LOOP="Loop",
+	STRUCT_ELEMENT="StructElement",
+	TYPE_CAST="TypeCast",
+	VARIABLE_DEFINITION="VariableDefinition",
+	BINARY_EXPRESSION="BinaryExpression",
+	UNARY_EXPRESSION="UnaryExpression",
+	RETURN="Return",
+	MODULE="Module",
+	JUMP="Jump",
+	LABEL="Label",
+	TYPE_DEFINITION="TypeDefinition",
+	VALUE="Value",
 
 	// ParseTree Nodes
-	RULE,
-	TOKEN,
+	RULE="Rule",
+	TOKEN="Token",
 
 	// Other
-	OTHER
+	OTHER="Other"
 }
 
 export interface ParentNode
@@ -131,6 +132,9 @@ export abstract class Node implements Tags
 		}
 		//json.tags= this.tags;
 		return JSON.stringify(json);
+	}
+	parseJSON():JSON{
+		return JSON.parse(this.toJSON());
 	}
 }
 
