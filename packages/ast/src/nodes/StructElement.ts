@@ -54,7 +54,11 @@ export class StructElement extends Expression implements ParentNode
 		if (this._struct.type instanceof Struct)
 		{
 			const element = this._struct.type.getElement (this.name);
-			if (element) return element.type;
+			if (element){
+				if(element.type){
+					return element.type;
+				}
+			}
 		}
 		return new Unknown();
 	}

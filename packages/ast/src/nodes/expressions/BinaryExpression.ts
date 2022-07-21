@@ -23,6 +23,7 @@
 import { Node, ParentNode, NodeID } from '..';
 import { Expression } from '..';
 import { ASTError } from '../../errors';
+import { Value } from '../Value';
 
 export enum BinaryExpressionOperator {
 	OPERATOR_ADD = '+',
@@ -44,37 +45,41 @@ export enum BinaryExpressionOperator {
 export class BinaryExpression extends Expression implements ParentNode
 {
 	protected NODE_ID: NodeID = NodeID.BINARY_EXPRESSION;
+	public left: Expression;
+	public right: Expression;
 
-	constructor (private _left: Expression, private _right: Expression, public operator: BinaryExpressionOperator | string)
+	constructor (left: Expression, right: Expression, public operator: BinaryExpressionOperator | string)
 	{
-		super ();
+		super();
+		this.left=left;
+		this.right=right;
 	}
 
-	get left (): Expression
-	{
-		return this._left;
-	}
+	// get left (): Expression
+	// {
+	// 	return this._left;
+	// }
 
-	set left (expression: Expression)
-	{
-		expression.parent = this;
-		const oldExpression = this._left;
-		this._left = expression;
-		oldExpression.removeFromParent ();
-	}
+	// set left (expression: Expression)
+	// {
+	// 	expression.parent = this;
+	// 	const oldExpression = this._left;
+	// 	this._left = expression;
+	// 	oldExpression.removeFromParent ();
+	// }
 
-	get right ():Expression
-	{
-		return this._right;
-	}
+	// get right ():Expression
+	// {
+	// 	return this._right;
+	// }
 
-	set right (expression: Expression)
-	{
-		expression.parent = this;
-		const oldExpression = this._right;
-		this._right = expression;
-		oldExpression.removeFromParent ();
-	}
+	// set right (expression: Expression)
+	// {
+	// 	expression.parent = this;
+	// 	const oldExpression = this._right;
+	// 	this._right = expression;
+	// 	oldExpression.removeFromParent ();
+	// }
 
 	_removeChild (node: Node): void
 	{
@@ -91,8 +96,8 @@ export class BinaryExpression extends Expression implements ParentNode
 	toJSON ():string
 	{
 		const json = JSON.parse(super.toJSON ());
-		json.left = this._left.toJSON ();
-		json.right = this._right.toJSON ();
+		json.left = this.left.toJSON ();
+		json.right = this.right.toJSON ();
 		json.operator = this.operator;
 		return JSON.stringify(json);
 	}

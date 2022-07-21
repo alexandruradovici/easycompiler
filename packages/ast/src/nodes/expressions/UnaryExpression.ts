@@ -36,24 +36,26 @@ export enum UnaryExpressionOperator {
 export class UnaryExpression extends Expression implements ParentNode
 {
 	protected NODE_ID: NodeID = NodeID.UNARY_EXPRESSION;
+	public expression: Expression;
 
-	constructor (private _expression: Expression, private operator: UnaryExpressionOperator | string)
+	constructor (expression: Expression, private operator: UnaryExpressionOperator | string)
 	{
 		super ();
+		this.expression=expression;
 	}
 
-	get expression (): Expression
-	{
-		return this._expression;
-	}
+	// get expression (): Expression
+	// {
+	// 	return this._expression;
+	// }
 
-	set expression (expression: Expression)
-	{
-		expression.parent = this;
-		const oldExpression = this._expression;
-		this._expression = expression;
-		oldExpression.removeFromParent ();
-	}
+	// set expression (expression: Expression)
+	// {
+	// 	expression.parent = this;
+	// 	const oldExpression = this._expression;
+	// 	this._expression = expression;
+	// 	oldExpression.removeFromParent ();
+	// }
 
 	_removeChild (node: Node): void
 	{
@@ -66,7 +68,7 @@ export class UnaryExpression extends Expression implements ParentNode
 	toJSON ():string
 	{
 		const json = JSON.parse(super.toJSON ());
-		json.expression = this._expression.toJSON ();
+		json.expression = this.expression.toJSON ();
 		json.operator = this.operator;
 		return JSON.stringify(json);
 	}

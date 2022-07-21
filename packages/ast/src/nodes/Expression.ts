@@ -18,24 +18,28 @@
  * limitations under the License.
  */
 
-import { NodeID } from '@easycompiler/util';
-import { Type, Unknown } from '../types';
+ import { NodeID } from '@easycompiler/util';
+import { Type } from 'src/types';
+//import { Type, Unknown } from '../types';
 import { AST } from './AST';
+import { Value } from './Value';
  
 
 export abstract class Expression extends AST
 {
 	protected NODE_ID: NodeID = NodeID.EXPRESSION;
 
-	constructor (public readonly type: Type = new Unknown())
+	constructor (public readonly value?: Value, public readonly type? :Type)
 	{
-		super ();
+		super();
 	}
 
 	toJSON ():string
 	{
 		const json = JSON.parse(super.toJSON());
-		json.type = this.type.toJSON ();
+		if(this.value){
+			json.value = this.value.toJSON ();
+		}
 		return JSON.stringify(json);
 	}
 }

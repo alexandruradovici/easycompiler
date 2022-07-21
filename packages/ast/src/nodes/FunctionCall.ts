@@ -24,20 +24,21 @@ import { Expression } from './Expression';
 import { u32 } from '@easycompiler/util';
 import { i32 } from '@easycompiler/util';
 import { ASTError } from '../errors';
+import { Block } from './Block';
  
 
 export class FunctionCall extends Expression implements ParentNode
 {
 	protected NODE_ID: NodeID = NodeID.FUNCTION_CALL;
 
-	constructor (private _fn: Expression, public readonly args:Expression[])
+	constructor (private _fn: Expression, public readonly args: Block)
 	{
 		super ();
-		_fn.parent = this;
-		for (const expression of args)
-		{
-			expression.parent = this;
-		}
+		//_fn.parent = this;
+		// for (const expression of args)
+		// {
+		// 	expression.parent = this;
+		// }
 	}
 
 	get fn (): Expression
@@ -46,13 +47,13 @@ export class FunctionCall extends Expression implements ParentNode
 	}
 
 
-	set fn (newFn: Expression)
-	{
-		newFn.parent = this;
-		const oldFn = this._fn;
-		this._fn = newFn;
-		oldFn.removeFromParent ();
-	}
+	// set fn (newFn: Expression)
+	// {
+	// 	newFn.parent = this;
+	// 	const oldFn = this._fn;
+	// 	this._fn = newFn;
+	// 	oldFn.removeFromParent ();
+	// }
 
 	getType ()
 	{
@@ -65,47 +66,47 @@ export class FunctionCall extends Expression implements ParentNode
 		{
 			throw new ASTError ('You can not remove the function expression from the function call');
 		}
-		else
-		{
-			let pos; 
-			if (expression instanceof Expression)
-			{
-				pos = this.getArgPosition (expression);
-			}
-			else
-			if (expression instanceof Node)
-			{
-				// this is not a child here
-				pos = -1;
-			}
-			else
-			{
-				pos = expression;
-			}
-			if (pos >= 0)
-			{
-				this.args.splice (pos, 1);
-			}
-		}
+		// else
+		// {
+		// 	let pos; 
+		// 	if (expression instanceof Expression)
+		// 	{
+		// 		pos = this.getArgPosition (expression);
+		// 	}
+		// 	else
+		// 	if (expression instanceof Node)
+		// 	{
+		// 		// this is not a child here
+		// 		pos = -1;
+		// 	}
+		// 	else
+		// 	{
+		// 		pos = expression;
+		// 	}
+		// 	if (pos >= 0)
+		// 	{
+		// 		this.args.splice (pos, 1);
+		// 	}
+		// }
 	}
 
-	getArgPosition (expression: Expression): i32
-	{
-		for (const pos in this.args)
-		{
-			if (this.args[pos] === expression) return parseInt (pos);
-		}
-		return -1;
-	}
+	// getArgPosition (expression: Expression): i32
+	// {
+	// 	for (const pos in this.args)
+	// 	{
+	// 		if (this.args[pos] === expression) return parseInt (pos);
+	// 	}
+	// 	return -1;
+	// }
 
 	toJSON ():string 
 	{
-		const json = JSON.parse(super.toJSON ());
-		json.fn = this._fn.toJSON ();
+		const json = JSON.parse(super.toJSON());
+		json.fn = this._fn.parseJSON();
 		json.args = [];
 		for (const index in this.args)
 		{
-			json.args.push (this.args[index].toJSON ());
+			json.args.push (this.args.parseJSON());
 		}
 		return JSON.stringify(json);
 	}

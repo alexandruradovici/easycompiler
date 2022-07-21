@@ -1,29 +1,30 @@
 {
-    "name": "@easycompiler/frontend",
-    "version": "1.0.0",
-    "description": "",
-    "main": "dist/index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "tsc --build tsconfig.json",
-        "lint": "npx eslint src"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/alexandruradovici/easycompiler.git"
-    },
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/alexandruradovici/easycompiler/issues"
-    },
-    "homepage": "https://github.com/alexandruradovici/easycompiler#readme",
-    "devDependencies": {
-        "lerna": "^5.1.7",
-        "typedoc": "^0.23.5"
-    },
-    "dependencies": {
-        "@types/node": "^18.0.3",
-        "@easycompiler/ast": "1.0.0"
-    }
+  "name": "@easycompiler/frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "build": "tsc --build tsconfig.json",
+      "lint": "npx eslint src"
+  },
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/alexandruradovici/easycompiler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+      "url": "https://github.com/alexandruradovici/easycompiler/issues"
+  },
+  "homepage": "https://github.com/alexandruradovici/easycompiler#readme",
+  "devDependencies": {
+      "lerna": "^5.1.7",
+      "typedoc": "^0.23.5"
+  },
+  "dependencies": {
+      "@types/node": "^18.0.3",
+      "@easycompiler/ast": "1.0.0"
+  }
 }
+
