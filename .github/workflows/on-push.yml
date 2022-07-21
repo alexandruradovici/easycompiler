@@ -9,7 +9,7 @@ jobs:
         with: 
           node-version: '16'
       - run: npx lerna bootstrap
-      - run: cp .\packages\util\src\types.d.ts .\packages\util\dist\
+      - run: cp ./packages/util/src/types.d.ts ./packages/util/dist/
       - run: npx lerna run build 
   lerna-lint:
     runs-on: ubuntu-latest
