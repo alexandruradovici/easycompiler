@@ -19,21 +19,28 @@
  */
 
  
-import { Type, TypeID } from './Type';
+import { IType, Type, TypeID } from './Type';
+
+export interface iBool extends IType{
+	name: string
+}
 
 export class Bool extends Type
 {
 	protected readonly TYPE_ID: TypeID = TypeID.BOOL;
 
-	constructor (name: string, public type: Type)
-	{
-		super (name);
-	}
+	public readonly name;
+    constructor (name: string)
+    {
+        super (TypeID.CHAR);
+        this.name=name;
+    }
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.type = this.type.toJSON ();
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: iBool = {
+			name: this.name,
+			typeID: super.type
+		};
+        return JSON.stringify(json);
+    }
 }

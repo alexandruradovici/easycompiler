@@ -18,34 +18,28 @@
  * limitations under the License.
  */
 
-import { Type, TypeID } from './Type';
+import { IType, Type, TypeID } from './Type';
 import { u32 } from '@easycompiler/util';
-
-// export class StructElement {
-// 	constructor (public name: string, public type: Type)
-// 	{
-
-// 	}
-
-// 	toJSON ():any
-// 	{
-// 		let json:any = {
-// 			name: this.name,
-// 			type: this.type.toJSON ()
-// 		};
-// 		return json;
-// 	}
-// }
 
 import { StructElement } from '../nodes';
  
-export class Struct extends Type
+export interface iStruct extends IType{
+	name: string,
+	elements: StructElement[]
+}
+
+
+export class Struct extends Type implements iStruct
 {
 	protected readonly TYPE_ID: TypeID = TypeID.STRUCT;
 
-	constructor (name: string, public readonly elements: StructElement[] = [])
+	public readonly name: string;
+	public readonly elements: StructElement[]=[];
+	constructor (name: string, elements: StructElement[])
 	{
-		super (name);
+		super (TypeID.STRUCT);
+		this.name=name;
+		this.elements=elements;
 	}
 
 	addElement (element: StructElement, position: u32 = -1)
@@ -99,14 +93,17 @@ export class Struct extends Type
 		return (this.getElement (name) === null);
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.elements = [];
+	public toJSON(): string {
+		let json_elements=[];
 		for (const element in this.elements)
 		{
-			json.elements.pushs (this.elements[element].toJSON ());
+			json_elements.push(this.elements[element]);
 		}
-		return JSON.stringify(json);
-	}
+        const json: iStruct = {
+			name: this.name,
+			elements: json_elements,
+			typeID: super.type
+		};
+        return JSON.stringify(json);
+    }
 }

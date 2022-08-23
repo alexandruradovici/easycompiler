@@ -21,20 +21,37 @@
 import { Definition } from "./Definition";
 import { Type } from '../types';
 import { NodeID } from '@easycompiler/util';
-export class VariableDefinition extends Definition
-{
-	protected NODE_ID: NodeID = NodeID.VARIABLE_DEFINITION;
 
-	constructor (public name: string, public type: Type)
+export interface iVariableDefinition{
+	name: string,
+	type: Type,
+}
+
+/** 
+     * AST Node corresponding to a variable definition in code
+     * 
+     * @param name - The name of the variable
+	 * @param type - The type of the variable
+*/
+export class VariableDefinition extends Definition implements iVariableDefinition
+{
+	static ID: NodeID = "variableDefinition";
+    public nodeId: NodeID = VariableDefinition.ID;
+	public name: string;
+	public type: Type;
+	constructor (name: string, type: Type)
 	{
 		super ();
+		this.name=name;
+		this.type=type;
 	}
 
-	toJSON ():string
-	{
-		const json= JSON.parse(super.toJSON ());
-		json.name = this.name;
-		json.type = this.type.toJSON ();
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: iVariableDefinition = {
+            name: this.name,
+            type: this.type,
+            ...this.nodeObject()
+        };
+        return JSON.stringify(json);
+    }
 }

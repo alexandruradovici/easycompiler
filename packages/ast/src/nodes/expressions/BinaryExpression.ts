@@ -24,6 +24,12 @@ import { Node, ParentNode, NodeID } from '..';
 import { Expression } from '..';
 import { ASTError } from '../../errors';
 
+export interface iBinaryExpression{
+	left: Expression,
+	right: Expression,
+	operator: BinaryExpressionOperator|string
+}
+
 export enum BinaryExpressionOperator {
 	OPERATOR_ADD = '+',
 	OPERATOR_SUBTRACT = '-',
@@ -41,41 +47,51 @@ export enum BinaryExpressionOperator {
 	OPERATIR_SHR = '>>'
 }
 
-export class BinaryExpression extends Expression implements ParentNode
+/** 
+     * AST Node corresponding to a binary expression
+     * 
+     * @param _left - The left part of the binary expression
+	 * @param _right - The right part of the binry expression
+	 * @param operator - The operator of the expression
+*/
+export class BinaryExpression extends Expression implements ParentNode, iBinaryExpression
 {
-	protected NODE_ID: NodeID = NodeID.BINARY_EXPRESSION;
-
-	constructor (private _left: Expression, private _right: Expression, public operator: BinaryExpressionOperator | string)
+	static ID: NodeID = "binaryExpression";
+    public nodeId: NodeID = BinaryExpression.ID;
+	public operator: BinaryExpressionOperator|string;
+	constructor (left: Expression, right: Expression, operator: BinaryExpressionOperator | string)
 	{
-		super ();
+		super();
+		this.left=left;
+		this.right=right;
+		this.operator=operator;
 	}
 
 	get left (): Expression
 	{
-		return this._left;
+		return this.left;
 	}
 
 	set left (expression: Expression)
 	{
-		expression.parent = this;
-		const oldExpression = this._left;
-		this._left = expression;
-		oldExpression.removeFromParent ();
+		this.left = expression;
 	}
 
 	get right ():Expression
 	{
-		return this._right;
+		return this.right;
 	}
 
 	set right (expression: Expression)
 	{
-		expression.parent = this;
-		const oldExpression = this._right;
-		this._right = expression;
-		oldExpression.removeFromParent ();
+		this.right = expression;
 	}
 
+	/** 
+     * Removes AST Node
+     * 
+     * @param node - AST Node to be removed
+	*/
 	_removeChild (node: Node): void
 	{
 		if (node === this.left)
@@ -88,12 +104,13 @@ export class BinaryExpression extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.left = this._left.toJSON ();
-		json.right = this._right.toJSON ();
-		json.operator = this.operator;
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: iBinaryExpression = {
+            left: this.left,
+			right: this.right,
+            operator: this.operator,
+            ...this.nodeObject()
+        };
+        return JSON.stringify(json);
+    }
 }

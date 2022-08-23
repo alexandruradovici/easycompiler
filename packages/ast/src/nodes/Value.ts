@@ -14,44 +14,38 @@
  * limitations under the License.
  */
 
-
-
-import { Type } from '../types';
-import { Identifier } from './Identifier';
+import { IType, Type } from '../types';
 import { INode, NodeID } from '@easycompiler/util';
-import { Value } from './Value';
- 
-export interface iConstant extends INode{
-	name: string;
-	type: Type;
-	value: Value;
-}
+import { AST } from "./AST";
 
 /** 
-     * AST Node corresponding to a constant
-	 * @param name
-	 * @param type
-	 * @param value
+     * AST Node corresponding to a value in code
+     * 
+     * @param value - The value 
+	 * @param type -  The type of the value
 */
-export class Constant extends Identifier implements iConstant
-{
-	static ID: NodeID = "constant";
-    public nodeId: NodeID = Constant.ID;
-	public value: Value;
-	constructor (name: string, type: Type, value: Value)
-	{
-		super (name, type);
-		this.value=value;
-	}
+export interface IValue extends INode {
+    readonly value: string | number | boolean;
+    readonly type: IType | undefined;
+}
 
-	public toJSON(): string {
-        const json: iConstant = {
-			name: this.name,
-			type: this.type,
+export class Value extends AST implements IValue {
+    static ID: NodeID = "value";
+    public nodeId: NodeID = Value.ID;
+    public readonly value: string | number | boolean;
+    public readonly type: Type | undefined;
+    constructor(value: string | number | boolean, type?: Type) {
+        super();
+        this.value = value;
+        this.type = type;
+    }
+
+    public toJSON(): string {
+        const json: IValue = {
             value: this.value,
+            type: this.type,
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
 }
-

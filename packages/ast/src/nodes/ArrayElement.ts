@@ -20,57 +20,82 @@
 
 
 
-import { Type } from '../types';
+import { Type, TypeID } from '../types';
 import { Expression } from './Expression';
-import { NodeID, ParentNode } from '@easycompiler/util';
+import { ParentNode } from '@easycompiler/util';
 import { Node } from "@easycompiler/util";
 import { ASTError } from '../errors';
+
+import type { NodeID } from '@easycompiler/util';
  
-
-export class ArrayElement extends Expression implements ParentNode
+export interface IArrayElement{
+	expression: Expression,
+	index: Expression
+}
+/** 
+     * AST Node corresponding to an array element
+     * 
+     * @param _expression - The element of the array
+	 * @param _index - The position in the array
+*/
+export class ArrayElement extends Expression implements IArrayElement,ParentNode
 {
-	protected NODE_ID: NodeID = NodeID.ARRAY_ELEMENT;
-
-	constructor (private _expression: Expression, public _index:Expression)
+	static ID: NodeID = "arrayElement";
+    public nodeId: NodeID = ArrayElement.ID;
+	constructor (expression: Expression, index:Expression)
 	{
 		super ();
-		this._expression.parent = this;
-		this._index.parent = this;
+		this.expression=expression;
+		this.index=index;
+		this.expression.parent = this;
+		this.index.parent = this;
 	}
 
 	get expression ():Expression
 	{
-		return this._expression;
+		return this.expression;
 	}
 
 	set expression (expression: Expression)
 	{
 		expression.parent = this;
-		const oldExpression = this._expression;
-		this._expression = expression;
+		const oldExpression = this.expression;
+		this.expression = expression;
 		oldExpression.removeFromParent ();
 		
 	}
 
 	get index ():Expression
 	{
-		return this._index;
+		return this.index;
 	}
 
 	set index (index: Expression)
 	{
 		index.parent = this;
-		const oldIndex = this._index;
-		this._index = index;
+		const oldIndex = this.index;
+		this.index = index;
 		oldIndex.removeFromParent ();
 		
 	}
-
-	getType ():Type
+	/** 
+     * Gets type of the array element
+     * 
+     * @returns The type of the array element
+	*/
+	public getType ():Type
 	{
-		return this.expression.type;
+		if(this.expression.type){
+			return this.expression.type;
+		}
+		return new Type(TypeID.UNKNOWN);
 	}
 
+	/** 
+     * Removes AST Node
+     * 
+     * @param node - AST Node to be removed
+	*/
 	_removeChild (node: Node): void
 	{
 		if (node === this.expression)
@@ -79,11 +104,12 @@ export class ArrayElement extends Expression implements ParentNode
 		}
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON());
-		json.expression = this._expression.toJSON ();
-		json.index = this._index;
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: IArrayElement = {
+            expression: this.expression,
+            index: this.index,
+            ...this.nodeObject()
+        };
+        return JSON.stringify(json);
+    }
 }

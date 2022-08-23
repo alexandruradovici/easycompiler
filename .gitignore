@@ -2,3 +2,4 @@ node_modules
 examples
 dist
 lerna-debug.log
+packages/util/src/index.ts

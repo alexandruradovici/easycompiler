@@ -18,4 +18,4 @@
  * limitations under the License.
  */
 
-export { SymbolTable, CSymbol, SymbolType } from './SymbolTable';
+export { SymbolTable, SymbolType } from './SymbolTable';

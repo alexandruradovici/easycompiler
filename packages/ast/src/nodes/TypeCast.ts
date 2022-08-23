@@ -24,41 +24,61 @@ import { ParentNode, NodeID } from '@easycompiler/util';
 import { ASTError } from '../errors';
 import { AST } from "./AST";
 
-export class TypeCase extends Expression implements ParentNode
-{
-	protected NODE_ID: NodeID = NodeID.TYPE_CAST;
+export interface iTypeCast{
+	target: AST,
+	type: Type,
+}
 
-	constructor (private _target: AST, public type: Type)
+/** 
+     * AST Node corresponding to a type cast in code
+     * 
+     * @param _target - The variable that will have the new type
+	 * @param type - The new type
+*/
+export class TypeCast extends Expression implements iTypeCast, ParentNode
+{
+	static ID: NodeID = "typeCast";
+    public nodeId: NodeID = TypeCast.ID;
+	public type: Type;
+	constructor (target: AST, type: Type)
 	{
 		super ();
-		_target.parent = this;
+		this.target=target;
+		this.type=type;
 	}
 
 	get target (): AST
 	{
-		return this._target;
+		return this.target;
 	}
 
 	set target (newTarget: AST)
 	{
 		newTarget.parent = this;
-		const oldTarget = this._target;
-		this._target = newTarget;
+		const oldTarget = this.target;
+		this.target = newTarget;
 		oldTarget.removeFromParent ();
 	}
 
-	_removeChild (expression: AST): void
+	/** 
+     * Removes AST Node
+     * 
+     * @param node - AST Node to be removed
+	*/
+	_removeChild (node: AST): void
 	{
-		if (expression === this._target)
+		if (node === this.target)
 		{
 			throw new ASTError ('You can not remove the target from the TypeCast node');
 		}
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.target = this._target.toJSON ();
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: iTypeCast = {
+            target: this.target,
+            type: this.type,
+            ...this.nodeObject()
+        };
+        return JSON.stringify(json);
+    }
 }

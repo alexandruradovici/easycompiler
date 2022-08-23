@@ -1,8 +1,4 @@
 /**
- * @module ast/nodes
- */
-
-/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,12 +20,35 @@ import { Node, NodeID, ParentNode } from '@easycompiler/util';
 import { i32, u32 } from '@easycompiler/util';
 import { AST } from './AST';
 
-export class Block extends AST implements ParentNode
+export interface iBlock{
+	readonly children: AST[];
+	readonly name: string;
+}
+
+/** 
+     * AST Node corresponding to a block of code
+     * 
+	 * @param name
+     * @param children - AST Nodes that are contained
+	 * 
+*/
+export class Block extends AST implements iBlock,ParentNode
 {
-	protected readonly NODE_ID: NodeID = NodeID.BLOCK;
+	static ID: NodeID = "block";
+    public nodeId: NodeID = Block.ID;
 
 	public readonly children: AST[] = [];
+	public readonly name: string;
+	constructor(name: string){
+		super();
+		this.name=name;
+	}
 
+	/** 
+     * Adds child AST node to the block 
+     * 
+     * @param node - AST node to be added
+	*/
 	addChild (node: AST): void
 	{
 		node.parent = this;
@@ -37,6 +56,12 @@ export class Block extends AST implements ParentNode
 		// TODO should throw or just silently remove element from parent
 	}
 
+	/** 
+     * Gets position of child AST node
+     * 
+     * @param node - AST Node to be verified
+	 * @returns position of the AST node if it exists, otherwise -1
+	*/
 	getChildPosition (node: AST): i32
 	{
 		for (const pos in this.children)
@@ -45,7 +70,12 @@ export class Block extends AST implements ParentNode
 		}
 		return -1;
 	}
-
+	
+	/** 
+     * Removes AST Node
+     * 
+     * @param node - AST Node to be removed
+	*/
 	_removeChild (node: Node | u32): void
 	{
 		let pos; 
@@ -67,20 +97,22 @@ export class Block extends AST implements ParentNode
 			this.children.splice (pos, 1);
 		}
 	}
-
+	/** 
+     * Checks if AST Block is empty 
+     * 
+	 * @returns true if the AST Block is empty, otherwise false
+	*/
 	isEmpty (): boolean
 	{
 		return this.children.length === 0;
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.children = [];
-		for (const index in this.children)
-		{
-			json.children.push (this.children[index].toJSON());
-		}
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: iBlock = {
+            name: this.name,
+            children: this.children,
+            ...this.nodeObject()
+        };
+        return JSON.stringify(json);
+    }
 }

@@ -1,8 +1,4 @@
 /**
- * @module ast/nodes
- */
-
-/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +14,8 @@
  * limitations under the License.
  */
 
- 
+
+
 import { NodeID } from '../nodes';
 import { AST } from './AST';
 
@@ -28,20 +25,38 @@ export enum JumpType {
 	JUMP_TO_LABEL = 'label'
 }
 
-export abstract class Jump extends AST
-{
-	protected NODE_ID: NodeID = NodeID.JUMP;
+export interface iJump{
+	jumpType: JumpType|string;
+	name?:string;
+}
 
-	constructor (public jumpType: JumpType | string, public name?: string)
+/** 
+     * AST Node corresponding to a jump in code
+     * 
+     * @param jumpType - Type of jump in the code
+	 * @param name
+*/
+export abstract class Jump extends AST implements iJump
+{
+	static ID: NodeID = "jump";
+    public nodeId: NodeID = Jump.ID;
+	public jumpType: JumpType | string;
+	public name?: string;
+	constructor (jumpType: JumpType|string, name?: string)
 	{
 		super ();
+		this.jumpType=jumpType;
+		if(name){
+			this.name=name;
+		}
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.name = this.name;
-		json.jumpType = this.jumpType;
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: iJump = {
+            name: this.name,
+            jumpType: this.jumpType,
+            ...this.nodeObject()
+        };
+        return JSON.stringify(json);
+    }
 }

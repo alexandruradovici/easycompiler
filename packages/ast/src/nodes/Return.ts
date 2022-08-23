@@ -23,30 +23,38 @@ import { Expression } from './Expression';
 import { Type } from '../types';
 import { AST } from './AST';
  
+export interface iReturn{
+	expression?: Expression
+}
 
-export class Return extends AST implements ParentNode
+/** 
+     * AST Node corresponding to return code
+     * 
+     * @param _expression - The expression that is to be returned
+*/
+export class Return extends AST implements iReturn,ParentNode
 {
-	protected NODE_ID: NodeID = NodeID.RETURN;
-
-	constructor (private _expression: Expression | undefined, public type: Type)
+	static ID: NodeID = "return";
+    public nodeId: NodeID = Return.ID;
+	constructor (expression?: Expression | undefined)
 	{
 		super ();
-		if (_expression)
+		if (expression)
 		{
-			_expression.parent = this;
+			this.expression=expression;
 		}
 	}
 
 	get expression ():Expression | undefined
 	{
-		return this._expression;
+		return this.expression;
 	}
 
 	set expression (expression: Expression | undefined)
 	{
-		if (this._expression)
+		if (this.expression)
 		{
-			this._expression.removeFromParent ();
+			this.expression.removeFromParent ();
 		}
 		if (expression)
 		{
@@ -54,6 +62,11 @@ export class Return extends AST implements ParentNode
 		}
 	}
 
+	/** 
+     * Removes AST Node
+     * 
+     * @param node - AST Node to be removed
+	*/
 	_removeChild (node: AST): void
 	{
 		if (node === this.expression)
@@ -62,11 +75,11 @@ export class Return extends AST implements ParentNode
 		}
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		if (this.expression) json.expression = this.expression.toJSON ();
-		json.type = this.type.toJSON ();
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: iReturn = {
+            expression: this.expression,
+            ...this.nodeObject()
+        };
+        return JSON.stringify(json);
+    }
 }

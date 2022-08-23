@@ -26,6 +26,6 @@ export class Unknown extends Type
 
 	constructor ()
 	{
-		super ('__unknown');
+		super (TypeID.UNKNOWN);
 	}
 }

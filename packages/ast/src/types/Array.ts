@@ -21,24 +21,39 @@
 
 
 
-import { Type, TypeID } from './Type';
+import { IType, Type, TypeID } from './Type';
 import { u32 } from '@easycompiler/util';
  
+export interface iArray extends IType{
+	name: string,
+	arrayType: Type,
+	size: u32,
+}
 
-export class Array extends Type
+export class Array extends Type implements iArray
 {
 	protected readonly TYPE_ID: TypeID = TypeID.ARRAY;
+	public readonly name: string;
+	public readonly arrayType: Type;
+	public readonly size: u32;
 
-	constructor (name: string, public readonly type: Type, public readonly size: u32)
+	constructor (name: string, type: Type, size: u32)
 	{
-		super (name);
+		super (TypeID.ARRAY);
+		this.name=name;
+		this.arrayType=type;
+		this.size=size;
 	}
 
-	toJSON ():string 
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.type = this.type.toJSON ();
-		json.size = this.size;
-		return JSON.stringify(json);
-	}
+	
+	public toJSON(): string {
+        const json: iArray = {
+			name: this.name,
+			arrayType: this.arrayType,
+			size: this.size,
+			typeID: super.type
+		};
+
+        return JSON.stringify(json);
+    }
 }

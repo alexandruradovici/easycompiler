@@ -22,81 +22,97 @@ import { ParentNode, NodeID } from '@easycompiler/util';
 import { Block } from './Block';
 import { ASTError } from '../errors';
 import { AST } from './AST';
- 
 
-export class Loop extends AST implements ParentNode
+export interface iLoop{
+	header: Block,
+	body: Block,
+	end: Block,
+}
+
+/** 
+     * AST Node corresponding to a loop
+     * 
+     * @param _header - The definition of the loop
+	 * @param _body - Block of code contained in the loop
+	 * @param _end - The end of the loop
+*/
+export class Loop extends AST implements iLoop,ParentNode
 {
-	protected NODE_ID: NodeID = NodeID.LOOP;
-
-	constructor (private _header:Block, private _body: Block, private _end: Block)
+	static ID: NodeID = "loop";
+    public nodeId: NodeID = Loop.ID;
+	constructor (header:Block, body: Block, end: Block)
 	{
 		super ();
-		_header.parent = this;
+		this.header=header;
+		this.body=body;
+		this.end=end;
 	}
 
 	get header (): Block
 	{
-		return this._header;
+		return this.header;
 	}
 
 	set header (newHeader: Block)
 	{
-		newHeader.parent = this;
-		const oldBlock = this._header;
-		this._header = newHeader;
-		oldBlock.removeFromParent ();
+		this.header = newHeader;
 	}
 
 	get body (): Block
 	{
-		return this._body;
+		return this.body;
 	}
 
 	set body (newBody: Block)
 	{
-		newBody.parent = this;
-		const oldBody = this._body;
-		this._body = newBody;
-		oldBody.removeFromParent ();
+		this.body = newBody;
 	}
 
 	get end (): Block
 	{
-		return this._end;
+		return this.end;
 	}
 
 	set end (newEnd: Block)
 	{
-		newEnd.parent = this;
-		const oldEnd = this._end;
-		this._end = newEnd;
-		oldEnd.removeFromParent ();
+		this.end = newEnd;
 	}
 
-	_removeChild (expression: AST): void
+	/** 
+     * Removes AST Node
+     * 
+     * @param node - AST Node to be removed
+	*/
+	_removeChild (node: AST): void
 	{
-		if (expression === this._header)
+		if (node === this.header)
 		{
 			throw new ASTError ('You can not remove the header block from the loop definition');
 		}
 		else
-		if (expression === this._body)
+		if (node === this.body)
 		{
 			throw new ASTError ('You can not remove the body block from the loop definition');
 		}
 		else
-		if (expression === this._end)
+		if (node === this.end)
 		{
 			throw new ASTError ('You can not remove the end block from the loop definition');
 		}
 	}
 
-	toJSON ():string 
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.header = this._header.toJSON ();
-		json.body = this._body.toJSON ();
-		json.end = this._end.toJSON ();
-		return JSON.stringify(json);
-	}
+	/** 
+     * Removes AST Node
+     * 
+     * @param node - AST Node to be removed
+	*/
+	public toJSON(): string {
+        const json: iLoop = {
+            header: this.header,
+            body: this.body,
+			end:this.end,
+            ...this.nodeObject()
+        };
+        return JSON.stringify(json);
+    }
 }

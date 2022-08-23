@@ -1,8 +1,4 @@
 /**
- * @module ast/nodes
- */
-
-/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,48 +16,64 @@
 
 import { ParentNode, NodeID } from '@easycompiler/util';
 import { Node } from "@easycompiler/util";
-import { Expression } from './Expression';
+import { Expression, iExpression } from './Expression';
 import { u32 } from '@easycompiler/util';
 import { i32 } from '@easycompiler/util';
 import { ASTError } from '../errors';
+import { Type } from 'src/types';
  
+export interface iFunctionCall{
+	fn: string;
+	type: Type;
+	args?:Expression[];
+}
 
-export class FunctionCall extends Expression implements ParentNode
-{
-	protected NODE_ID: NodeID = NodeID.FUNCTION_CALL;
-
-	constructor (private _fn: Expression, public readonly args:Expression[])
+/** 
+     * AST Node corresponding to a function call
+     * 
+     * @param _fn - name of the function
+	 * @param type - type of return
+	 * @param args - array of arguments
+*/
+export class FunctionCall extends Expression implements ParentNode, iFunctionCall
+{	
+	static ID: NodeID = "functionCall";
+    public nodeId: NodeID = FunctionCall.ID;
+	public type: Type;
+	public args?: Expression[];
+	constructor (fn: string, type: Type, args?: Expression[])
 	{
 		super ();
-		_fn.parent = this;
-		for (const expression of args)
-		{
-			expression.parent = this;
+		this.fn=fn;
+		this.type=type;
+		if(args){
+			this.args=args;
 		}
 	}
 
-	get fn (): Expression
+	get fn (): string
 	{
-		return this._fn;
+		return this.fn;
 	}
 
-
-	set fn (newFn: Expression)
+	set fn (newFn: string)
 	{
-		newFn.parent = this;
-		const oldFn = this._fn;
-		this._fn = newFn;
-		oldFn.removeFromParent ();
+		this.fn = newFn;
 	}
 
 	getType ()
 	{
-		return this._fn.type;
+		return this.type;
 	}
 
-	_removeChild (expression: Node | u32): void
+	/** 
+     * Removes AST Node
+     * 
+     * @param node - AST Node to be removed
+	*/
+	_removeChild (expression: Node | string | u32): void
 	{
-		if (expression === this._fn)
+		if (expression === this.fn)
 		{
 			throw new ASTError ('You can not remove the function expression from the function call');
 		}
@@ -72,41 +84,54 @@ export class FunctionCall extends Expression implements ParentNode
 			{
 				pos = this.getArgPosition (expression);
 			}
-			else
-			if (expression instanceof Node)
+			else 
 			{
-				// this is not a child here
-				pos = -1;
-			}
-			else
-			{
-				pos = expression;
+				if (expression instanceof Node)
+				{
+					// this is not a child here
+					pos = -1;
+				}
+				else
+				{
+					pos = expression;
+				}
 			}
 			if (pos >= 0)
 			{
-				this.args.splice (pos, 1);
+				if(this.args) this.args.splice (pos as u32, 1);
 			}
 		}
 	}
 
-	getArgPosition (expression: Expression): i32
+	/** 
+     * Gets the position of the given argument
+     * 
+     * @param arg - Argument to be verified
+	 * @returns the position of the argument
+	*/
+	getArgPosition (arg: Expression): i32
 	{
-		for (const pos in this.args)
-		{
-			if (this.args[pos] === expression) return parseInt (pos);
-		}
+		if(this.args instanceof Expression)
+			for (const pos in this.args)
+			{
+					if (this.args[pos] === arg) return parseInt (pos);
+			}
 		return -1;
 	}
 
-	toJSON ():string 
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.fn = this._fn.toJSON ();
-		json.args = [];
-		for (const index in this.args)
-		{
-			json.args.push (this.args[index].toJSON ());
-		}
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+		let json_args=[];
+		if(this.args instanceof Expression)
+			for (const index in this.args)
+			{
+				json_args.push (this.args[index]);
+			}
+        const json: iFunctionCall = {
+            fn: this.fn,
+            type: this.type,
+			args: json_args,
+            ...this.nodeObject()
+        };
+        return JSON.stringify(json);
+    }
 }

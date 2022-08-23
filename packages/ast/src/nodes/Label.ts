@@ -22,19 +22,31 @@
 import { NodeID } from '@easycompiler/util';
 import { AST } from './AST';
 
-export class Label extends AST
-{
-	protected NODE_ID: NodeID = NodeID.LABEL;
+export interface iLabel{
+	name: string
+}
 
-	constructor (public name: string)
+/** 
+     * AST Node corresponding to a label
+     * 
+     * @param name
+*/
+export class Label extends AST implements iLabel
+{
+	static ID: NodeID = "label";
+    public nodeId: NodeID = Label.ID;
+	public name:string;
+	constructor (name: string)
 	{
 		super ();
+		this.name=name;
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.name = this.name;
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: iLabel = {
+            name: this.name,
+            ...this.nodeObject()
+        };
+        return JSON.stringify(json);
+    }
 }

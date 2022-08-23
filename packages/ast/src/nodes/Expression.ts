@@ -1,8 +1,4 @@
 /**
- * @module ast/nodes
- */
-
-/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,24 +14,46 @@
  * limitations under the License.
  */
 
-import { NodeID } from '@easycompiler/util';
-import { Type, Unknown } from '../types';
+
+import type { NodeID } from '@easycompiler/util';
+import { Type } from 'src/types';
 import { AST } from './AST';
+import { Value } from './Value';
  
+export interface iExpression{
+	readonly value?: Value;
+	readonly type?: Type;
+}
 
-export abstract class Expression extends AST
+/** 
+     * AST Node corresponding to an expression
+     * 
+     * @param value
+	 * @param type
+*/
+export abstract class Expression extends AST implements iExpression
 {
-	protected NODE_ID: NodeID = NodeID.EXPRESSION;
 
-	constructor (public readonly type: Type = new Unknown())
+	protected NODE_ID: NodeID = "expression";
+	public readonly value?:Value;
+	public readonly type?: Type;
+	constructor (value?: Value, type? :Type)
 	{
-		super ();
+		super();
+		if(value){
+			this.value=value;
+		}
+		if(type){
+			this.type=type;
+		}
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON());
-		json.type = this.type.toJSON ();
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: iExpression = {
+            value: this.value,
+            type: this.type,
+            ...this.nodeObject()
+        };
+        return JSON.stringify(json);
+    }
 }

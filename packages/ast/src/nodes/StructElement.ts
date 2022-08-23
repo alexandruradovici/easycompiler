@@ -24,54 +24,79 @@ import { Unknown } from '../types';
 import { ParentNode, NodeID } from '@easycompiler/util';
 import { ASTError } from '../errors';
 import { AST } from './AST';
+import { VariableDefinition } from './VariableDefinition';
  
+export interface iStructElement{
+	name: string,
+	struct: VariableDefinition,
+}
 
-export class StructElement extends Expression implements ParentNode
+/** 
+     * AST Node corresponding to a struct element
+     * 
+     * @param _struct - The definition of the struct element
+	 * @param name - The name of the struct element
+*/
+export class StructElement extends Expression implements iStructElement,ParentNode
 {
-	protected NODE_ID: NodeID = NodeID.STRUCT_ELEMENT;
-
-	constructor (private _struct: Expression, public name:string)
+	static ID: NodeID = "structElement";
+    public nodeId: NodeID = StructElement.ID;
+	public name:string;
+	constructor (name:string, struct: VariableDefinition, )
 	{
 		super ();
-		_struct.parent = this;
+		this.name=name;
+		this.struct=struct;
 	}
 
-	get struct ():Expression
+	get struct ():VariableDefinition
 	{
-		return this._struct;
+		return this.struct;
 	}
 
-	set struct (newStruct: Expression)
+	set struct (newStruct: VariableDefinition)
 	{
-		newStruct.parent = this;
-		const oldStruct = this._struct;
-		this._struct = newStruct;
-		oldStruct.removeFromParent ();
+		this.struct = newStruct;
 	}
 
+	/** 
+     * Gets type of the struct element
+     * 
+     * @returns - The type of the struct element
+	*/
 	getType ():Type
 	{
-		if (this._struct.type instanceof Struct)
+		if (this.struct.type instanceof Struct)
 		{
-			const element = this._struct.type.getElement (this.name);
-			if (element) return element.type;
+			const element = this.struct.type.getElement (this.name);
+			if (element){
+				if(element.type){
+					return element.type;
+				}
+			}
 		}
 		return new Unknown();
 	}
 
-	_removeChild (expression: AST): void
+	/** 
+     * Removes AST Node
+     * 
+     * @param node - AST Node to be removed
+	*/
+	_removeChild (node: AST): void
 	{
-		if (expression === this._struct)
+		if (node === this.struct)
 		{
 			throw new ASTError ('You can not remove the struct from the StructElement node');
 		}
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.struct = this._struct.toJSON ();
-		json.name = this.name;
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: iStructElement = {
+            name: this.name,
+            struct: this.struct,
+            ...this.nodeObject()
+        };
+        return JSON.stringify(json);
+    }
 }

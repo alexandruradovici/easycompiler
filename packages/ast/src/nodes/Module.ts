@@ -23,43 +23,59 @@ import { Block } from './Block';
 import { ASTError } from '../errors';
 import { AST } from './AST';
  
+export interface iModule{
+	name: string,
+	block: Block,
+}
 
-export class Module extends AST implements ParentNode
+/** 
+     * AST Node corresponding to a module
+     * 
+     * @param name - AST Nodes that are contained
+	 * @param _block - Block of code contained in the module
+*/
+export class Module extends AST implements iModule,ParentNode
 {
-	protected NODE_ID: NodeID = NodeID.MODULE;
-
-	constructor (public name: string, private _block: Block)
+	static ID: NodeID = "module";
+    public nodeId: NodeID = Module.ID;
+	public name: string;
+	constructor (name: string, block: Block)
 	{
 		super ();
-		_block.parent = this;
+		this.name=name;
+		this.block=block;
 	}
 
 	get block (): Block
 	{
-		return this._block;
+		return this.block;
 	}
 
 	set block (newBlock: Block)
 	{
 		newBlock.parent = this;
-		this._block = newBlock;
+		this.block = newBlock;
 		newBlock.removeFromParent ();
 	}
 
-	_removeChild (expression: AST): void
+	/** 
+     * Removes AST Node
+     * 
+     * @param node - AST Node to be removed
+	*/
+	_removeChild (node: AST): void
 	{
-		if (expression === this._block)
+		if (node === this.block)
 		{
 			throw new ASTError ('You can not remove the block from the Module node');
 		}
 	}
-
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.id = this.NODE_ID;
-		json.name = this.name;
-		json.block = this._block.toJSON ();
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: iModule = {
+            name: this.name,
+            block: this.block,
+            ...this.nodeObject()
+        };
+        return JSON.stringify(json);
+    }
 }

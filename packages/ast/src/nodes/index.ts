@@ -30,7 +30,7 @@ export { Definition } from './Definition';
 export { FunctionCall } from './FunctionCall';
 export { FunctionDefinition } from './FunctionDefinition';
 export { StructElement } from './StructElement';
-export { TypeCase } from './TypeCast';
+export { TypeCast } from './TypeCast';
 export { VariableDefinition } from './VariableDefinition';
 export { Expression } from './Expression';
 export { Module } from './Module';
