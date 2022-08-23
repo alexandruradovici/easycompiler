@@ -54,7 +54,7 @@ export class SymAttributes{
 	private _scope: SymScope = SymScope.GLOBAL;
 	private _tags: NodeTag = {};
 	
-	constructor(reserved: boolean = false, isConst: boolean = false, blockLevel: number = 0, scope: string = "global"){
+	constructor(reserved: boolean = false, isConst: boolean = false, scope: string = "global"){
 		this.isReserved=reserved;
 		this.isConst=isConst;
 		this.scope=scope;
@@ -108,7 +108,6 @@ export class Sym //implements Tags
 {
 	//public readonly tags: NodeTag = {};
 	public type: SymbolType=SymbolType.UNDEFINED;
-	public blockLevel: number= 0;
 	public attributes: SymAttributes = new SymAttributes();
 	constructor (/*public name: string,*/ type?: string){
 		if(type){
@@ -163,7 +162,7 @@ export class SymbolTable
 			blocks: new SymbolList(),
 		}
 		this.addBlockToList("firstBlock","keywords",this.blockKeywords);
-		this.addBlockToList("firstBlock","global",this.blockGlobal);
+		this.addBlockToList("keywords","global",this.blockGlobal);
 	}
 
 	//block functions
