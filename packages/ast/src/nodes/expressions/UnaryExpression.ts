@@ -25,7 +25,7 @@ import { Node, ParentNode, NodeID } from '..';
 import { Expression } from '..';
 import { ASTError } from '../../errors';
 
-export interface iUnaryExpression{
+interface iUnaryExpression{
 	expression: Expression,
 	operator: UnaryExpressionOperator|string
 }
@@ -90,4 +90,7 @@ export class UnaryExpression extends Expression implements ParentNode,iUnaryExpr
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

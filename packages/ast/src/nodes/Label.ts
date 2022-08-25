@@ -22,7 +22,7 @@
 import { NodeID } from '@easycompiler/util';
 import { AST } from './AST';
 
-export interface iLabel{
+interface iLabel{
 	name: string
 }
 
@@ -49,4 +49,7 @@ export class Label extends AST implements iLabel
         };
         return JSON.stringify(json);
     }
+    public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

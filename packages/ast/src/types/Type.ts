@@ -35,21 +35,24 @@ export enum TypeID {
 
 
 export interface IType{ 
-	readonly typeID: TypeID;
+	readonly typeID: TypeID|string;
 }
 export class Type implements IType
 {
 	public readonly typeID: TypeID = TypeID.TYPE;
 	
 
-	constructor (public readonly type: TypeID)
+	constructor (public readonly type: TypeID|string)
 	{
 	}
 
 	public toJSON(): string {
         const json: IType = {
-            typeID: this.typeID,
+            typeID: this.typeID as string,
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

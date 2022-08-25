@@ -20,9 +20,9 @@ import { Type } from 'src/types';
 import { AST } from './AST';
 import { Value } from './Value';
  
-export interface iExpression{
-	readonly value?: Value;
-	readonly type?: Type;
+interface iExpression{
+	readonly value?: Value|JSON;
+	readonly type?: Type|JSON;
 }
 
 /** 
@@ -49,11 +49,21 @@ export abstract class Expression extends AST implements iExpression
 	}
 
 	public toJSON(): string {
+		let v,t;
+		if(this.value){
+			v=this.value.stringToJSON()
+		}
+		if(this.type){
+			t=this.type.stringToJSON()
+		}
         const json: iExpression = {
-            value: this.value,
-            type: this.type,
+            value: v,
+            type: t,
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

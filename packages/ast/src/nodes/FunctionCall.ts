@@ -16,16 +16,17 @@
 
 import { ParentNode, NodeID } from '@easycompiler/util';
 import { Node } from "@easycompiler/util";
-import { Expression, iExpression } from './Expression';
+import { Expression } from './Expression';
 import { u32 } from '@easycompiler/util';
 import { i32 } from '@easycompiler/util';
 import { ASTError } from '../errors';
 import { Type } from 'src/types';
+import { Identifier, iIdentifier } from './Identifier';
  
 export interface iFunctionCall{
-	fn: string;
-	type: Type;
-	args?:Expression[];
+	fn: Identifier|JSON;
+	type: Type|JSON;
+	args?:Expression[]|JSON[];
 }
 
 /** 
@@ -40,8 +41,9 @@ export class FunctionCall extends Expression implements ParentNode, iFunctionCal
 	static ID: NodeID = "functionCall";
     public nodeId: NodeID = FunctionCall.ID;
 	public type: Type;
+	public fn: Identifier;
 	public args?: Expression[];
-	constructor (fn: string, type: Type, args?: Expression[])
+	constructor (fn: Identifier, type: Type, args?: Expression[])
 	{
 		super ();
 		this.fn=fn;
@@ -51,15 +53,7 @@ export class FunctionCall extends Expression implements ParentNode, iFunctionCal
 		}
 	}
 
-	get fn (): string
-	{
-		return this.fn;
-	}
-
-	set fn (newFn: string)
-	{
-		this.fn = newFn;
-	}
+	
 
 	getType ()
 	{
@@ -124,14 +118,17 @@ export class FunctionCall extends Expression implements ParentNode, iFunctionCal
 		if(this.args instanceof Expression)
 			for (const index in this.args)
 			{
-				json_args.push (this.args[index]);
+				json_args.push (this.args[index].stringToJSON());
 			}
         const json: iFunctionCall = {
-            fn: this.fn,
-            type: this.type,
+            fn: this.fn.stringToJSON(),
+            type: this.type.stringToJSON(),
 			args: json_args,
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

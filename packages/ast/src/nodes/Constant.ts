@@ -23,8 +23,8 @@ import { Value } from './Value';
  
 export interface iConstant extends INode{
 	name: string;
-	type: Type;
-	value: Value;
+	type: Type|JSON;
+	value: Value|JSON;
 }
 
 /** 
@@ -47,11 +47,14 @@ export class Constant extends Identifier implements iConstant
 	public toJSON(): string {
         const json: iConstant = {
 			name: this.name,
-			type: this.type,
-            value: this.value,
+			type: this.type.stringToJSON(),
+            value: this.value.stringToJSON(),
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }
 

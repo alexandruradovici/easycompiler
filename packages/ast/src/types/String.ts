@@ -21,12 +21,12 @@
  
 import { IType, Type, TypeID } from './Type';
 
-export interface iString extends IType{
+interface iString extends IType{
 	name: string
 }
 
 
-export class String extends Type
+export class String extends Type implements iString
 {
     protected readonly TYPE_ID: TypeID = TypeID.STRING;
     public readonly name;

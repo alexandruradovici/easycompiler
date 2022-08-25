@@ -25,7 +25,7 @@ export enum JumpType {
 	JUMP_TO_LABEL = 'label'
 }
 
-export interface iJump{
+interface iJump{
 	jumpType: JumpType|string;
 	name?:string;
 }
@@ -54,7 +54,7 @@ export abstract class Jump extends AST implements iJump
 	public toJSON(): string {
         const json: iJump = {
             name: this.name,
-            jumpType: this.jumpType,
+            jumpType: this.jumpType as string,
             ...this.nodeObject()
         };
         return JSON.stringify(json);

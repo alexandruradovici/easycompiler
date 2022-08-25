@@ -113,4 +113,7 @@ export class BinaryExpression extends Expression implements ParentNode, iBinaryE
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

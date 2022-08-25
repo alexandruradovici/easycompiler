@@ -24,11 +24,11 @@ import { VariableDefinition } from './VariableDefinition';
 import { u32 } from '@easycompiler/util';
 import { ASTError } from '../errors';
  
-export interface iFunctionDefinition{
+interface iFunctionDefinition{
 	name: string, 
-	block: Block,
-	returnType: Type,
-	parameters?: VariableDefinition[],
+	block: Block|JSON,
+	returnType: Type|JSON,
+	parameters?: VariableDefinition[]|JSON[],
 }
 
 /** 
@@ -127,16 +127,19 @@ export class FunctionDefinition extends Definition implements ParentNode, iFunct
 		if(this.parameters){
 			for (const index in this.parameters)
 			{
-				json_parameters.push (this.parameters[index]);
+				json_parameters.push (this.parameters[index].stringToJSON());
 			}
 		}
         const json: iFunctionDefinition = {
             name: this.name,
-			block: this.block,
-			returnType: this.returnType,
+			block: this.block.stringToJSON(),
+			returnType: this.returnType.stringToJSON(),
             parameters: json_parameters,
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

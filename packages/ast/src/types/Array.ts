@@ -24,9 +24,9 @@
 import { IType, Type, TypeID } from './Type';
 import { u32 } from '@easycompiler/util';
  
-export interface iArray extends IType{
+interface iArray extends IType{
 	name: string,
-	arrayType: Type,
+	arrayType: Type|string,
 	size: u32,
 }
 
@@ -44,16 +44,14 @@ export class Array extends Type implements iArray
 		this.arrayType=type;
 		this.size=size;
 	}
-
 	
 	public toJSON(): string {
         const json: iArray = {
 			name: this.name,
-			arrayType: this.arrayType,
+			arrayType: this.arrayType.toJSON(),
 			size: this.size,
 			typeID: super.type
 		};
-
         return JSON.stringify(json);
     }
 }

@@ -24,9 +24,9 @@ import { AST } from "./AST";
      * @param value - The value 
 	 * @param type -  The type of the value
 */
-export interface IValue extends INode {
+interface IValue extends INode {
     readonly value: string | number | boolean;
-    readonly type: IType | undefined;
+    readonly type: Type | JSON| undefined;
 }
 
 export class Value extends AST implements IValue {
@@ -41,11 +41,18 @@ export class Value extends AST implements IValue {
     }
 
     public toJSON(): string {
+        let t;
+        if(this.type){
+            t=this.type.stringToJSON()
+        }
         const json: IValue = {
             value: this.value,
-            type: this.type,
+            type: t,
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+    public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

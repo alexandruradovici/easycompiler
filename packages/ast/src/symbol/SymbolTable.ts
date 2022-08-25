@@ -253,6 +253,10 @@ export class SymbolTable
 			}
 		}
 	}
+
+	toJSON():string{
+		return JSON.stringify(this.symList);
+	}
 	
 	flush (): void
 	{

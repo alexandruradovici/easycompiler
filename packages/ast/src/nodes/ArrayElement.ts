@@ -28,9 +28,9 @@ import { ASTError } from '../errors';
 
 import type { NodeID } from '@easycompiler/util';
  
-export interface IArrayElement{
-	expression: Expression,
-	index: Expression
+interface IArrayElement{
+	expression: Expression|JSON,
+	index: Expression|JSON
 }
 /** 
      * AST Node corresponding to an array element
@@ -106,10 +106,13 @@ export class ArrayElement extends Expression implements IArrayElement,ParentNode
 
 	public toJSON(): string {
         const json: IArrayElement = {
-            expression: this.expression,
-            index: this.index,
+            expression: this.expression.stringToJSON(),
+            index: this.index.stringToJSON(),
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

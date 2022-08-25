@@ -25,7 +25,7 @@ export interface iChar extends IType{
 	name: string
 }
 
-export class Char extends Type
+export class Char extends Type implements iChar
 {
     protected readonly TYPE_ID: TypeID = TypeID.CHAR;
     public readonly name;

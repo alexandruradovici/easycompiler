@@ -28,7 +28,7 @@ import { VariableDefinition } from './VariableDefinition';
  
 export interface iStructElement{
 	name: string,
-	struct: VariableDefinition,
+	struct: VariableDefinition|JSON,
 }
 
 /** 
@@ -94,9 +94,12 @@ export class StructElement extends Expression implements iStructElement,ParentNo
 	public toJSON(): string {
         const json: iStructElement = {
             name: this.name,
-            struct: this.struct,
+            struct: this.struct.stringToJSON(),
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

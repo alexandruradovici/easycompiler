@@ -22,10 +22,10 @@ import { Expression } from './Expression';
 import { ASTError } from '../errors';
 import { AST } from './AST';
  
-export interface iBranch{
-	expression: Expression;
-	thenBlock: Block;
-	elseBlock: Block
+interface iBranch{
+	expression: Expression|JSON;
+	thenBlock: Block|JSON;
+	elseBlock: Block|JSON
 }
 /** 
      * AST Node corresponding to a branch in the code
@@ -110,11 +110,14 @@ export class Branch extends AST implements iBranch,ParentNode
 
 	public toJSON(): string {
         const json: iBranch = {
-            expression: this.expression,
-            thenBlock: this.thenBlock,
-			elseBlock: this.elseBlock,
+            expression: this.expression.stringToJSON(),
+            thenBlock: this.thenBlock.stringToJSON(),
+			elseBlock: this.elseBlock.stringToJSON(),
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

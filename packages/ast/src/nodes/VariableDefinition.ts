@@ -22,9 +22,9 @@ import { Definition } from "./Definition";
 import { Type } from '../types';
 import { NodeID } from '@easycompiler/util';
 
-export interface iVariableDefinition{
+interface iVariableDefinition{
 	name: string,
-	type: Type,
+	type: Type|JSON,
 }
 
 /** 
@@ -49,9 +49,12 @@ export class VariableDefinition extends Definition implements iVariableDefinitio
 	public toJSON(): string {
         const json: iVariableDefinition = {
             name: this.name,
-            type: this.type,
+            type: this.type.stringToJSON(),
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

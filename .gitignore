@@ -1,5 +1,4 @@
 node_modules
-examples
+examples/Example - Pascal Frontend
 dist
 lerna-debug.log
-packages/util/src/index.ts

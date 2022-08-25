@@ -141,8 +141,6 @@ export abstract class Node implements INode, Tags
 		return json;
 	}
 	
-	// static fromJSON(json: string): Node {
-	// 	throw Error("must be implemented by a class");
-	// }
+	abstract stringToJSON(): JSON 
 }
 

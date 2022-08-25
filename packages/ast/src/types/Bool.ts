@@ -25,14 +25,14 @@ export interface iBool extends IType{
 	name: string
 }
 
-export class Bool extends Type
+export class Bool extends Type implements iBool
 {
 	protected readonly TYPE_ID: TypeID = TypeID.BOOL;
 
 	public readonly name;
     constructor (name: string)
     {
-        super (TypeID.CHAR);
+        super (TypeID.BOOL);
         this.name=name;
     }
 

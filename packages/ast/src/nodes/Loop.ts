@@ -23,10 +23,10 @@ import { Block } from './Block';
 import { ASTError } from '../errors';
 import { AST } from './AST';
 
-export interface iLoop{
-	header: Block,
-	body: Block,
-	end: Block,
+interface iLoop{
+	header: Block|JSON,
+	body: Block|JSON,
+	end: Block|JSON,
 }
 
 /** 
@@ -108,11 +108,14 @@ export class Loop extends AST implements iLoop,ParentNode
 	*/
 	public toJSON(): string {
         const json: iLoop = {
-            header: this.header,
-            body: this.body,
-			end:this.end,
+            header: this.header.stringToJSON(),
+            body: this.body.stringToJSON(),
+			end:this.end.stringToJSON(),
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

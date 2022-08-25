@@ -23,9 +23,9 @@ import { u32 } from '@easycompiler/util';
 
 import { StructElement } from '../nodes';
  
-export interface iStruct extends IType{
+interface iStruct extends IType{
 	name: string,
-	elements: StructElement[]
+	elements: StructElement[]|string[]
 }
 
 
@@ -97,7 +97,7 @@ export class Struct extends Type implements iStruct
 		let json_elements=[];
 		for (const element in this.elements)
 		{
-			json_elements.push(this.elements[element]);
+			json_elements.push(this.elements[element].toJSON());
 		}
         const json: iStruct = {
 			name: this.name,

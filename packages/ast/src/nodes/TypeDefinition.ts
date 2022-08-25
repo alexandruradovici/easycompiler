@@ -24,7 +24,7 @@ import { NodeID } from '@easycompiler/util';
 
 export interface iTypeDefinition{
 	name: string,
-	type: Type,
+	type: Type|JSON,
 }
 
 /** 
@@ -49,9 +49,12 @@ export class TypeDefinition extends Definition implements iTypeDefinition
 	public toJSON(): string {
         const json: iTypeDefinition = {
             name: this.name,
-            type: this.type,
+            type: this.type.stringToJSON(),
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

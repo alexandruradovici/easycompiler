@@ -21,7 +21,7 @@
 
 import { IType, Type, TypeID } from '../Type';
 
-export interface iFloat extends IType{
+interface iFloat extends IType{
 	name: string,
 	precision: Precision
 }
@@ -47,7 +47,7 @@ export class Float extends Type implements iFloat
 	public toJSON(): string {
         const json: iFloat = {
 			name: this.name,
-			precision: this.precision,
+			precision: this.precision as number,
 			typeID: super.type
 		};
         return JSON.stringify(json);

@@ -20,10 +20,10 @@
 
 import { IType, Type, TypeID } from './Type';
 
-export interface iFunction extends IType{
+interface iFunction extends IType{
 	name: string,
-	functionType: Type,
-	parameterTypes: Type[],
+	functionType: Type|string,
+	parameterTypes: Type[]|string[],
 }
 export class Function extends Type implements iFunction
 {
@@ -42,10 +42,14 @@ export class Function extends Type implements iFunction
 		this.parameterTypes.push(parameterType);
 	}
 	public toJSON(): string {
+		let json_parameterTypes=[];
+		for(const parameterType of this.parameterTypes){
+			json_parameterTypes.push(parameterType.toJSON())
+		}
         const json: iFunction = {
 			name: this.name,
-			functionType: this.functionType,
-			parameterTypes: this.parameterTypes,
+			functionType: this.functionType.toJSON(),
+			parameterTypes: json_parameterTypes,
 			typeID: super.type
 		};
         return JSON.stringify(json);

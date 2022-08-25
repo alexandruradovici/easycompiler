@@ -20,7 +20,7 @@ import { Expression } from './Expression';
  
 export interface iIdentifier{
 	name: string;
-	type: Type;
+	type: Type|JSON;
 }
 
 /** 
@@ -45,9 +45,12 @@ export class Identifier extends Expression
 	public toJSON(): string {
         const json: iIdentifier = {
             name: this.name,
-            type: this.type,
+            type: this.type.stringToJSON(),
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

@@ -24,7 +24,7 @@ import { Type } from '../types';
 import { AST } from './AST';
  
 export interface iReturn{
-	expression?: Expression
+	expression?: Expression|JSON
 }
 
 /** 
@@ -76,10 +76,17 @@ export class Return extends AST implements iReturn,ParentNode
 	}
 
 	public toJSON(): string {
+		let e;
+		if(this.expression){
+			e=this.expression.stringToJSON()
+		}
         const json: iReturn = {
-            expression: this.expression,
+            expression: e,
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

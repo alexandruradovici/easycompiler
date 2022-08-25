@@ -1,6 +1,6 @@
-//import { AST } from '@easycompiler/ast';
+import { AST } from '@easycompiler/ast';
 export interface IOptimizer{
-    optimize(AST :string): string;
+    optimize(AST :string): AST
 }
 
 export abstract class OptimizerError extends Error {

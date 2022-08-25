@@ -20,8 +20,8 @@ import { Node, NodeID, ParentNode } from '@easycompiler/util';
 import { i32, u32 } from '@easycompiler/util';
 import { AST } from './AST';
 
-export interface iBlock{
-	readonly children: AST[];
+interface iBlock{
+	readonly children: AST[]|string[];
 	readonly name: string;
 }
 
@@ -108,6 +108,10 @@ export class Block extends AST implements iBlock,ParentNode
 	}
 
 	public toJSON(): string {
+		let json_children=[];
+		for(const child of this.children){
+			json_children.push(child.stringToJSON())
+		}
         const json: iBlock = {
             name: this.name,
             children: this.children,
@@ -115,4 +119,7 @@ export class Block extends AST implements iBlock,ParentNode
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

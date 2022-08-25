@@ -21,7 +21,7 @@
 import { IType, Type, TypeID } from '../Type';
 import { u32 } from '@easycompiler/util';
  
-export interface iInteger extends IType{
+interface iInteger extends IType{
 	name: string,
 	bits: u32,
 	signed: boolean

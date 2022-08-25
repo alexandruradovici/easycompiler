@@ -24,9 +24,9 @@ import { ParentNode, NodeID } from '@easycompiler/util';
 import { ASTError } from '../errors';
 import { AST } from "./AST";
 
-export interface iTypeCast{
-	target: AST,
-	type: Type,
+interface iTypeCast{
+	target: AST|JSON,
+	type: Type|JSON,
 }
 
 /** 
@@ -75,10 +75,13 @@ export class TypeCast extends Expression implements iTypeCast, ParentNode
 
 	public toJSON(): string {
         const json: iTypeCast = {
-            target: this.target,
-            type: this.type,
+            target: this.target.stringToJSON(),
+            type: this.type.stringToJSON(),
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

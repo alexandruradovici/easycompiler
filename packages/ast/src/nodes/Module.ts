@@ -23,9 +23,9 @@ import { Block } from './Block';
 import { ASTError } from '../errors';
 import { AST } from './AST';
  
-export interface iModule{
+interface iModule{
 	name: string,
-	block: Block,
+	block: Block|JSON,
 }
 
 /** 
@@ -73,9 +73,12 @@ export class Module extends AST implements iModule,ParentNode
 	public toJSON(): string {
         const json: iModule = {
             name: this.name,
-            block: this.block,
+            block: this.block.stringToJSON(),
             ...this.nodeObject()
         };
         return JSON.stringify(json);
     }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
+	}
 }

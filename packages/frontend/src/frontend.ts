@@ -9,8 +9,7 @@ export interface IFrontend{
      * @throws {@link FrontendError} if `sourceCode` cannot be
      * parsed
     */
-    parse(sourceCode :string): string;
-    print():void;
+    parse(sourceCode :string): JSON;
 }
 
 export abstract class FrontendError extends Error {
