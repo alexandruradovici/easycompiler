@@ -19,26 +19,38 @@
  */
 
 
-import { Type, TypeID } from '../Type';
+import { IType, Type, TypeID } from '../Type';
+
+interface iFloat extends IType{
+	name: string,
+	precision: Precision
+}
+
 
 export enum Precision {
 	SIMPLE = 0,
 	DOUBLE = 1
 }
 
-export class Float extends Type
+export class Float extends Type implements iFloat
 {
 	protected readonly TYPE_ID: TypeID = TypeID.FLOAT;
-
-	constructor (name: string, public readonly precision: Precision)
+	public readonly name: string;
+	public readonly precision: Precision;
+	constructor (name: string, precision: Precision)
 	{
-		super (name);	
+		super (TypeID.FLOAT);	
+		this.name=name;
+		this.precision=precision
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.precision = this.precision;
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: iFloat = {
+			...super.asInterface(),
+			name: this.name,
+			precision: this.precision as number,
+			typeID: super.type
+		};
+        return JSON.stringify(json);
+    }
 }

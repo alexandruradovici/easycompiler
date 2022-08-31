@@ -20,46 +20,71 @@
 
 import { NodeID, ParentNode } from '@easycompiler/util';
 import { Block } from './Block';
-import { ASTError } from '../errors';
-import { AST } from './AST';
+import { AstError } from '../errors';
+import { Ast, IAst } from './Ast';
  
+interface IModule extends IAst{
+	name: string,
+	block: Block,
+}
 
-export class Module extends AST implements ParentNode
+/** 
+     * Ast Node corresponding to a module
+     * 
+     * @param name - Ast Nodes that are contained
+	 * @param _block - Block of code contained in the module
+*/
+export class Module extends Ast implements IModule,ParentNode
 {
-	protected NODE_ID: NodeID = NodeID.MODULE;
-
-	constructor (public name: string, private _block: Block)
+	static ID: NodeID = "module";
+    public nodeId: NodeID = Module.ID;
+	public name: string;
+	constructor (name: string, block: Block)
 	{
 		super ();
-		_block.parent = this;
+		this.name=name;
+		this.block=block;
 	}
 
 	get block (): Block
 	{
-		return this._block;
+		return this.block;
 	}
 
 	set block (newBlock: Block)
 	{
 		newBlock.parent = this;
-		this._block = newBlock;
+		this.block = newBlock;
 		newBlock.removeFromParent ();
 	}
 
-	_removeChild (expression: AST): void
+	/** 
+     * Removes Ast Node
+     * 
+     * @param node - Ast Node to be removed
+	*/
+	_removeChild (node: Ast): void
 	{
-		if (expression === this._block)
+		if (node === this.block)
 		{
-			throw new ASTError ('You can not remove the block from the Module node');
+			throw new AstError ('You can not remove the block from the Module node');
 		}
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.id = this.NODE_ID;
-		json.name = this.name;
-		json.block = this._block.toJSON ();
-		return JSON.stringify(json);
+	public asInterface():IModule{
+		 const json: IModule = {
+			...super.asInterface(),
+            name: this.name,
+            block: this.block,            
+        };
+		return json;
+	}
+
+	public toJSON(): string {
+       
+        return JSON.stringify(this.asInterface());
+    }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
 	}
 }

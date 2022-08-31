@@ -23,7 +23,12 @@
  
 import { Node, ParentNode, NodeID } from '..';
 import { Expression } from '..';
-import { ASTError } from '../../errors';
+import { AstError } from '../../errors';
+
+interface iUnaryExpression{
+	expression: Expression,
+	operator: UnaryExpressionOperator|string
+}
 
 export enum UnaryExpressionOperator {
 	OPERATOR_NEGATIVE = '-',
@@ -33,41 +38,61 @@ export enum UnaryExpressionOperator {
 	OPERATOR_DECREMENT = '--'
 }
 
-export class UnaryExpression extends Expression implements ParentNode
+
+/** 
+     * Ast Node corresponding to a binary expression
+     * 
+     * @param left - The left part of the binary expression
+	 * @param right - The right part of the binry expression
+	 * @param operator - The operator of the expression
+*/
+export class UnaryExpression extends Expression implements ParentNode,iUnaryExpression
 {
-	protected NODE_ID: NodeID = NodeID.UNARY_EXPRESSION;
+	static ID: NodeID = "unaryExpression";
+    public nodeId: NodeID = UnaryExpression.ID;
+	public operator: UnaryExpressionOperator|string;
+	public expression: Expression;
 
-	constructor (private _expression: Expression, private operator: UnaryExpressionOperator | string)
+
+	constructor (expression: Expression, operator: UnaryExpressionOperator | string)
 	{
-		super ();
+		super();
+		this.expression=expression;
+		this.operator=operator;
 	}
 
-	get expression (): Expression
-	{
-		return this._expression;
-	}
+	// get expression(): Expression
+	// {
+	// 	return this.expression;
+	// }
 
-	set expression (expression: Expression)
-	{
-		expression.parent = this;
-		const oldExpression = this._expression;
-		this._expression = expression;
-		oldExpression.removeFromParent ();
-	}
+	// set expression(expression: Expression)
+	// {
+	// 	this.expression = expression;
+	// }
 
+	/** 
+     * Removes Ast Node
+     * 
+     * @param node - Ast Node to be removed
+	*/
 	_removeChild (node: Node): void
 	{
 		if (node === this.expression)
 		{
-			throw new ASTError ('You can not remove the left expression from a UniaryExpression');
+			throw new AstError ('You can not remove the left expression from a UniaryExpression');
 		}
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.expression = this._expression.toJSON ();
-		json.operator = this.operator;
-		return JSON.stringify(json);
+	public toJSON(): string {
+        const json: iUnaryExpression = {
+            expression: this.expression,
+            operator: this.operator,
+            ...this.asInterface()
+        };
+        return JSON.stringify(json);
+    }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
 	}
 }

@@ -1,8 +1,4 @@
 /**
- * @module ast/nodes
- */
-
-/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,22 +18,51 @@
  
 import { Node, NodeID, ParentNode } from '@easycompiler/util';
 import { i32, u32 } from '@easycompiler/util';
-import { AST } from './AST';
+import { IAst, Ast } from './Ast';
 
-export class Block extends AST implements ParentNode
+interface IBlock extends IAst {
+	readonly children: IAst[];
+	readonly name: string;
+}
+
+/** 
+     * Ast Node corresponding to a block of code
+     * 
+	 * @param name
+     * @param children - Ast Nodes that are contained
+	 * 
+*/
+export class Block extends Ast implements IBlock,ParentNode
 {
-	protected readonly NODE_ID: NodeID = NodeID.BLOCK;
+	static ID: NodeID = "block";
+    public nodeId: NodeID = Block.ID;
 
-	public readonly children: AST[] = [];
+	public readonly children: Ast[] = [];
+	public readonly name: string;
+	constructor(name: string){
+		super();
+		this.name=name;
+	}
 
-	addChild (node: AST): void
+	/** 
+     * Adds child Ast node to the block 
+     * 
+     * @param node - Ast node to be added
+	*/
+	addChild (node: Ast): void
 	{
 		node.parent = this;
 		this.children.push (node);
 		// TODO should throw or just silently remove element from parent
 	}
 
-	getChildPosition (node: AST): i32
+	/** 
+     * Gets position of child Ast node
+     * 
+     * @param node - Ast Node to be verified
+	 * @returns position of the Ast node if it exists, otherwise -1
+	*/
+	getChildPosition (node: Ast): i32
 	{
 		for (const pos in this.children)
 		{
@@ -45,11 +70,16 @@ export class Block extends AST implements ParentNode
 		}
 		return -1;
 	}
-
+	
+	/** 
+     * Removes Ast Node
+     * 
+     * @param node - Ast Node to be removed
+	*/
 	_removeChild (node: Node | u32): void
 	{
 		let pos; 
-		if (node instanceof AST)
+		if (node instanceof Ast)
 		{
 			pos = this.getChildPosition (node);
 		}
@@ -67,20 +97,34 @@ export class Block extends AST implements ParentNode
 			this.children.splice (pos, 1);
 		}
 	}
-
+	/** 
+     * Checks if Ast Block is empty 
+     * 
+	 * @returns true if the Ast Block is empty, otherwise false
+	*/
 	isEmpty (): boolean
 	{
 		return this.children.length === 0;
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.children = [];
-		for (const index in this.children)
-		{
-			json.children.push (this.children[index].toJSON());
+	public asInterface(): IBlock {
+		let json_children=[];
+		for(const child of this.children){
+			json_children.push(child.asInterface());
 		}
-		return JSON.stringify(json);
+        const json: IBlock = {
+            ...super.asInterface(),
+			name: this.name,
+            children: json_children,
+        };
+		// console.log(json);
+		return json;
+	}
+
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
+    }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
 	}
 }

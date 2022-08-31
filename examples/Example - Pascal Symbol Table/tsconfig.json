@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "lib": ["es6"],
+        "moduleResolution": "node",
+        //"declaration": true,                   /* Generates corresponding '.d.ts' file. */
+        //"declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
+        "outDir": "dist",
+        "rootDir": "src",
+        "baseUrl": ".",
+    }
+}

@@ -21,20 +21,41 @@
 import { Definition } from "./Definition";
 import { Type } from "../types";
 import { NodeID } from '@easycompiler/util';
-export class TypeDefinition extends Definition
-{
-	protected readonly NODE_ID: NodeID = NodeID.TYPE_DEFINITION;
+import { IAst } from "./Ast";
 
-	constructor (public name: string, public type: Type)
+export interface ITypeDefinition extends IAst{
+	name: string,
+	type: Type,
+}
+
+/** 
+     * Ast Node corresponding to a type definition in code
+     * 
+     * @param name - The name of the type
+	 * @param type - The type of the new type
+*/
+export class TypeDefinition extends Definition implements ITypeDefinition
+{
+	static ID: NodeID = "typeDefinition";
+    public nodeId: NodeID = TypeDefinition.ID;
+	public name: string;
+	public type: Type;
+	constructor (name: string, type: Type)
 	{
 		super ();
+		this.name=name;
+		this.type=type;
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.name = this.name;
-		json.type = this.type.toJSON ();
-		return JSON.stringify(json);
+	public toJSON(): string {
+        const json: ITypeDefinition = {
+			...this.asInterface(),
+            name: this.name,
+            type: this.type,
+        };
+        return JSON.stringify(json);
+    }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
 	}
 }

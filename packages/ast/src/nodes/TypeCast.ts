@@ -21,44 +21,67 @@
 import { Expression } from "../nodes/Expression";
 import { Type } from "../types";
 import { ParentNode, NodeID } from '@easycompiler/util';
-import { ASTError } from '../errors';
-import { AST } from "./AST";
+import { AstError } from '../errors';
+import { IAst, Ast } from "./Ast";
 
-export class TypeCase extends Expression implements ParentNode
+interface iTypeCast{
+	target: IAst,
+	type: Type,
+}
+
+/** 
+     * Ast Node corresponding to a type cast in code
+     * 
+     * @param _target - The variable that will have the new type
+	 * @param type - The new type
+*/
+export class TypeCast extends Expression implements iTypeCast, ParentNode
 {
-	protected NODE_ID: NodeID = NodeID.TYPE_CAST;
-
-	constructor (private _target: AST, public type: Type)
+	static ID: NodeID = "typeCast";
+    public nodeId: NodeID = TypeCast.ID;
+	public type: Type;
+	constructor (target: Ast, type: Type)
 	{
 		super ();
-		_target.parent = this;
+		this.target=target;
+		this.type=type;
 	}
 
-	get target (): AST
+	get target (): Ast
 	{
-		return this._target;
+		return this.target;
 	}
 
-	set target (newTarget: AST)
+	set target (newTarget: Ast)
 	{
 		newTarget.parent = this;
-		const oldTarget = this._target;
-		this._target = newTarget;
+		const oldTarget = this.target;
+		this.target = newTarget;
 		oldTarget.removeFromParent ();
 	}
 
-	_removeChild (expression: AST): void
+	/** 
+     * Removes Ast Node
+     * 
+     * @param node - Ast Node to be removed
+	*/
+	_removeChild (node: Ast): void
 	{
-		if (expression === this._target)
+		if (node === this.target)
 		{
-			throw new ASTError ('You can not remove the target from the TypeCast node');
+			throw new AstError ('You can not remove the target from the TypeCast node');
 		}
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.target = this._target.toJSON ();
-		return JSON.stringify(json);
+	public toJSON(): string {
+        const json: iTypeCast = {
+            target: this.target.asInterface(),
+            type: this.type,
+            ...super.asInterface()
+        };
+        return JSON.stringify(json);
+    }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
 	}
 }

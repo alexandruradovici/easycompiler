@@ -1,8 +1,4 @@
 /**
- * @module ast/nodes
- */
-
-/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,10 +14,32 @@
  * limitations under the License.
  */
 
-import { NodeID } from '@easycompiler/util';
-import { AST } from './AST';
+import { INode, NodeID } from '@easycompiler/util';
+import { Ast, IAst } from './Ast';
 
-export abstract class Definition extends AST
+
+
+/** 
+     * Ast Node corresponding to a definition
+*/
+export abstract class Definition extends Ast
 {
-	protected NODE_ID: NodeID = NodeID.DEFINITION;
+     static ID: NodeID = "definition";
+     public nodeId: NodeID = Definition.ID;
+
+	constructor ()
+	{
+		super ();
+	}
+
+    public asInterface():IAst{
+        const json: IAst = {
+            ...super.asInterface()
+        };
+        return json;
+    }
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
+    }
+
 }

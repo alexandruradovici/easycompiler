@@ -1,8 +1,4 @@
 /**
- * @module ast/nodes
- */
-
-/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,46 +22,64 @@ import { Block } from './Block';
 import { Definition } from './Definition';
 import { VariableDefinition } from './VariableDefinition';
 import { u32 } from '@easycompiler/util';
-import { ASTError } from '../errors';
+import { AstError } from '../errors';
+import { IAst } from './Ast';
+import { IFunctionCall } from './FunctionCall';
  
+interface IFunctionDefinition extends IAst{
+	name: string, 
+	block: Block,
+	returnType: Type,
+	parameters?: IAst[],
+}
 
-export class FunctionDefinition extends Definition implements ParentNode
+/** 
+     * Ast Node corresponding to a function definition
+     * 
+     * @param name - Name of the function 
+	 * @param _parameters - Parameters deckaration
+	 * @param _block - Block of code contained in the function
+	 * @param returnType - Type of function return 
+*/
+export class FunctionDefinition extends Definition implements ParentNode, IFunctionDefinition
 {
-	protected NODE_ID: NodeID = NodeID.FUNCTION_DEFINITION;
+	static ID: NodeID = "functionDefinition";
+    public nodeId: NodeID = FunctionDefinition.ID;
+	public name: string;
+	public returnType: Type;
+	public parameters?:VariableDefinition[];
 
-	constructor (public name: string, private _parameters:VariableDefinition[], private _block:Block, public returnType: Type)
+	constructor (name: string, block: Block, returnType: Type, parameters?: VariableDefinition[])
 	{
 		super ();
-		for (const parameter of _parameters)
-		{
-			parameter.parent = this;
+		this.name=name;
+		this.block=block;
+		this.returnType=returnType;
+		if(parameters){
+			this.parameters=parameters;
 		}
-		_block.parent = this;
-	}
-
-	get parameters (): VariableDefinition[]
-	{
-		return this._parameters;
 	}
 
 	get block (): Block
 	{
-		return this._block;
+		return this.block;
 	}
 
 	set block (newBlock: Block)
 	{
-		newBlock.parent = this;
-		const oldBlock = this._block;
-		this._block = newBlock;
-		oldBlock.removeFromParent ();
+		this.block = newBlock;
 	}
 
+	/** 
+     * Removes Ast Node
+     * 
+     * @param node - Ast Node to be removed
+	*/
 	_removeChild (variableDefinition: Node | u32): void
 	{
-		if (variableDefinition === this._block)
+		if (variableDefinition === this.block)
 		{
-			throw new ASTError ('You can not remove the block from the function definition');
+			throw new AstError ('You can not remove the block from the function definition');
 		}
 		else
 		{
@@ -77,7 +91,6 @@ export class FunctionDefinition extends Definition implements ParentNode
 			else
 			if (variableDefinition instanceof Node)
 			{
-				// this is not a child here
 				pos = -1;
 			}
 			else
@@ -86,31 +99,55 @@ export class FunctionDefinition extends Definition implements ParentNode
 			}
 			if (pos >= 0)
 			{
-				this._parameters.splice (pos, 1);
+				if(this.parameters){
+					this.parameters.splice (pos, 1);
+				}
 			}
 		}
 	}
 
-	getParameterPosition (variableDefinition: VariableDefinition): i32
+	/** 
+     * Gets the position of the given parameter
+     * 
+     * @param arg - Parameter to be verified
+	 * @returns the position of the parameter
+	*/
+	public getParameterPosition (param: VariableDefinition): i32
 	{
-		for (const pos in this._parameters)
-		{
-			if (this._parameters[pos] === variableDefinition) return parseInt (pos);
-		}
+		if(this.parameters){
+			for (const pos in this.parameters)
+			{
+				if (this.parameters[pos] === param) 
+					return parseInt (pos);
+			}
+		}	
 		return -1;
 	}
 
-	toJSON ():string 
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.name = this.name;
-		json.parameters = [];
-		for (const index in this._parameters)
-		{
-			json.parameters.push (this._parameters[index].toJSON());
+	public asInterface():IFunctionDefinition{
+		let json_parameters=[];
+		if(this.parameters){
+			for (const index in this.parameters)
+			{
+				json_parameters.push (this.parameters[index].asInterface());
+			}
 		}
-		json.block = this._block.toJSON ();
-		json.returnType = this.returnType.toJSON ();
-		return JSON.stringify(json);
+        const json: IFunctionDefinition = {
+			...super.asInterface(),
+            name: this.name,
+			block: this.block,
+			returnType: this.returnType,
+            parameters: json_parameters,
+            
+        };
+		return json;
+	}
+
+	public toJSON(): string {
+		
+        return JSON.stringify(this.asInterface());
+    }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
 	}
 }

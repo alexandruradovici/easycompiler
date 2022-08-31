@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-export class ASTError extends Error
+export class AstError extends Error
 {
 
 }

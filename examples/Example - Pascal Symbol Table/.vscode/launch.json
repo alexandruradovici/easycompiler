@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "antlr4",
+            "type": "antlr-debug",
+            "request": "launch",
+            "input": "code-pascal.txt",
+            "grammar": "pascal.g4",
+            "startRule": "start",
+            "printParseTree": true,
+            "visualParseTree": true
+        }
+    ]
+}

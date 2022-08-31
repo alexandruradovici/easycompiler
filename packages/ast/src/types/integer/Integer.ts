@@ -18,24 +18,39 @@
  * limitations under the License.
  */
 
-import { Type, TypeID } from '../Type';
+import { IType, Type, TypeID } from '../Type';
 import { u32 } from '@easycompiler/util';
  
+interface iInteger extends IType{
+	name: string,
+	bits: u32,
+	signed: boolean
+}
 
-export class Integer extends Type
+
+export class Integer extends Type implements iInteger
 {
 	protected readonly TYPE_ID: TypeID = TypeID.INTEGER;
+	public readonly name: string;
+	public readonly bits: u32;
+	public readonly signed: boolean;
 
-	constructor (name: string, public readonly bits: u32, public readonly signed: boolean)
+	constructor (name: string,bits: u32, signed: boolean)
 	{
-		super (name);	
+		super (TypeID.INTEGER);
+		this.name=name;
+		this.bits=bits;
+		this.signed=signed;	
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.bits = this.bits;
-		json.signed = this.signed;
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: iInteger = {
+			...super.asInterface(),
+			name: this.name,
+			bits: this.bits,
+			signed: this.signed,
+			typeID: super.type
+		};
+        return JSON.stringify(json);
+    }
 }

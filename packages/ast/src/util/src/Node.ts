@@ -20,57 +20,72 @@
 
 import { u32 } from './types';
 import { Tags, NodeTag, NodeTagValue } from './Tags';
+export type NodeID = string;
 
-export enum NodeID {
-	NODE,
+// export enum NodeID {
+// 	NODE="Node",
 
-	// AST Nodes
-	AST,
-	ARRAY_ELEMENT,
-	BLOCK,
-	BRANCH,
-	CONSTANT,
-	DEFINITION,
-	EXPRESSION,
-	FUNCTION_CALL,
-	FUNCTION_DEFINITION,
-	IDENTIFIER,
-	LOOP,
-	STRUCT_ELEMENT,
-	TYPE_CAST,
-	VARIABLE_DEFINITION,
-	BINARY_EXPRESSION,
-	UNARY_EXPRESSION,
-	RETURN,
-	MODULE,
-	JUMP,
-	LABEL,
-	TYPE_DEFINITION,
+// 	// Ast Nodes
+// 	Ast="Ast",
+// 	ARRAY_ELEMENT="ArrayElement",
+// 	BLOCK="Block",
+// 	BRANCH="Branch",
+// 	CONSTANT="Constant",
+// 	DEFINITION="Definition",
+// 	EXPRESSION="Expression",
+// 	FUNCTION_CALL="FunctionCall",
+// 	FUNCTION_DEFINITION="FunctionDefinition",
+// 	IDENTIFIER="Identifier",
+// 	LOOP="Loop",
+// 	STRUCT_ELEMENT="StructElement",
+// 	TYPE_CAst="TypeCast",
+// 	VARIABLE_DEFINITION="VariableDefinition",
+// 	BINARY_EXPRESSION="BinaryExpression",
+// 	UNARY_EXPRESSION="UnaryExpression",
+// 	RETURN="Return",
+// 	MODULE="Module",
+// 	JUMP="Jump",
+// 	LABEL="Label",
+// 	TYPE_DEFINITION="TypeDefinition",
+// 	VALUE="Value",
 
-	// ParseTree Nodes
-	RULE,
-	TOKEN,
+// 	// ParseTree Nodes
+// 	RULE="Rule",
+// 	TOKEN="Token",
 
-	// Other
-	OTHER
-}
-
+// 	// Other
+// 	OTHER="Other"
+// }
 export interface ParentNode
 {
 	_removeChild (child:Node): void;
 }
 
-export abstract class Node implements Tags
-{
+export interface INode {
 	/**
 	 * class version
 	 */
-	protected readonly VERSION: u32 = 1;
+	 readonly version: u32;
+	 /**
+	  * class node id, used for serializing and deserializing
+	  */
+	 readonly nodeId: NodeID;
+	 readonly tags: NodeTag;
+}
+
+export abstract class Node implements INode, Tags
+{
+	static VERSION: u32 = 1;
+	static NODEID: string;
+	/**
+	 * class version
+	 */
+	readonly version: u32 = Node.VERSION;
 
 	/**
 	 * class node id, used for serializing and deserializing
 	 */
-	protected readonly NODE_ID: NodeID = NodeID.NODE;
+	abstract readonly nodeId: NodeID;
 
 	public readonly tags: NodeTag = {};
 	
@@ -87,7 +102,7 @@ export abstract class Node implements Tags
 		this._parent = parent;
 	}
 
-	hasTag (label: string): boolean
+	public hasTag (label: string): boolean
 	{
 		if(this.tags[label]) 
 		{
@@ -108,20 +123,17 @@ export abstract class Node implements Tags
 		}
 	}
 
-	toJSON (): string
+	public toJSON(): string {
+		// console.log (this.asInterface());
+		return JSON.stringify(this.asInterface());
+	}
+
+	public asInterface(): INode
 	{
-		type json_type={
-			version: u32,
-			node?: NodeID,
-			tags?: {
-				[key: string]: NodeTagValue,
-			}
-		}
-		
-		const json:json_type={
-			node: this.NODE_ID,
-			version: this.VERSION,
-			tags: {}
+		const json: INode = {
+			nodeId: this.nodeId,
+			version: this.version,
+			tags: {} as NodeTag
 		};
 		if(json.tags){
 			for (const tag in this.tags)
@@ -129,8 +141,22 @@ export abstract class Node implements Tags
 				json.tags[tag]=this.tags[tag];
 			}
 		}
-		//json.tags= this.tags;
-		return JSON.stringify(json);
+		// we must force this
+		return json;
 	}
+}
+class NodeIdType
+{
+	[nodeId:string]:typeof Node 
+}
+
+export class NodeFactory {
+	static nodeIds: NodeIdType = {};
+
+	static registerNode(node: typeof Node) {
+		NodeFactory.nodeIds[node.NODEID] = node;
+	}
+
+	private Nodefactory() {}
 }
 

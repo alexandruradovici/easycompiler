@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-export { Type, TypeID } from './Type';
+export { IType, Type, TypeID } from './Type';
 export { Array } from './Array';
 export { Function } from './Function';
 export { Struct } from './Struct';

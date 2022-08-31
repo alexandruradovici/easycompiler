@@ -19,21 +19,30 @@
  */
 
  
-import { Type, TypeID } from './Type';
+import { IType, Type, TypeID } from './Type';
 
-export class Pointer extends Type
+export interface iPointer extends IType{
+	name: string
+}
+
+
+export class Pointer extends Type implements iPointer
 {
 	protected readonly TYPE_ID: TypeID = TypeID.POINTER;
 
-	constructor (name: string, public type: Type)
-	{
-		super (name);
-	}
+	public readonly name;
+    constructor (name: string)
+    {
+        super (TypeID.POINTER);
+        this.name=name;
+    }
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.type = this.type.toJSON ();
-		return JSON.stringify(json);
-	}
+	public toJSON(): string {
+        const json: iPointer = {
+            ...super.asInterface(),
+			name: this.name,
+			typeID: super.type
+		};
+        return JSON.stringify(json);
+    }
 }

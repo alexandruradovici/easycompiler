@@ -18,16 +18,41 @@
  * limitations under the License.
  */
 
-import { Type, TypeID } from './Type';
+import { IType, Type, TypeID } from './Type';
 
-export class Function extends Type
+interface IFunction extends IType{
+	name: string,
+	functionType: Type,
+	parameterTypes: Type[],
+}
+export class Function extends Type implements IFunction
 {
 	protected readonly TYPE_ID: TypeID = TypeID.FUNCTION;
-
-	constructor ()
+	public name: string;
+	public functionType: Type;
+	public parameterTypes: Type[];
+	constructor (name: string, functionType: Type, parameterTypes: Type[])
 	{
-		super ('__function');
+		super (TypeID.FUNCTION);
+		this.name=name;
+		this.functionType=functionType;
+		this.parameterTypes=parameterTypes;
 	}
-
-	// TODO add parameter types
+	public addParameterType(parameterType: Type){
+		this.parameterTypes.push(parameterType);
+	}
+	public toJSON(): string {
+		let json_parameterTypes=[];
+		for(const parameterType of this.parameterTypes){
+			json_parameterTypes.push(parameterType)
+		}
+        const json: IFunction = {
+			...super.asInterface(),
+			name: this.name,
+			functionType: this.functionType,
+			parameterTypes: json_parameterTypes,
+			typeID: super.type
+		};
+        return JSON.stringify(json);
+    }
 }

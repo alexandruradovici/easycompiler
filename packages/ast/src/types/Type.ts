@@ -18,41 +18,44 @@
  * limitations under the License.
  */
 
-
-import { u32 } from '@easycompiler/util';
-
 export enum TypeID {
-	TYPE,
-	INTEGER,
-	FLOAT,
-	STRING,
-	CHAR,
-	ARRAY,
-	FUNCTION,
-	POINTER,
-	STRUCT,
-	UNKNOWN,
-	VOID,
-	BOOL
+	TYPE="Type",
+	INTEGER="Integer",
+	FLOAT="Float",
+	STRING="String",
+	CHAR="Char",
+	BOOL="Bool",
+	ARRAY="Array",
+	FUNCTION="Function",
+	POINTER="Pointer",
+	STRUCT="Struct",
+	UNKNOWN="Unknown",
+	VOID="Void"	
 }
 
-export abstract class Type
+
+export interface IType{ 
+	readonly typeID: TypeID|string;
+}
+export class Type implements IType
 {
-	protected version:u32 = 1;
-	protected readonly TYPE_ID: TypeID = TypeID.TYPE;
+	public readonly typeID: TypeID = TypeID.TYPE;
+	
 
-	constructor (public readonly name: string)
-	{
-
+	constructor (public readonly type: TypeID|string){
 	}
 
-	toJSON ():string 
-	{
-		const json = {
-			version: this.version,
-			typeID: this.TYPE_ID,
-			name: this.name
-		};
-		return JSON.stringify(json);
+	public asInterface(): IType{
+		const json: IType = {
+            typeID: this.typeID as string,
+        };
+		return json;
+	}
+
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
+    }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
 	}
 }

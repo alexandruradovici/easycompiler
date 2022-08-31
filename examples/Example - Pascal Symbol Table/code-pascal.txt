@@ -1,0 +1,15 @@
+PROGRAM GREETINGS;
+CONST
+MESSAGE = ' Welcome to the world of Pascal ';
+TEST = 'TEST';
+TYPE
+NAME= STRING;
+
+VAR
+FIRSTNAME, SURNAME: NAME;
+
+BEGIN
+   FIRSTNAME:='John';
+   SURNAME:='Doe';
+   WRITELN(MESSAGE, ' ', FIRSTNAME, ' ', SURNAME);
+END.

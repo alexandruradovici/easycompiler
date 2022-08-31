@@ -1,8 +1,4 @@
 /**
- * @module ast/nodes
- */
-
-/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,47 +19,48 @@ import { Node } from "@easycompiler/util";
 import { Expression } from './Expression';
 import { u32 } from '@easycompiler/util';
 import { i32 } from '@easycompiler/util';
-import { ASTError } from '../errors';
+import { AstError } from '../errors';
+import { Identifier } from './Identifier';
+import { Ast, IAst } from './Ast';
+import { ParameterList } from './ParameterList';
  
+export interface IFunctionCall extends IAst{
+	fn: Identifier;
+	args?: IAst;
+}
 
-export class FunctionCall extends Expression implements ParentNode
-{
-	protected NODE_ID: NodeID = NodeID.FUNCTION_CALL;
-
-	constructor (private _fn: Expression, public readonly args:Expression[])
+/** 
+     * Ast Node corresponding to a function call
+     * 
+     * @param _fn - name of the function
+	 * @param type - type of return
+	 * @param args - array of arguments
+*/
+export class FunctionCall extends Expression implements ParentNode, IFunctionCall
+{	
+	static ID: NodeID = "functionCall";
+    public nodeId: NodeID = FunctionCall.ID;
+	public fn: Identifier;
+	public args?: ParameterList;
+	constructor (fn: Identifier, args?: ParameterList)
 	{
 		super ();
-		_fn.parent = this;
-		for (const expression of args)
-		{
-			expression.parent = this;
+		this.fn=fn;
+		if(args){
+			this.args=args;
 		}
 	}
 
-	get fn (): Expression
+	/** 
+     * Removes Ast Node
+     * 
+     * @param node - Ast Node to be removed
+	*/
+	_removeChild (expression: Node | string | u32): void
 	{
-		return this._fn;
-	}
-
-
-	set fn (newFn: Expression)
-	{
-		newFn.parent = this;
-		const oldFn = this._fn;
-		this._fn = newFn;
-		oldFn.removeFromParent ();
-	}
-
-	getType ()
-	{
-		return this._fn.type;
-	}
-
-	_removeChild (expression: Node | u32): void
-	{
-		if (expression === this._fn)
+		if (expression === this.fn)
 		{
-			throw new ASTError ('You can not remove the function expression from the function call');
+			throw new AstError ('You can not remove the function expression from the function call');
 		}
 		else
 		{
@@ -72,41 +69,68 @@ export class FunctionCall extends Expression implements ParentNode
 			{
 				pos = this.getArgPosition (expression);
 			}
-			else
-			if (expression instanceof Node)
+			else 
 			{
-				// this is not a child here
-				pos = -1;
-			}
-			else
-			{
-				pos = expression;
+				if (expression instanceof Node)
+				{
+					// this is not a child here
+					pos = -1;
+				}
+				else
+				{
+					pos = expression;
+				}
 			}
 			if (pos >= 0)
 			{
-				this.args.splice (pos, 1);
+				if(this.args) {
+					if(this.args.parameters){
+						this.args.parameters.splice (pos as u32, 1);
+					}
+				}
 			}
 		}
 	}
 
-	getArgPosition (expression: Expression): i32
+	/** 
+     * Gets the position of the given argument
+     * 
+     * @param arg - Argument to be verified
+	 * @returns the position of the argument
+	*/
+	getArgPosition (arg: Expression): i32
 	{
-		for (const pos in this.args)
-		{
-			if (this.args[pos] === expression) return parseInt (pos);
-		}
+		if(this.args instanceof ParameterList)
+		if(this.args.parameters)
+			for (const pos in this.args.parameters)
+			{
+					if (this.args.parameters[pos] === arg) return parseInt (pos);
+			}
 		return -1;
 	}
 
-	toJSON ():string 
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.fn = this._fn.toJSON ();
-		json.args = [];
-		for (const index in this.args)
-		{
-			json.args.push (this.args[index].toJSON ());
-		}
-		return JSON.stringify(json);
+	public asInterface():IFunctionCall{
+		// let json_args=[];
+		// if(this.args instanceof ParameterList)
+		// 	if(this.args.parameters){
+		// 		for (const index in this.args.parameters)
+		// 		{
+		// 			json_args.push (this.args.parameters[index].asInterface());
+		// 		}
+		// 	}
+        const json: IFunctionCall = { 
+			...super.asInterface(),
+            fn: this.fn,
+			args: this.args,
+           
+        };
+		return json;
+	}
+
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
+    }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
 	}
 }

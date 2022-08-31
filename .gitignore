@@ -1,4 +1,5 @@
 node_modules
-examples
+examples/Example - Pascal Frontend
 dist
 lerna-debug.log
+examples\Example - Pascal Symbol Table\symbol-table.json

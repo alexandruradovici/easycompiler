@@ -18,4 +18,4 @@
  * limitations under the License.
  */
 
-export { ASTError } from './ASTError';
+export { AstError } from './AstError';

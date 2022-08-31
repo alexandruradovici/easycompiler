@@ -1,8 +1,4 @@
 /**
- * @module ast/nodes
- */
-
-/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,24 +14,53 @@
  * limitations under the License.
  */
 
-import { NodeID } from '@easycompiler/util';
-import { Type, Unknown } from '../types';
-import { AST } from './AST';
+
+import type { NodeID } from '@easycompiler/util';
+import { Type } from '../types';
+import { Ast, IAst } from './Ast';
+import { Value } from './Value';
  
+interface IExpression extends IAst{
+	readonly value?: Value;
+	readonly type?: Type;
+}
 
-export abstract class Expression extends AST
+/** 
+     * Ast Node corresponding to an expression
+     * 
+     * @param value
+	 * @param type
+*/
+export abstract class Expression extends Ast implements IExpression
 {
-	protected NODE_ID: NodeID = NodeID.EXPRESSION;
 
-	constructor (public readonly type: Type = new Unknown())
+	protected NODE_ID: NodeID = "expression";
+	public value?:Value;
+	public readonly type?: Type;
+	constructor (value?: Value, type? :Type)
 	{
-		super ();
+		super();
+		if(value){
+			this.value=value;
+		}
+		if(type){
+			this.type=type;
+		}
 	}
 
-	toJSON ():string
-	{
-		const json = JSON.parse(super.toJSON());
-		json.type = this.type.toJSON ();
-		return JSON.stringify(json);
+	public asInterface():IExpression{
+        const json: IExpression = {
+			...super.asInterface(),
+            value: this.value,
+            type: this.type,
+        };
+		return json;
+	}
+
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
+    }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
 	}
 }

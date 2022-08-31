@@ -1,8 +1,4 @@
 /**
- * @module ast/nodes
- */
-
-/**
  * Copyright 2018 Alexandru RADOVICI
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,23 +16,46 @@
 
 import { NodeID } from '@easycompiler/util';
 import { Type, Unknown } from '../types';
+import { IAst } from './Ast';
 import { Expression } from './Expression';
  
+export interface IIdentifier extends IAst{
+	name: string;
+	type: Type;
+}
 
+/** 
+     * Ast Node corresponding to an indentifier
+     * 
+     * @param name
+	 * @param type
+*/
 export class Identifier extends Expression
 {
-	protected NODE_ID: NodeID = NodeID.IDENTIFIER;
-
-	constructor (public name: string, public type: Type = new Unknown())
+	static ID: NodeID = "identifier";
+    public nodeId: NodeID = Identifier.ID;
+	public name: string;
+	public type: Type = new Unknown();
+	constructor (name: string, type: Type)
 	{
 		super ();
+		this.name=name;
+		this.type=type;
 	}
 
-	toJSON ():string 
-	{
-		const json = JSON.parse(super.toJSON ());
-		json.name = this.name;
-		json.type = this.type.toJSON ();
-		return JSON.stringify(json);
+	public asInterface():IIdentifier{
+		 const json: IIdentifier = {
+			...super.asInterface(),
+            name: this.name,
+            type: this.type,
+        };
+		return json;
+	}
+	public toJSON(): string {
+       
+        return JSON.stringify(this.asInterface());
+    }
+	public stringToJSON():JSON{
+		return JSON.parse(this.toJSON())
 	}
 }
