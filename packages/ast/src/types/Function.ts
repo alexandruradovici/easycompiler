@@ -20,12 +20,12 @@
 
 import { IType, Type, TypeID } from './Type';
 
-interface iFunction extends IType{
+interface IFunction extends IType{
 	name: string,
-	functionType: Type|string,
-	parameterTypes: Type[]|string[],
+	functionType: Type,
+	parameterTypes: Type[],
 }
-export class Function extends Type implements iFunction
+export class Function extends Type implements IFunction
 {
 	protected readonly TYPE_ID: TypeID = TypeID.FUNCTION;
 	public name: string;
@@ -44,11 +44,12 @@ export class Function extends Type implements iFunction
 	public toJSON(): string {
 		let json_parameterTypes=[];
 		for(const parameterType of this.parameterTypes){
-			json_parameterTypes.push(parameterType.toJSON())
+			json_parameterTypes.push(parameterType)
 		}
-        const json: iFunction = {
+        const json: IFunction = {
+			...super.asInterface(),
 			name: this.name,
-			functionType: this.functionType.toJSON(),
+			functionType: this.functionType,
 			parameterTypes: json_parameterTypes,
 			typeID: super.type
 		};

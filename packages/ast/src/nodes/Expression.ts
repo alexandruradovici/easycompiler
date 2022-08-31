@@ -16,26 +16,26 @@
 
 
 import type { NodeID } from '@easycompiler/util';
-import { Type } from 'src/types';
-import { AST } from './AST';
+import { Type } from '../types';
+import { Ast, IAst } from './Ast';
 import { Value } from './Value';
  
-interface iExpression{
-	readonly value?: Value|JSON;
-	readonly type?: Type|JSON;
+interface IExpression extends IAst{
+	readonly value?: Value;
+	readonly type?: Type;
 }
 
 /** 
-     * AST Node corresponding to an expression
+     * Ast Node corresponding to an expression
      * 
      * @param value
 	 * @param type
 */
-export abstract class Expression extends AST implements iExpression
+export abstract class Expression extends Ast implements IExpression
 {
 
 	protected NODE_ID: NodeID = "expression";
-	public readonly value?:Value;
+	public value?:Value;
 	public readonly type?: Type;
 	constructor (value?: Value, type? :Type)
 	{
@@ -48,20 +48,17 @@ export abstract class Expression extends AST implements iExpression
 		}
 	}
 
-	public toJSON(): string {
-		let v,t;
-		if(this.value){
-			v=this.value.stringToJSON()
-		}
-		if(this.type){
-			t=this.type.stringToJSON()
-		}
-        const json: iExpression = {
-            value: v,
-            type: t,
-            ...this.nodeObject()
+	public asInterface():IExpression{
+        const json: IExpression = {
+			...super.asInterface(),
+            value: this.value,
+            type: this.type,
         };
-        return JSON.stringify(json);
+		return json;
+	}
+
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
     }
 	public stringToJSON():JSON{
 		return JSON.parse(this.toJSON())

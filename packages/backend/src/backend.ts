@@ -1,5 +1,5 @@
 export interface IBackend{
-    generateCode(AST: string): string;
+    generateCode(Ast: string): string;
 }
 
 export abstract class BackendError extends Error {

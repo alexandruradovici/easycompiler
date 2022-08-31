@@ -25,8 +25,8 @@ export type NodeID = string;
 // export enum NodeID {
 // 	NODE="Node",
 
-// 	// AST Nodes
-// 	AST="AST",
+// 	// Ast Nodes
+// 	Ast="Ast",
 // 	ARRAY_ELEMENT="ArrayElement",
 // 	BLOCK="Block",
 // 	BRANCH="Branch",
@@ -38,7 +38,7 @@ export type NodeID = string;
 // 	IDENTIFIER="Identifier",
 // 	LOOP="Loop",
 // 	STRUCT_ELEMENT="StructElement",
-// 	TYPE_CAST="TypeCast",
+// 	TYPE_CAst="TypeCast",
 // 	VARIABLE_DEFINITION="VariableDefinition",
 // 	BINARY_EXPRESSION="BinaryExpression",
 // 	UNARY_EXPRESSION="UnaryExpression",
@@ -76,6 +76,7 @@ export interface INode {
 export abstract class Node implements INode, Tags
 {
 	static VERSION: u32 = 1;
+	static NODEID: string;
 	/**
 	 * class version
 	 */
@@ -122,9 +123,12 @@ export abstract class Node implements INode, Tags
 		}
 	}
 
-	public abstract toJSON(): string;
+	public toJSON(): string {
+		// console.log (this.asInterface());
+		return JSON.stringify(this.asInterface());
+	}
 
-	protected nodeObject (): INode
+	public asInterface(): INode
 	{
 		const json: INode = {
 			nodeId: this.nodeId,
@@ -140,7 +144,19 @@ export abstract class Node implements INode, Tags
 		// we must force this
 		return json;
 	}
-	
-	abstract stringToJSON(): JSON 
+}
+class NodeIdType
+{
+	[nodeId:string]:typeof Node 
+}
+
+export class NodeFactory {
+	static nodeIds: NodeIdType = {};
+
+	static registerNode(node: typeof Node) {
+		NodeFactory.nodeIds[node.NODEID] = node;
+	}
+
+	private Nodefactory() {}
 }
 

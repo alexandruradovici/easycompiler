@@ -23,7 +23,7 @@
  
 import { Node, ParentNode, NodeID } from '..';
 import { Expression } from '..';
-import { ASTError } from '../../errors';
+import { AstError } from '../../errors';
 
 interface iUnaryExpression{
 	expression: Expression,
@@ -40,7 +40,7 @@ export enum UnaryExpressionOperator {
 
 
 /** 
-     * AST Node corresponding to a binary expression
+     * Ast Node corresponding to a binary expression
      * 
      * @param left - The left part of the binary expression
 	 * @param right - The right part of the binry expression
@@ -51,6 +51,8 @@ export class UnaryExpression extends Expression implements ParentNode,iUnaryExpr
 	static ID: NodeID = "unaryExpression";
     public nodeId: NodeID = UnaryExpression.ID;
 	public operator: UnaryExpressionOperator|string;
+	public expression: Expression;
+
 
 	constructor (expression: Expression, operator: UnaryExpressionOperator | string)
 	{
@@ -59,26 +61,26 @@ export class UnaryExpression extends Expression implements ParentNode,iUnaryExpr
 		this.operator=operator;
 	}
 
-	get expression(): Expression
-	{
-		return this.expression;
-	}
+	// get expression(): Expression
+	// {
+	// 	return this.expression;
+	// }
 
-	set expression(expression: Expression)
-	{
-		this.expression = expression;
-	}
+	// set expression(expression: Expression)
+	// {
+	// 	this.expression = expression;
+	// }
 
 	/** 
-     * Removes AST Node
+     * Removes Ast Node
      * 
-     * @param node - AST Node to be removed
+     * @param node - Ast Node to be removed
 	*/
 	_removeChild (node: Node): void
 	{
 		if (node === this.expression)
 		{
-			throw new ASTError ('You can not remove the left expression from a UniaryExpression');
+			throw new AstError ('You can not remove the left expression from a UniaryExpression');
 		}
 	}
 
@@ -86,7 +88,7 @@ export class UnaryExpression extends Expression implements ParentNode,iUnaryExpr
         const json: iUnaryExpression = {
             expression: this.expression,
             operator: this.operator,
-            ...this.nodeObject()
+            ...this.asInterface()
         };
         return JSON.stringify(json);
     }

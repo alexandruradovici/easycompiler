@@ -21,16 +21,16 @@
 import { Expression } from "../nodes/Expression";
 import { Type } from "../types";
 import { ParentNode, NodeID } from '@easycompiler/util';
-import { ASTError } from '../errors';
-import { AST } from "./AST";
+import { AstError } from '../errors';
+import { IAst, Ast } from "./Ast";
 
 interface iTypeCast{
-	target: AST|JSON,
-	type: Type|JSON,
+	target: IAst,
+	type: Type,
 }
 
 /** 
-     * AST Node corresponding to a type cast in code
+     * Ast Node corresponding to a type cast in code
      * 
      * @param _target - The variable that will have the new type
 	 * @param type - The new type
@@ -40,19 +40,19 @@ export class TypeCast extends Expression implements iTypeCast, ParentNode
 	static ID: NodeID = "typeCast";
     public nodeId: NodeID = TypeCast.ID;
 	public type: Type;
-	constructor (target: AST, type: Type)
+	constructor (target: Ast, type: Type)
 	{
 		super ();
 		this.target=target;
 		this.type=type;
 	}
 
-	get target (): AST
+	get target (): Ast
 	{
 		return this.target;
 	}
 
-	set target (newTarget: AST)
+	set target (newTarget: Ast)
 	{
 		newTarget.parent = this;
 		const oldTarget = this.target;
@@ -61,23 +61,23 @@ export class TypeCast extends Expression implements iTypeCast, ParentNode
 	}
 
 	/** 
-     * Removes AST Node
+     * Removes Ast Node
      * 
-     * @param node - AST Node to be removed
+     * @param node - Ast Node to be removed
 	*/
-	_removeChild (node: AST): void
+	_removeChild (node: Ast): void
 	{
 		if (node === this.target)
 		{
-			throw new ASTError ('You can not remove the target from the TypeCast node');
+			throw new AstError ('You can not remove the target from the TypeCast node');
 		}
 	}
 
 	public toJSON(): string {
         const json: iTypeCast = {
-            target: this.target.stringToJSON(),
-            type: this.type.stringToJSON(),
-            ...this.nodeObject()
+            target: this.target.asInterface(),
+            type: this.type,
+            ...super.asInterface()
         };
         return JSON.stringify(json);
     }

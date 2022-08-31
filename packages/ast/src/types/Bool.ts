@@ -21,11 +21,11 @@
  
 import { IType, Type, TypeID } from './Type';
 
-export interface iBool extends IType{
+export interface IBool extends IType{
 	name: string
 }
 
-export class Bool extends Type implements iBool
+export class Bool extends Type implements IBool
 {
 	protected readonly TYPE_ID: TypeID = TypeID.BOOL;
 
@@ -36,11 +36,15 @@ export class Bool extends Type implements iBool
         this.name=name;
     }
 
-	public toJSON(): string {
-        const json: iBool = {
+    public asInterface():IBool{
+        const json: IBool = {
+            ...super.asInterface(),
 			name: this.name,
-			typeID: super.type
 		};
-        return JSON.stringify(json);
+        return json;
+    }
+
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
     }
 }

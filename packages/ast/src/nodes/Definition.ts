@@ -15,14 +15,14 @@
  */
 
 import { INode, NodeID } from '@easycompiler/util';
-import { AST } from './AST';
+import { Ast, IAst } from './Ast';
 
 
 
 /** 
-     * AST Node corresponding to a definition
+     * Ast Node corresponding to a definition
 */
-export abstract class Definition extends AST
+export abstract class Definition extends Ast
 {
      static ID: NodeID = "definition";
      public nodeId: NodeID = Definition.ID;
@@ -32,11 +32,14 @@ export abstract class Definition extends AST
 		super ();
 	}
 
-	public toJSON(): string {
-        const json: INode = {
-            ...this.nodeObject()
+    public asInterface():IAst{
+        const json: IAst = {
+            ...super.asInterface()
         };
-        return JSON.stringify(json);
+        return json;
+    }
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
     }
 
 }

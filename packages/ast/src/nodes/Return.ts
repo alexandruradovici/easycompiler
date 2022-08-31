@@ -21,18 +21,18 @@
 import { ParentNode, NodeID } from '@easycompiler/util';
 import { Expression } from './Expression';
 import { Type } from '../types';
-import { AST } from './AST';
+import { Ast, IAst } from './Ast';
  
-export interface iReturn{
-	expression?: Expression|JSON
+export interface IReturn extends IAst{
+	expression?: Expression
 }
 
 /** 
-     * AST Node corresponding to return code
+     * Ast Node corresponding to return code
      * 
      * @param _expression - The expression that is to be returned
 */
-export class Return extends AST implements iReturn,ParentNode
+export class Return extends Ast implements IReturn,ParentNode
 {
 	static ID: NodeID = "return";
     public nodeId: NodeID = Return.ID;
@@ -63,11 +63,11 @@ export class Return extends AST implements iReturn,ParentNode
 	}
 
 	/** 
-     * Removes AST Node
+     * Removes Ast Node
      * 
-     * @param node - AST Node to be removed
+     * @param node - Ast Node to be removed
 	*/
-	_removeChild (node: AST): void
+	_removeChild (node: Ast): void
 	{
 		if (node === this.expression)
 		{
@@ -75,16 +75,20 @@ export class Return extends AST implements iReturn,ParentNode
 		}
 	}
 
-	public toJSON(): string {
+	public asInterface():IReturn{
 		let e;
 		if(this.expression){
-			e=this.expression.stringToJSON()
+			e=this.expression
 		}
-        const json: iReturn = {
+        const json: IReturn = {
+			...super.asInterface(),
             expression: e,
-            ...this.nodeObject()
         };
-        return JSON.stringify(json);
+		return json;
+	}
+
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
     }
 	public stringToJSON():JSON{
 		return JSON.parse(this.toJSON())

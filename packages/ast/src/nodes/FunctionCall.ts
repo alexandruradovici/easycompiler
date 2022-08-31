@@ -19,57 +19,48 @@ import { Node } from "@easycompiler/util";
 import { Expression } from './Expression';
 import { u32 } from '@easycompiler/util';
 import { i32 } from '@easycompiler/util';
-import { ASTError } from '../errors';
-import { Type } from 'src/types';
-import { Identifier, iIdentifier } from './Identifier';
+import { AstError } from '../errors';
+import { Identifier } from './Identifier';
+import { Ast, IAst } from './Ast';
+import { ParameterList } from './ParameterList';
  
-export interface iFunctionCall{
-	fn: Identifier|JSON;
-	type: Type|JSON;
-	args?:Expression[]|JSON[];
+export interface IFunctionCall extends IAst{
+	fn: Identifier;
+	args?: IAst;
 }
 
 /** 
-     * AST Node corresponding to a function call
+     * Ast Node corresponding to a function call
      * 
      * @param _fn - name of the function
 	 * @param type - type of return
 	 * @param args - array of arguments
 */
-export class FunctionCall extends Expression implements ParentNode, iFunctionCall
+export class FunctionCall extends Expression implements ParentNode, IFunctionCall
 {	
 	static ID: NodeID = "functionCall";
     public nodeId: NodeID = FunctionCall.ID;
-	public type: Type;
 	public fn: Identifier;
-	public args?: Expression[];
-	constructor (fn: Identifier, type: Type, args?: Expression[])
+	public args?: ParameterList;
+	constructor (fn: Identifier, args?: ParameterList)
 	{
 		super ();
 		this.fn=fn;
-		this.type=type;
 		if(args){
 			this.args=args;
 		}
 	}
 
-	
-
-	getType ()
-	{
-		return this.type;
-	}
-
 	/** 
-     * Removes AST Node
+     * Removes Ast Node
      * 
-     * @param node - AST Node to be removed
+     * @param node - Ast Node to be removed
 	*/
 	_removeChild (expression: Node | string | u32): void
 	{
 		if (expression === this.fn)
 		{
-			throw new ASTError ('You can not remove the function expression from the function call');
+			throw new AstError ('You can not remove the function expression from the function call');
 		}
 		else
 		{
@@ -92,7 +83,11 @@ export class FunctionCall extends Expression implements ParentNode, iFunctionCal
 			}
 			if (pos >= 0)
 			{
-				if(this.args) this.args.splice (pos as u32, 1);
+				if(this.args) {
+					if(this.args.parameters){
+						this.args.parameters.splice (pos as u32, 1);
+					}
+				}
 			}
 		}
 	}
@@ -105,28 +100,35 @@ export class FunctionCall extends Expression implements ParentNode, iFunctionCal
 	*/
 	getArgPosition (arg: Expression): i32
 	{
-		if(this.args instanceof Expression)
-			for (const pos in this.args)
+		if(this.args instanceof ParameterList)
+		if(this.args.parameters)
+			for (const pos in this.args.parameters)
 			{
-					if (this.args[pos] === arg) return parseInt (pos);
+					if (this.args.parameters[pos] === arg) return parseInt (pos);
 			}
 		return -1;
 	}
 
-	public toJSON(): string {
-		let json_args=[];
-		if(this.args instanceof Expression)
-			for (const index in this.args)
-			{
-				json_args.push (this.args[index].stringToJSON());
-			}
-        const json: iFunctionCall = {
-            fn: this.fn.stringToJSON(),
-            type: this.type.stringToJSON(),
-			args: json_args,
-            ...this.nodeObject()
+	public asInterface():IFunctionCall{
+		// let json_args=[];
+		// if(this.args instanceof ParameterList)
+		// 	if(this.args.parameters){
+		// 		for (const index in this.args.parameters)
+		// 		{
+		// 			json_args.push (this.args.parameters[index].asInterface());
+		// 		}
+		// 	}
+        const json: IFunctionCall = { 
+			...super.asInterface(),
+            fn: this.fn,
+			args: this.args,
+           
         };
-        return JSON.stringify(json);
+		return json;
+	}
+
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
     }
 	public stringToJSON():JSON{
 		return JSON.parse(this.toJSON())

@@ -20,21 +20,21 @@
 
 import { NodeID, ParentNode } from '@easycompiler/util';
 import { Block } from './Block';
-import { ASTError } from '../errors';
-import { AST } from './AST';
+import { AstError } from '../errors';
+import { Ast, IAst } from './Ast';
  
-interface iModule{
+interface IModule extends IAst{
 	name: string,
-	block: Block|JSON,
+	block: Block,
 }
 
 /** 
-     * AST Node corresponding to a module
+     * Ast Node corresponding to a module
      * 
-     * @param name - AST Nodes that are contained
+     * @param name - Ast Nodes that are contained
 	 * @param _block - Block of code contained in the module
 */
-export class Module extends AST implements iModule,ParentNode
+export class Module extends Ast implements IModule,ParentNode
 {
 	static ID: NodeID = "module";
     public nodeId: NodeID = Module.ID;
@@ -59,24 +59,30 @@ export class Module extends AST implements iModule,ParentNode
 	}
 
 	/** 
-     * Removes AST Node
+     * Removes Ast Node
      * 
-     * @param node - AST Node to be removed
+     * @param node - Ast Node to be removed
 	*/
-	_removeChild (node: AST): void
+	_removeChild (node: Ast): void
 	{
 		if (node === this.block)
 		{
-			throw new ASTError ('You can not remove the block from the Module node');
+			throw new AstError ('You can not remove the block from the Module node');
 		}
 	}
-	public toJSON(): string {
-        const json: iModule = {
+
+	public asInterface():IModule{
+		 const json: IModule = {
+			...super.asInterface(),
             name: this.name,
-            block: this.block.stringToJSON(),
-            ...this.nodeObject()
+            block: this.block,            
         };
-        return JSON.stringify(json);
+		return json;
+	}
+
+	public toJSON(): string {
+       
+        return JSON.stringify(this.asInterface());
     }
 	public stringToJSON():JSON{
 		return JSON.parse(this.toJSON())

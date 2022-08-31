@@ -16,15 +16,16 @@
 
 import { NodeID } from '@easycompiler/util';
 import { Type, Unknown } from '../types';
+import { IAst } from './Ast';
 import { Expression } from './Expression';
  
-export interface iIdentifier{
+export interface IIdentifier extends IAst{
 	name: string;
-	type: Type|JSON;
+	type: Type;
 }
 
 /** 
-     * AST Node corresponding to an indentifier
+     * Ast Node corresponding to an indentifier
      * 
      * @param name
 	 * @param type
@@ -42,13 +43,17 @@ export class Identifier extends Expression
 		this.type=type;
 	}
 
-	public toJSON(): string {
-        const json: iIdentifier = {
+	public asInterface():IIdentifier{
+		 const json: IIdentifier = {
+			...super.asInterface(),
             name: this.name,
-            type: this.type.stringToJSON(),
-            ...this.nodeObject()
+            type: this.type,
         };
-        return JSON.stringify(json);
+		return json;
+	}
+	public toJSON(): string {
+       
+        return JSON.stringify(this.asInterface());
     }
 	public stringToJSON():JSON{
 		return JSON.parse(this.toJSON())

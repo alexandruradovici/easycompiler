@@ -24,13 +24,13 @@
 import { IType, Type, TypeID } from './Type';
 import { u32 } from '@easycompiler/util';
  
-interface iArray extends IType{
+interface IArray extends IType{
 	name: string,
-	arrayType: Type|string,
+	arrayType: Type,
 	size: u32,
 }
 
-export class Array extends Type implements iArray
+export class Array extends Type implements IArray
 {
 	protected readonly TYPE_ID: TypeID = TypeID.ARRAY;
 	public readonly name: string;
@@ -44,14 +44,18 @@ export class Array extends Type implements iArray
 		this.arrayType=type;
 		this.size=size;
 	}
+
+	public asInterface(): IArray {
+		const json: IArray = {
+			...super.asInterface(),
+			name: this.name,
+			arrayType: this.arrayType,
+			size: this.size,
+		};
+		return json;
+	}
 	
 	public toJSON(): string {
-        const json: iArray = {
-			name: this.name,
-			arrayType: this.arrayType.toJSON(),
-			size: this.size,
-			typeID: super.type
-		};
-        return JSON.stringify(json);
+        return JSON.stringify(this.asInterface());
     }
 }

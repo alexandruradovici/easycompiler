@@ -35,7 +35,6 @@ Adapted from pascal.g by  Hakki Dogusan, Piet Schoutteten and Marton Papp
 
 grammar pascal;
 
-options { caseInsensitive = true; }
 
 start
    : program;

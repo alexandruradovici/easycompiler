@@ -46,6 +46,7 @@ export class Float extends Type implements iFloat
 
 	public toJSON(): string {
         const json: iFloat = {
+			...super.asInterface(),
 			name: this.name,
 			precision: this.precision as number,
 			typeID: super.type

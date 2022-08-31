@@ -22,7 +22,7 @@
  
 import { Node, ParentNode, NodeID } from '..';
 import { Expression } from '..';
-import { ASTError } from '../../errors';
+import { AstError } from '../../errors';
 
 export interface iBinaryExpression{
 	left: Expression,
@@ -48,7 +48,7 @@ export enum BinaryExpressionOperator {
 }
 
 /** 
-     * AST Node corresponding to a binary expression
+     * Ast Node corresponding to a binary expression
      * 
      * @param _left - The left part of the binary expression
 	 * @param _right - The right part of the binry expression
@@ -88,19 +88,19 @@ export class BinaryExpression extends Expression implements ParentNode, iBinaryE
 	}
 
 	/** 
-     * Removes AST Node
+     * Removes Ast Node
      * 
-     * @param node - AST Node to be removed
+     * @param node - Ast Node to be removed
 	*/
 	_removeChild (node: Node): void
 	{
 		if (node === this.left)
 		{
-			throw new ASTError ('You can not remove the left expression from a BinaryExpression');
+			throw new AstError ('You can not remove the left expression from a BinaryExpression');
 		}
 		if (node === this.right)
 		{
-			throw new ASTError ('You can not remove the right expression from a BinaryExpression');
+			throw new AstError ('You can not remove the right expression from a BinaryExpression');
 		}
 	}
 
@@ -109,7 +109,7 @@ export class BinaryExpression extends Expression implements ParentNode, iBinaryE
             left: this.left,
 			right: this.right,
             operator: this.operator,
-            ...this.nodeObject()
+            ...this.asInterface()
         };
         return JSON.stringify(json);
     }

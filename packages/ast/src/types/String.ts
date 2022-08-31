@@ -38,6 +38,7 @@ export class String extends Type implements iString
 
     public toJSON(): string {
         const json: iString = {
+            ...super.asInterface(),
 			name: this.name,
 			typeID: super.type
 		};

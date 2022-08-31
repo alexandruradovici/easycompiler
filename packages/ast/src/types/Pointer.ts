@@ -39,6 +39,7 @@ export class Pointer extends Type implements iPointer
 
 	public toJSON(): string {
         const json: iPointer = {
+            ...super.asInterface(),
 			name: this.name,
 			typeID: super.type
 		};

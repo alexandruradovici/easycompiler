@@ -20,23 +20,23 @@
 
 import { ParentNode, NodeID } from '@easycompiler/util';
 import { Block } from './Block';
-import { ASTError } from '../errors';
-import { AST } from './AST';
+import { AstError } from '../errors';
+import { Ast, IAst } from './Ast';
 
-interface iLoop{
-	header: Block|JSON,
-	body: Block|JSON,
-	end: Block|JSON,
+interface ILoop extends IAst{
+	header: Block,
+	body: Block,
+	end: Block,
 }
 
 /** 
-     * AST Node corresponding to a loop
+     * Ast Node corresponding to a loop
      * 
      * @param _header - The definition of the loop
 	 * @param _body - Block of code contained in the loop
 	 * @param _end - The end of the loop
 */
-export class Loop extends AST implements iLoop,ParentNode
+export class Loop extends Ast implements ILoop,ParentNode
 {
 	static ID: NodeID = "loop";
     public nodeId: NodeID = Loop.ID;
@@ -79,41 +79,40 @@ export class Loop extends AST implements iLoop,ParentNode
 	}
 
 	/** 
-     * Removes AST Node
+     * Removes Ast Node
      * 
-     * @param node - AST Node to be removed
+     * @param node - Ast Node to be removed
 	*/
-	_removeChild (node: AST): void
+	_removeChild (node: Ast): void
 	{
 		if (node === this.header)
 		{
-			throw new ASTError ('You can not remove the header block from the loop definition');
+			throw new AstError ('You can not remove the header block from the loop definition');
 		}
 		else
 		if (node === this.body)
 		{
-			throw new ASTError ('You can not remove the body block from the loop definition');
+			throw new AstError ('You can not remove the body block from the loop definition');
 		}
 		else
 		if (node === this.end)
 		{
-			throw new ASTError ('You can not remove the end block from the loop definition');
+			throw new AstError ('You can not remove the end block from the loop definition');
 		}
 	}
 
-	/** 
-     * Removes AST Node
-     * 
-     * @param node - AST Node to be removed
-	*/
-	public toJSON(): string {
-        const json: iLoop = {
-            header: this.header.stringToJSON(),
-            body: this.body.stringToJSON(),
-			end:this.end.stringToJSON(),
-            ...this.nodeObject()
+	public asInterface():ILoop{
+		 const json: ILoop = {
+			...super.asInterface(),
+            header: this.header,
+            body: this.body,
+			end:this.end,
         };
-        return JSON.stringify(json);
+		return json;
+	}
+
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
     }
 	public stringToJSON():JSON{
 		return JSON.parse(this.toJSON())

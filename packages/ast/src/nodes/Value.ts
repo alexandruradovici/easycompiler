@@ -16,20 +16,20 @@
 
 import { IType, Type } from '../types';
 import { INode, NodeID } from '@easycompiler/util';
-import { AST } from "./AST";
+import { Ast } from "./Ast";
 
 /** 
-     * AST Node corresponding to a value in code
+     * Ast Node corresponding to a value in code
      * 
      * @param value - The value 
 	 * @param type -  The type of the value
 */
 interface IValue extends INode {
     readonly value: string | number | boolean;
-    readonly type: Type | JSON| undefined;
+    readonly type: Type | undefined;
 }
 
-export class Value extends AST implements IValue {
+export class Value extends Ast implements IValue {
     static ID: NodeID = "value";
     public nodeId: NodeID = Value.ID;
     public readonly value: string | number | boolean;
@@ -40,17 +40,21 @@ export class Value extends AST implements IValue {
         this.type = type;
     }
 
-    public toJSON(): string {
+    public asInterface():IValue{
         let t;
         if(this.type){
-            t=this.type.stringToJSON()
+            t=this.type
         }
         const json: IValue = {
+            ...super.asInterface(),
             value: this.value,
             type: t,
-            ...this.nodeObject()
         };
-        return JSON.stringify(json);
+        return json;
+    }
+
+    public toJSON(): string {
+        return JSON.stringify(this.asInterface());
     }
     public stringToJSON():JSON{
 		return JSON.parse(this.toJSON())

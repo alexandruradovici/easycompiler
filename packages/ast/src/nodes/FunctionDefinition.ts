@@ -22,24 +22,26 @@ import { Block } from './Block';
 import { Definition } from './Definition';
 import { VariableDefinition } from './VariableDefinition';
 import { u32 } from '@easycompiler/util';
-import { ASTError } from '../errors';
+import { AstError } from '../errors';
+import { IAst } from './Ast';
+import { IFunctionCall } from './FunctionCall';
  
-interface iFunctionDefinition{
+interface IFunctionDefinition extends IAst{
 	name: string, 
-	block: Block|JSON,
-	returnType: Type|JSON,
-	parameters?: VariableDefinition[]|JSON[],
+	block: Block,
+	returnType: Type,
+	parameters?: IAst[],
 }
 
 /** 
-     * AST Node corresponding to a function definition
+     * Ast Node corresponding to a function definition
      * 
      * @param name - Name of the function 
 	 * @param _parameters - Parameters deckaration
 	 * @param _block - Block of code contained in the function
 	 * @param returnType - Type of function return 
 */
-export class FunctionDefinition extends Definition implements ParentNode, iFunctionDefinition
+export class FunctionDefinition extends Definition implements ParentNode, IFunctionDefinition
 {
 	static ID: NodeID = "functionDefinition";
     public nodeId: NodeID = FunctionDefinition.ID;
@@ -69,15 +71,15 @@ export class FunctionDefinition extends Definition implements ParentNode, iFunct
 	}
 
 	/** 
-     * Removes AST Node
+     * Removes Ast Node
      * 
-     * @param node - AST Node to be removed
+     * @param node - Ast Node to be removed
 	*/
 	_removeChild (variableDefinition: Node | u32): void
 	{
 		if (variableDefinition === this.block)
 		{
-			throw new ASTError ('You can not remove the block from the function definition');
+			throw new AstError ('You can not remove the block from the function definition');
 		}
 		else
 		{
@@ -122,22 +124,28 @@ export class FunctionDefinition extends Definition implements ParentNode, iFunct
 		return -1;
 	}
 
-	public toJSON(): string {
+	public asInterface():IFunctionDefinition{
 		let json_parameters=[];
 		if(this.parameters){
 			for (const index in this.parameters)
 			{
-				json_parameters.push (this.parameters[index].stringToJSON());
+				json_parameters.push (this.parameters[index].asInterface());
 			}
 		}
-        const json: iFunctionDefinition = {
+        const json: IFunctionDefinition = {
+			...super.asInterface(),
             name: this.name,
-			block: this.block.stringToJSON(),
-			returnType: this.returnType.stringToJSON(),
+			block: this.block,
+			returnType: this.returnType,
             parameters: json_parameters,
-            ...this.nodeObject()
+            
         };
-        return JSON.stringify(json);
+		return json;
+	}
+
+	public toJSON(): string {
+		
+        return JSON.stringify(this.asInterface());
     }
 	public stringToJSON():JSON{
 		return JSON.parse(this.toJSON())

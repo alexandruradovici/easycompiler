@@ -17,7 +17,7 @@
 
 
 import { NodeID } from '../nodes';
-import { AST } from './AST';
+import { Ast, IAst } from './Ast';
 
 export enum JumpType {
 	BREAK = 'break',
@@ -25,18 +25,18 @@ export enum JumpType {
 	JUMP_TO_LABEL = 'label'
 }
 
-interface iJump{
+interface IJump extends IAst{
 	jumpType: JumpType|string;
 	name?:string;
 }
 
 /** 
-     * AST Node corresponding to a jump in code
+     * Ast Node corresponding to a jump in code
      * 
      * @param jumpType - Type of jump in the code
 	 * @param name
 */
-export abstract class Jump extends AST implements iJump
+export abstract class Jump extends Ast implements IJump
 {
 	static ID: NodeID = "jump";
     public nodeId: NodeID = Jump.ID;
@@ -51,12 +51,16 @@ export abstract class Jump extends AST implements iJump
 		}
 	}
 
-	public toJSON(): string {
-        const json: iJump = {
+	public asInterface():IJump{
+		const json: IJump = {
+			...this.asInterface(),
             name: this.name,
             jumpType: this.jumpType as string,
-            ...this.nodeObject()
         };
-        return JSON.stringify(json);
+        return json;
+	}
+
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
     }
 }

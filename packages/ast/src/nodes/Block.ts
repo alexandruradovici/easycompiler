@@ -18,26 +18,26 @@
  
 import { Node, NodeID, ParentNode } from '@easycompiler/util';
 import { i32, u32 } from '@easycompiler/util';
-import { AST } from './AST';
+import { IAst, Ast } from './Ast';
 
-interface iBlock{
-	readonly children: AST[]|string[];
+interface IBlock extends IAst {
+	readonly children: IAst[];
 	readonly name: string;
 }
 
 /** 
-     * AST Node corresponding to a block of code
+     * Ast Node corresponding to a block of code
      * 
 	 * @param name
-     * @param children - AST Nodes that are contained
+     * @param children - Ast Nodes that are contained
 	 * 
 */
-export class Block extends AST implements iBlock,ParentNode
+export class Block extends Ast implements IBlock,ParentNode
 {
 	static ID: NodeID = "block";
     public nodeId: NodeID = Block.ID;
 
-	public readonly children: AST[] = [];
+	public readonly children: Ast[] = [];
 	public readonly name: string;
 	constructor(name: string){
 		super();
@@ -45,11 +45,11 @@ export class Block extends AST implements iBlock,ParentNode
 	}
 
 	/** 
-     * Adds child AST node to the block 
+     * Adds child Ast node to the block 
      * 
-     * @param node - AST node to be added
+     * @param node - Ast node to be added
 	*/
-	addChild (node: AST): void
+	addChild (node: Ast): void
 	{
 		node.parent = this;
 		this.children.push (node);
@@ -57,12 +57,12 @@ export class Block extends AST implements iBlock,ParentNode
 	}
 
 	/** 
-     * Gets position of child AST node
+     * Gets position of child Ast node
      * 
-     * @param node - AST Node to be verified
-	 * @returns position of the AST node if it exists, otherwise -1
+     * @param node - Ast Node to be verified
+	 * @returns position of the Ast node if it exists, otherwise -1
 	*/
-	getChildPosition (node: AST): i32
+	getChildPosition (node: Ast): i32
 	{
 		for (const pos in this.children)
 		{
@@ -72,14 +72,14 @@ export class Block extends AST implements iBlock,ParentNode
 	}
 	
 	/** 
-     * Removes AST Node
+     * Removes Ast Node
      * 
-     * @param node - AST Node to be removed
+     * @param node - Ast Node to be removed
 	*/
 	_removeChild (node: Node | u32): void
 	{
 		let pos; 
-		if (node instanceof AST)
+		if (node instanceof Ast)
 		{
 			pos = this.getChildPosition (node);
 		}
@@ -98,26 +98,31 @@ export class Block extends AST implements iBlock,ParentNode
 		}
 	}
 	/** 
-     * Checks if AST Block is empty 
+     * Checks if Ast Block is empty 
      * 
-	 * @returns true if the AST Block is empty, otherwise false
+	 * @returns true if the Ast Block is empty, otherwise false
 	*/
 	isEmpty (): boolean
 	{
 		return this.children.length === 0;
 	}
 
-	public toJSON(): string {
+	public asInterface(): IBlock {
 		let json_children=[];
 		for(const child of this.children){
-			json_children.push(child.stringToJSON())
+			json_children.push(child.asInterface());
 		}
-        const json: iBlock = {
-            name: this.name,
-            children: this.children,
-            ...this.nodeObject()
+        const json: IBlock = {
+            ...super.asInterface(),
+			name: this.name,
+            children: json_children,
         };
-        return JSON.stringify(json);
+		// console.log(json);
+		return json;
+	}
+
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
     }
 	public stringToJSON():JSON{
 		return JSON.parse(this.toJSON())

@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-import { Node } from "@easycompiler/util";
+import { INode, Node } from "@easycompiler/util";
+
+export interface IAst extends INode {
+     
+}
 
 /** 
      * An AST Node
 */
-export abstract class AST extends Node
+export abstract class Ast extends Node
 {
+     public asInterface(): IAst {
+          return super.asInterface();
+     }
 }

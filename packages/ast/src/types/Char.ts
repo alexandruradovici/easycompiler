@@ -21,11 +21,11 @@
  
 import { IType, Type, TypeID } from './Type';
 
-export interface iChar extends IType{
+export interface IChar extends IType{
 	name: string
 }
 
-export class Char extends Type implements iChar
+export class Char extends Type implements IChar
 {
     protected readonly TYPE_ID: TypeID = TypeID.CHAR;
     public readonly name;
@@ -35,11 +35,15 @@ export class Char extends Type implements iChar
         this.name=name;
     }
     
-    public toJSON(): string {
-        const json: iChar = {
+    public asInterface(): IChar {
+        const json: IChar = {
+            ...super.asInterface(),
 			name: this.name,
-			typeID: super.type
 		};
-        return JSON.stringify(json);
+        return json;
+    }
+
+    public toJSON(): string {
+        return JSON.stringify(this.asInterface());
     }
 }

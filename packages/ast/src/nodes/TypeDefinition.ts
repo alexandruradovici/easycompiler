@@ -21,19 +21,20 @@
 import { Definition } from "./Definition";
 import { Type } from "../types";
 import { NodeID } from '@easycompiler/util';
+import { IAst } from "./Ast";
 
-export interface iTypeDefinition{
+export interface ITypeDefinition extends IAst{
 	name: string,
-	type: Type|JSON,
+	type: Type,
 }
 
 /** 
-     * AST Node corresponding to a type definition in code
+     * Ast Node corresponding to a type definition in code
      * 
      * @param name - The name of the type
 	 * @param type - The type of the new type
 */
-export class TypeDefinition extends Definition implements iTypeDefinition
+export class TypeDefinition extends Definition implements ITypeDefinition
 {
 	static ID: NodeID = "typeDefinition";
     public nodeId: NodeID = TypeDefinition.ID;
@@ -47,10 +48,10 @@ export class TypeDefinition extends Definition implements iTypeDefinition
 	}
 
 	public toJSON(): string {
-        const json: iTypeDefinition = {
+        const json: ITypeDefinition = {
+			...this.asInterface(),
             name: this.name,
-            type: this.type.stringToJSON(),
-            ...this.nodeObject()
+            type: this.type,
         };
         return JSON.stringify(json);
     }

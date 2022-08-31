@@ -33,16 +33,6 @@ export enum SymbolType
 	OTHER
 }
 
-/*
-The name (as a string)
- Attribute: Reserved word, Variable name, Type
-name, Procedure name, Constant name
- The data type
- The block level
- Its scope (global, local, or parameter)
- Its offset from the base pointer (for local variables
-and parameters only)
-*/
 export enum SymScope{
 	GLOBAL="Global", 
 	LOCAL="Local", 
@@ -130,67 +120,138 @@ export class Sym //implements Tags
 			}
 		}
 	}
-}
-export class SymbolStorage
-{
-	[name: string]: Sym;
+	toJSON(): string {
+		let json={
+			type: this.type
+		}
+		return JSON.parse(JSON.stringify(json));
+	}
 }
 
-export type symbolBlock = {
-	blockLevel: number,
-	total: number,
-	symbols: SymbolStorage,
-	parent?: symbolBlock,
-	blocks: SymbolList
+
+export class SymbolStorage
+{
+	storage: { [name: string]: Sym; }={};
+	toJSON():string{
+		let json={
+			storage: this.storage
+		}
+		return JSON.parse(JSON.stringify(json));
+	}
+}
+export class symbolBlock {
+	public blockLevel: number;
+	private total: number=0;
+	public symbols: SymbolStorage=new SymbolStorage();
+	public parent?: symbolBlock;
+	public blocks: SymbolList=new SymbolList();
+
+	constructor(blockLevel: number, parent?:symbolBlock){
+		this.blockLevel=blockLevel;
+		if(parent) this.parent=parent;
+	}
+	setTotal(){
+		this.total=Object.keys(this.symbols).length;
+	}
+	toJSON():JSON{
+		let json:{
+			blocklevel: number,
+			total: number,
+			symbols: {
+				[key: string]: string
+			},
+			blocks: {
+				[key: string]: JSON
+			},
+		}={
+			blocklevel: 0,
+			total: 0,
+			symbols: {},
+			blocks: {}
+		};
+
+		json.blocklevel=this.blockLevel;
+		json.total=this.total;
+		for(const key in Object.keys(this.symbols.storage)){
+			json.symbols[key]=this.symbols.storage[key].toJSON();
+			
+		}
+		for(const key of Object.keys(this.blocks.list)){
+			json.blocks[key]=this.blocks.list[key].toJSON();
+			
+		}
+		return JSON.parse(JSON.stringify(json));
+	}
 };
+
 export class SymbolList{
-	[name: string]: symbolBlock;
+	list: { [name: string]: symbolBlock; }={}; 
+	toJSON():string{
+		let json:{ [key: string]: JSON}={};
+			for(const key of Object.keys(this.list)){
+				//console.log("Key: "+key,this.list[key]);
+				if(this.list[key]){
+					json[key]=this.list[key].toJSON();
+					//console.log("keys: ", json[key]);
+				}
+			}
+		return JSON.stringify(json);
+	}
 }
 
 export class SymbolTable
 {
 	// .. <-- lvl3(locals) <-- lvl2(globals) <-- lvl1(keywords) <-- lvl0(null)
-	private blockGlobal: SymbolStorage = new SymbolStorage(); //2
-	private blockKeywords: SymbolStorage = new SymbolStorage(); //1
 	private symList:SymbolList=new SymbolList();
+	public currentBlock:String;
 
 	constructor(){
-		this.symList["firstBlock"]={
-			blockLevel: 0,
-			total: 0,
-			symbols: new SymbolStorage(),
-			blocks: new SymbolList(),
-		}
-		this.addBlockToList("firstBlock","keywords",this.blockKeywords);
-		this.addBlockToList("keywords","global",this.blockGlobal);
+		this.symList.list["firstblock"]=new symbolBlock(0);
+		this.addBlockToList("firstblock","keywords");
+		console.log("addBlock :", this.addBlockToList("keywords","global"));
+		this.currentBlock="global";
 	}
 
 	//block functions
-	addBlockToList(parentBlock: string, blockName: string, symbolStorage:SymbolStorage){
-		let res= this.getBlock(parentBlock,this.symList);
+	addBlockToList(parentBlock: string, blockName: string): number{
+		let blockNameLC=blockName.toLowerCase();
+		let res= this.getBlock(parentBlock);
 		if(typeof res==="number") return -1;
-		let symObjProp:symbolBlock={
-			blockLevel: res.blockLevel+1,
-			total: Object.keys(symbolStorage).length,
-			symbols: symbolStorage,
-			parent: res,
-			blocks: new SymbolList(),
+		let newBlock:symbolBlock=new symbolBlock(res.blockLevel+1,res);
+		if(newBlock.parent){
+			newBlock.parent.blocks.list[blockNameLC]=newBlock;
 		}
-		this.symList[parentBlock.toLowerCase()].blocks[blockName.toLowerCase()]=symObjProp;
+		res.blocks.list[blockNameLC]=newBlock;
+		return 0;
+		//console.log("Block added:", res.blocks.list[blockNameLC]);
 	}
 
-	getBlock(blockName: string, list: SymbolList): symbolBlock|number{
-		if(this.symList[blockName.toLowerCase()].blockLevel==1) return this.symList["firstBlock"].blocks["keywords"];
-		else if(this.symList[blockName.toLowerCase()].blockLevel==2)  return this.symList["firstBlock"].blocks["keywords"].blocks["global"];
+	getBlock(blockName:string): symbolBlock|number{
+		let list=this.symList;
+		let blockNameLC=blockName.toLowerCase();
+		return this.getBlockWithList(blockNameLC, list);
+	}
+
+	getBlockWithList(blockName: string, list: SymbolList): symbolBlock|number{
+		if(list.list[blockName]){
+			console.log("Block name: ",blockName);
+			console.log("Level: ", list.list[blockName].blockLevel);
+			if(list.list[blockName].blockLevel==0) return this.symList.list["firstblock"];
+			else if(list.list[blockName].blockLevel==1)  return this.symList.list["firstblock"].blocks.list["keywords"];
+			else if(list.list[blockName].blockLevel==2)  return this.symList.list["firstblock"].blocks.list["keywords"].blocks.list["global"];	
+		}
 		else{
-			for(let block in list){
-				if(list[block].blocks[blockName]){
-					return list[block].blocks[blockName];
+			for(const block of Object.keys(list.list)){
+				console.log("Else Block name: ", blockName);
+				if(list.list[block].blocks.list[blockName]){
+					console.log("Else parent name of "+blockName+": ", block);
+					return list.list[block].blocks.list[blockName];
 				}
 				else{
-					list=list[block].blocks;
-					this.getBlock(blockName, list);
+					list=list.list[block].blocks;
+					this.getBlockWithList(blockName, list);
 				}
+				
 			}
 		}
 		return -1;
@@ -199,35 +260,38 @@ export class SymbolTable
 	//symbol search functions
 	lookupByBlock (symName: string, block: symbolBlock): Sym | number
 	{
-		if(block.symbols[symName.toLowerCase()]){
-			return block.symbols[symName.toLowerCase()];
+		let symNameLC=symName.toLowerCase();
+		if(block.symbols.storage[symNameLC]){
+			return block.symbols.storage[symNameLC];
 		}
 		else if(block.blockLevel==1){
 			return -1;
 		}
 		else{
-			return this.lookupByBlock(symName, (block.parent as symbolBlock));
+			return this.lookupByBlock(symNameLC, (block.parent as symbolBlock));
 		}
 	}
 
 	lookup(symName: string, blockName: string): Sym | number {
-		let res= this.getBlock(blockName, this.symList);
+		let symNameLC=symName.toLowerCase();
+		let res= this.getBlock(blockName);
 		if(typeof res!=="number"){
-			this.lookupByBlock(symName, res);
+			this.lookupByBlock(symNameLC, res);
 		}
 		return -1;
 	}
 
 	//symbol functions
 	addOrReplaceSymbolToStorage(blockName: string, symName: string, symType: string): number{
-		let res= this.getBlock(blockName, this.symList);
+		let symNameLC=symName.toLowerCase();
+		let res= this.getBlock(blockName);
 		if(typeof res==="number") return -1;
-		if(res.symbols[symName.toLowerCase()]){
-			res.symbols[symName.toLowerCase()]=new Sym(symType);
-			res.total+=1;
+		if(res.symbols.storage[symNameLC]){
+			res.symbols.storage[symNameLC]=new Sym(symType);
+			res.setTotal();
 		}
 		else{
-			res.symbols[symName.toLowerCase()].setType(symType);
+			res.symbols.storage[symName].setType(symType);
 		}
 		return 0;
 	}
@@ -255,9 +319,9 @@ export class SymbolTable
 	}
 
 	toJSON():string{
-		return JSON.stringify(this.symList);
+		return this.symList.toJSON();
 	}
-	
+		
 	flush (): void
 	{
 		this.symList = new SymbolList ();

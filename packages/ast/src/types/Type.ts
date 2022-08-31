@@ -42,15 +42,18 @@ export class Type implements IType
 	public readonly typeID: TypeID = TypeID.TYPE;
 	
 
-	constructor (public readonly type: TypeID|string)
-	{
+	constructor (public readonly type: TypeID|string){
+	}
+
+	public asInterface(): IType{
+		const json: IType = {
+            typeID: this.typeID as string,
+        };
+		return json;
 	}
 
 	public toJSON(): string {
-        const json: IType = {
-            typeID: this.typeID as string,
-        };
-        return JSON.stringify(json);
+        return JSON.stringify(this.asInterface());
     }
 	public stringToJSON():JSON{
 		return JSON.parse(this.toJSON())

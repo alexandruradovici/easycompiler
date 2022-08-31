@@ -45,6 +45,7 @@ export class Integer extends Type implements iInteger
 
 	public toJSON(): string {
         const json: iInteger = {
+			...super.asInterface(),
 			name: this.name,
 			bits: this.bits,
 			signed: this.signed,

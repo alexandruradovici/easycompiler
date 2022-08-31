@@ -1,6 +1,15 @@
-PROGRAM HELLOWORLD;
+PROGRAM GREETINGS;
+CONST
+MESSAGE = ' Welcome to the world of Pascal ';
+TEST = 'TEST';
+TYPE
+NAME= STRING;
 
-(* Here the main program block starts *)
+VAR
+FIRSTNAME, SURNAME: NAME;
+
 BEGIN
-   WRITELN('Hello, World!');
+   FIRSTNAME:='John';
+   SURNAME:='Doe';
+   WRITELN(MESSAGE, ' ', FIRSTNAME, ' ', SURNAME);
 END.

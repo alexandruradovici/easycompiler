@@ -18,22 +18,23 @@
 
 import { Type } from '../types';
 import { Identifier } from './Identifier';
-import { INode, NodeID } from '@easycompiler/util';
+import { NodeID } from '@easycompiler/util';
 import { Value } from './Value';
+import { IAst } from './Ast';
  
-export interface iConstant extends INode{
+export interface IConstant extends IAst{
 	name: string;
-	type: Type|JSON;
-	value: Value|JSON;
+	type: Type;
+	value: Value;
 }
 
 /** 
-     * AST Node corresponding to a constant
+     * Ast Node corresponding to a constant
 	 * @param name
 	 * @param type
 	 * @param value
 */
-export class Constant extends Identifier implements iConstant
+export class Constant extends Identifier implements IConstant
 {
 	static ID: NodeID = "constant";
     public nodeId: NodeID = Constant.ID;
@@ -44,14 +45,18 @@ export class Constant extends Identifier implements iConstant
 		this.value=value;
 	}
 
-	public toJSON(): string {
-        const json: iConstant = {
+	public asInterface(): IConstant{
+		const json: IConstant = {
+			...super.asInterface(),
 			name: this.name,
-			type: this.type.stringToJSON(),
-            value: this.value.stringToJSON(),
-            ...this.nodeObject()
+			type: this.type,
+            value: this.value,
+            
         };
-        return JSON.stringify(json);
+		return json;
+	}
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
     }
 	public stringToJSON():JSON{
 		return JSON.parse(this.toJSON())

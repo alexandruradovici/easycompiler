@@ -19,21 +19,21 @@
 import { NodeID, ParentNode } from '@easycompiler/util';
 import { Block } from './Block';
 import { Expression } from './Expression';
-import { ASTError } from '../errors';
-import { AST } from './AST';
+import { AstError } from '../errors';
+import { Ast, IAst } from './Ast';
  
-interface iBranch{
-	expression: Expression|JSON;
-	thenBlock: Block|JSON;
-	elseBlock: Block|JSON
+interface IBranch extends IAst{
+	expression: Expression;
+	thenBlock: Block;
+	elseBlock: Block
 }
 /** 
-     * AST Node corresponding to a branch in the code
+     * Ast Node corresponding to a branch in the code
 	 * @param _expression - expression that is verified in the branch
-	 * @param _thenBlock - AST block that contains the code to be executed after `_expression` is true
-	 * @param _elseBlock - AST block that contains the code to be executed after `_expression` is false
+	 * @param _thenBlock - Ast block that contains the code to be executed after `_expression` is true
+	 * @param _elseBlock - Ast block that contains the code to be executed after `_expression` is false
 */
-export class Branch extends AST implements iBranch,ParentNode
+export class Branch extends Ast implements IBranch,ParentNode
 {
 	static ID: NodeID = "branch";
     public nodeId: NodeID = Branch.ID;
@@ -86,36 +86,41 @@ export class Branch extends AST implements iBranch,ParentNode
 	}
 
 	/** 
-     * Removes AST Node
+     * Removes Ast Node
      * 
-     * @param node - AST Node to be removed
+     * @param node - Ast Node to be removed
 	*/
-	_removeChild (node: AST): void
+	_removeChild (node: Ast): void
 	{
 		if (node === this.expression)
 		{
-			throw new ASTError ('The expression cannot be removed from Branch node');
+			throw new AstError ('The expression cannot be removed from Branch node');
 		}
 		else
 		if (node === this.thenBlock)
 		{
-			throw new ASTError ('The then block cannot be removed from Branch node');
+			throw new AstError ('The then block cannot be removed from Branch node');
 		}
 		else
 		if (node === this.elseBlock)
 		{
-			throw new ASTError ('The else block cannot be removed from Branch node');
+			throw new AstError ('The else block cannot be removed from Branch node');
 		}
 	}
 
+	public asInterface(): IBranch{
+		const json: IBranch = {
+			...super.asInterface(),
+			expression: this.expression,
+			thenBlock: this.thenBlock,
+			elseBlock: this.elseBlock,
+		};
+		return json;
+	}
+
 	public toJSON(): string {
-        const json: iBranch = {
-            expression: this.expression.stringToJSON(),
-            thenBlock: this.thenBlock.stringToJSON(),
-			elseBlock: this.elseBlock.stringToJSON(),
-            ...this.nodeObject()
-        };
-        return JSON.stringify(json);
+       
+        return JSON.stringify(this.asInterface());
     }
 	public stringToJSON():JSON{
 		return JSON.parse(this.toJSON())

@@ -24,16 +24,17 @@ import { Type, TypeID } from '../types';
 import { Expression } from './Expression';
 import { ParentNode } from '@easycompiler/util';
 import { Node } from "@easycompiler/util";
-import { ASTError } from '../errors';
+import { AstError } from '../errors';
 
 import type { NodeID } from '@easycompiler/util';
+import { IAst } from './Ast';
  
-interface IArrayElement{
-	expression: Expression|JSON,
-	index: Expression|JSON
+interface IArrayElement extends IAst{
+	expression: Expression,
+	index: Expression
 }
 /** 
-     * AST Node corresponding to an array element
+     * Ast Node corresponding to an array element
      * 
      * @param _expression - The element of the array
 	 * @param _index - The position in the array
@@ -92,25 +93,29 @@ export class ArrayElement extends Expression implements IArrayElement,ParentNode
 	}
 
 	/** 
-     * Removes AST Node
+     * Removes Ast Node
      * 
-     * @param node - AST Node to be removed
+     * @param node - Ast Node to be removed
 	*/
 	_removeChild (node: Node): void
 	{
 		if (node === this.expression)
 		{
-			throw new ASTError ('You can not remove the expression from an ArrayElement');
+			throw new AstError ('You can not remove the expression from an ArrayElement');
 		}
 	}
 
-	public toJSON(): string {
-        const json: IArrayElement = {
-            expression: this.expression.stringToJSON(),
-            index: this.index.stringToJSON(),
-            ...this.nodeObject()
+	public asInterface(): IArrayElement{
+		const json: IArrayElement = {
+            ...super.asInterface(),
+			expression: this.expression,
+            index: this.index,
         };
-        return JSON.stringify(json);
+		return json;
+	}
+
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
     }
 	public stringToJSON():JSON{
 		return JSON.parse(this.toJSON())

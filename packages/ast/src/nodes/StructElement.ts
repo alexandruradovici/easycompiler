@@ -22,22 +22,22 @@ import { Type, Struct } from '../types';
 import { Expression } from './Expression';
 import { Unknown } from '../types';
 import { ParentNode, NodeID } from '@easycompiler/util';
-import { ASTError } from '../errors';
-import { AST } from './AST';
+import { AstError } from '../errors';
+import { Ast, IAst } from './Ast';
 import { VariableDefinition } from './VariableDefinition';
  
-export interface iStructElement{
+export interface IStructElement extends IAst{
 	name: string,
-	struct: VariableDefinition|JSON,
+	struct: VariableDefinition,
 }
 
 /** 
-     * AST Node corresponding to a struct element
+     * Ast Node corresponding to a struct element
      * 
      * @param _struct - The definition of the struct element
 	 * @param name - The name of the struct element
 */
-export class StructElement extends Expression implements iStructElement,ParentNode
+export class StructElement extends Expression implements IStructElement,ParentNode
 {
 	static ID: NodeID = "structElement";
     public nodeId: NodeID = StructElement.ID;
@@ -79,25 +79,29 @@ export class StructElement extends Expression implements iStructElement,ParentNo
 	}
 
 	/** 
-     * Removes AST Node
+     * Removes Ast Node
      * 
-     * @param node - AST Node to be removed
+     * @param node - Ast Node to be removed
 	*/
-	_removeChild (node: AST): void
+	_removeChild (node: Ast): void
 	{
 		if (node === this.struct)
 		{
-			throw new ASTError ('You can not remove the struct from the StructElement node');
+			throw new AstError ('You can not remove the struct from the StructElement node');
 		}
 	}
 
-	public toJSON(): string {
-        const json: iStructElement = {
+	public asInterface(){
+		const json: IStructElement = {
+			...super.asInterface(),
             name: this.name,
-            struct: this.struct.stringToJSON(),
-            ...this.nodeObject()
+            struct: this.struct,
         };
-        return JSON.stringify(json);
+		return json;
+	}
+
+	public toJSON(): string {
+        return JSON.stringify(this.asInterface());
     }
 	public stringToJSON():JSON{
 		return JSON.parse(this.toJSON())
